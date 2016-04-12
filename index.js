@@ -18,17 +18,25 @@ bot.startRTM(function (err, bot, payload) {
   }
 })
 
+var test = 'just testing'
+var albumArray = ['LCD Soundsystem - Sound of Silver', 'Tom Petty - Wildflowers', 'The Head and the Heart - The Head and the Heart','Sufjan Stevens - Illinois','Cake - Prolonging the Magic','The Format Dog Problems','The Avett Brothers - Second Gleam','Death Cab for Cutie - Transatlantism','Red Hot Chili Peppers - By the Way','The Violet Archers - End of Part One']
+var randomAlbum
+
 controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
 
-controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
-  bot.reply(message, 'Hello.')
+controller.hears(['album'], ['direct_mention'], function (bot, message) {
+  randomAlbum = albumArray[Math.floor(Math.random() * albumArray.length)]
+  bot.reply(message, randomAlbum)
 })
 
-controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
-  bot.reply(message, 'Hello.')
-  bot.reply(message, 'It\'s nice to talk to you directly.')
+controller.hears(['rocky'], ['direct_message','direct_mention','mention','ambient'], function (bot, message) {
+  bot.reply(message, 'Honestly slackbot, I think you\'re being a bit harsh on the guy.')
+})
+
+controller.hears(['frank'], ['direct_mention'], function (bot, message) {
+  bot.reply(message, 'FRANK!')
 })
 
 controller.hears('.*', ['mention'], function (bot, message) {
