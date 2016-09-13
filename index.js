@@ -97,7 +97,7 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
       channel: "#robo_russ"
     });
 
-    bot.reply(message, "thanks for your bug report, " + message.user);
+    bot.reply(message, "thanks for your bug report, " + message.user + ". you can find it in #robo_russ");
   }
 
   bot.reply(message, response);
