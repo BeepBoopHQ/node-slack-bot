@@ -80,7 +80,7 @@ controller.on('bot_channel_join', function (bot, message) {
 //   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 // })
 
-controller.hears('!(.*)\s(.*)', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
+controller.hears('!(.*)\s?(.*)?', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
   var command = message.match[1].toLowerCase();
 
