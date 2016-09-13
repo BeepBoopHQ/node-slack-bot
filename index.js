@@ -84,27 +84,27 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
 
   var command = message.match[1];
 
-  commands[command]();
+  bot.reply(commands[command]());
 });
 
 function commandBerto() {
-  return respondWithStaticMessage('ayo berto :100:');
+  return generateStaticMessage('ayo berto :100:');
 }
 
 function commandGoHawks() {
-  return respondWithStaticMessage('#gohawks');
+  return generateStaticMessage('#gohawks');
 }
 
 function commandRussell() {
-  return respondWithStaticMessage('/giphy russell wilson');
+  return generateStaticMessage('/giphy russell wilson');
 }
 
 function commandCoinFlip() {
   return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'Heads!' : 'Tails!';
 }
 
-function respondWithStaticMessage(message) {
-  bot.reply(message);
+function generateStaticMessage(message) {
+  return message;
 }
 
 function listCommands() {
