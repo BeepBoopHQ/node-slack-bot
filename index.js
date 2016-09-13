@@ -80,7 +80,7 @@ controller.on('bot_channel_join', function (bot, message) {
 //   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 // })
 
-controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
+controller.hears('!(.*)\s(.*)', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
   var command = message.match[1].toLowerCase();
 
@@ -93,8 +93,8 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
   if (command === 'bug') {
     // log this to #russel_bot as well
     bot.say({
-      text: message.user + " has reported a bug: " + message.text.replace('!bug', ''),
-      channel: "#robo_russ"
+      text: message.user + " has reported a bug: " + message.match[2],
+      channel: "C2AVCAC6L"
     });
 
     bot.reply(message, "thanks for your bug report, " + message.user + ". you can find it in #robo_russ");
