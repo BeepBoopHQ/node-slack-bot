@@ -84,7 +84,13 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
 
   var command = message.match[1];
 
-  bot.reply(commands[command]());
+  console.log("command is: " + command);
+
+  var response = commands[command]();
+
+  console.log("response is: " + response)
+
+  bot.reply(message, response);
 });
 
 function commandBerto() {
