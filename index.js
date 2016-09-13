@@ -118,7 +118,7 @@ function listCommands() {
 
   for(var key in commands) {
     if (commands.hasOwnProperty(key)) {
-      message += '`!' + key + '`'
+      message += '`!' + key + '` ';
     }
   }
 
