@@ -83,9 +83,15 @@ controller.on('bot_channel_join', function (bot, message) {
 controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
   var command = message.match[1].toLowerCase();
+  var commandMsg = '';
 
-  command = command.substr(0, command.indexOf(' '));
-  var commandMsg = command.substr(command.indexOf(' ') + 1);
+  console.log(command);
+  console.log(commandMsg);
+
+  if (command.indexOf(' ') !== -1) {
+    command = command.substr(0, command.indexOf(' '));
+    commandMsg = command.substr(command.indexOf(' ') + 1);
+  }
 
   console.log(command);
   console.log(commandMsg);
