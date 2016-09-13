@@ -85,16 +85,10 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   var command = message.match[1].toLowerCase();
   var commandMsg = '';
 
-  console.log(command);
-  console.log(commandMsg);
-
   if (command.indexOf(' ') !== -1) {
-    command = command.substr(0, command.indexOf(' '));
     commandMsg = command.substr(command.indexOf(' ') + 1);
+    command = command.substr(0, command.indexOf(' '));
   }
-
-  console.log(command);
-  console.log(commandMsg);
 
   if(!(command in commands)) {
     return;
