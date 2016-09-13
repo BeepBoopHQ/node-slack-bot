@@ -102,7 +102,7 @@ function commandGoHawks() {
 }
 
 function commandRussell() {
-  return generateStaticMessage('`beep boop i am russell_bot v1.0`');
+  return generateStaticMessage('`beep boop i am russell_bot beta-v1.0`');
 }
 
 function commandFlipCoin() {
