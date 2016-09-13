@@ -21,6 +21,9 @@ if (token) {
     }
 
     console.log('Connected to Slack RTM')
+
+    bot.say('russell_bot connected. ');
+    bot.say(showVersion());
   })
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
@@ -102,11 +105,15 @@ function commandGoHawks() {
 }
 
 function commandRussell() {
-  return generateStaticMessage('`beep boop i am russell_bot beta-v1.0`');
+  return generateStaticMessage('`beep boop i am russell_bot`');
 }
 
 function commandFlipCoin() {
   return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'Heads!' : 'Tails!';
+}
+
+function showVersion() {
+  return generateStaticMessage('russell_bot version: `v1.0 \'berto\'`');
 }
 
 function generateStaticMessage(message) {
@@ -130,5 +137,6 @@ function buildCommandDictionary() {
   commands["gohawks"] = commandGoHawks;
   commands["russell"] = commandRussell;
   commands["flipcoin"] = commandFlipCoin;
+  commands["version"] = showVersion;
   commands["commands"] = listCommands;
 }
