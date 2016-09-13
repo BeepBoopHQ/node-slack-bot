@@ -30,16 +30,8 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "#gohawks")
 })
 
-controller.on('message_received', function(bot, message)) {
-  if (message === 'sea') {
-    bot.reply(message, 'hawks')
-    return
-  }
-
-  if (message === 'berto') {
-    bot.reply(message, 'ayo berto')
-    return
-  }
+controller.hears(['berto', 'bert'], ['message_received'], function (bot, message) {
+  bot.reply(message, 'ayo berto')
 })
 
 controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
