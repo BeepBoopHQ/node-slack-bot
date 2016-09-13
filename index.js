@@ -79,23 +79,17 @@ controller.hears('!(.*)', ['direct_message','direct_mention'], function (bot, me
 
   let command = message.match[1];
 
-  var response = routeCommand(command)
+  var response = routeCommand(command);
 
   if(response !== '') {
-    bot.reply(message, response)
+    bot.reply(message, response);
   }
-})
+});
 
 function routeCommand(command) {
-  switch(command) {
+  if (command === 'berto') return 'ayo berto :100:';
+  if (command === 'gohawks') return '#gohawks';
+  if (command === 'commands') return 'commands available: `!berto`, `!gohawks`';
 
-    case "berto":
-      return "ayo berto"
-
-    case "gohawks":
-      return "#gohawks"
-
-    case "commands":
-      return "call me with `!berto`, `!gohawks`"
-  }
+  return '';
 }
