@@ -21,9 +21,6 @@ if (token) {
     }
 
     console.log('Connected to Slack RTM')
-
-    bot.say('russell_bot connected. ');
-    bot.say(showVersion());
   })
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
@@ -85,13 +82,23 @@ controller.on('bot_channel_join', function (bot, message) {
 
 controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
-  var command = message.match[1];
+  var command = message.match[1].toLowerCase();
 
   if(!(command in commands)) {
     return;
   }
 
   var response = commands[command]();
+
+  if (command === bug) {
+    // log this to #russel_bot as well
+    bot.say({
+      text: message.user + " has reported a bug: " + message.replace('!bug', ''),
+      channel: "#robo_russ"
+    });
+
+    bot.reply(message, "thanks for your bug report, " + message.user);
+  }
 
   bot.reply(message, response);
 });
@@ -112,8 +119,12 @@ function commandFlipCoin() {
   return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'Heads!' : 'Tails!';
 }
 
+function commandBug() {
+
+}
+
 function showVersion() {
-  return generateStaticMessage('russell_bot version: `v1.0 \'berto\'`');
+  return generateStaticMessage('russell_bot version: `v1.1 \'berto\'`');
 }
 
 function generateStaticMessage(message) {
@@ -137,6 +148,7 @@ function buildCommandDictionary() {
   commands["gohawks"] = commandGoHawks;
   commands["russell"] = commandRussell;
   commands["flipcoin"] = commandFlipCoin;
+  commands["bug"] = commandBug;
   commands["version"] = showVersion;
   commands["commands"] = listCommands;
 }
