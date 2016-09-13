@@ -92,12 +92,16 @@ controller.hears('!(.*)\s?(.*)?', ['ambient','mention','direct_message','direct_
 
   if (command === 'bug') {
     // log this to #russel_bot as well
+    console.log(message);
+    console.log(message.user);
+    console.log(message.match[2]);
     bot.say({
       text: message.user + " has reported a bug: " + message.match[2],
       channel: "C2AVCAC6L"
     });
 
     bot.reply(message, "thanks for your bug report, " + message.user + ". you can find it in #robo_russ");
+    return;
   }
 
   bot.reply(message, response);
@@ -120,7 +124,7 @@ function commandFlipCoin() {
 }
 
 function commandBug() {
-
+  return '';
 }
 
 function showVersion() {
