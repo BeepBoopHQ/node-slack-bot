@@ -102,10 +102,10 @@ function commandGoHawks() {
 }
 
 function commandRussell() {
-  return generateStaticMessage('/giphy russell wilson');
+  return generateStaticMessage('`beep boop i am russell_bot v1.0`');
 }
 
-function commandCoinFlip() {
+function commandFlipCoin() {
   return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'Heads!' : 'Tails!';
 }
 
@@ -129,6 +129,6 @@ function buildCommandDictionary() {
   commands["berto"] = commandBerto;
   commands["gohawks"] = commandGoHawks;
   commands["russell"] = commandRussell;
-  commands["coinflip"] = commandCoinFlip;
+  commands["flipcoin"] = commandFlipCoin;
   commands["commands"] = listCommands;
 }
