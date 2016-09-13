@@ -76,6 +76,6 @@ controller.on('bot_channel_join', function (bot, message) {
 //   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 // })
 
-controller.hears('message_received', function (bot, message) {
+controller.hears(['testing', 'test'], ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
   bot.reply(message, 'message_receieved')
 })
