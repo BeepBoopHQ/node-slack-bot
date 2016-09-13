@@ -2,6 +2,8 @@ var Botkit = require('botkit')
 
 var token = process.env.SLACK_TOKEN
 
+var commands = {}
+
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
@@ -25,6 +27,9 @@ if (token) {
   console.log('Starting in Beep Boop multi-team mode')
   require('beepboop-botkit').start(controller, { debug: true })
 }
+
+// build the command dictionary
+buildCommandDictionary();
 
 controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "#gohawks")
@@ -79,17 +84,39 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
 
   var command = message.match[1];
 
-  var response = routeCommand(command);
-
-  if(response !== '') {
-    bot.reply(message, response);
-  }
+  commands[command]();
 });
 
-function routeCommand(command) {
-  if (command === 'berto') return 'ayo berto :100:';
-  if (command === 'gohawks') return '#gohawks';
-  if (command === 'commands') return 'commands available: `!berto`, `!gohawks`';
+function commandBerto() {
+  return respondWithStaticMessage('ayo berto :100:');
+}
 
-  return '';
+function commandGoHawks() {
+  return respondWithStaticMessage('#gohawks');
+}
+function commandRussell() {
+  return respondWithStaticMessage('/giphy russell wilson');
+}
+
+function respondWithStaticMessage(message) {
+  bot.reply(message);
+}
+
+function listCommands() {
+  var message = "commands available: ";
+
+  for(var key in commands) {
+    if (commands.hasOwnProperty(key)) {
+      message += `"`!{key}` "`;
+    }
+  }
+
+  return message;
+}
+
+function buildCommandDictionary() {
+  commands["berto"] = commandBerto;
+  commands["gohawks"] = commandGoHawks;
+  commands["russell"] = commandRussell;
+  commands["commands"] = listCommands;
 }
