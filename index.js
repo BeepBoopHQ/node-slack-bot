@@ -90,7 +90,7 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
 
   var response = commands[command]();
 
-  if (command === bug) {
+  if (command === 'bug') {
     // log this to #russel_bot as well
     bot.say({
       text: message.user + " has reported a bug: " + message.replace('!bug', ''),
