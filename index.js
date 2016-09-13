@@ -94,8 +94,13 @@ function commandBerto() {
 function commandGoHawks() {
   return respondWithStaticMessage('#gohawks');
 }
+
 function commandRussell() {
   return respondWithStaticMessage('/giphy russell wilson');
+}
+
+function commandCoinFlip() {
+  return Math.floor(Math.random() * (2 - 1 + 1)) + 1;
 }
 
 function respondWithStaticMessage(message) {
@@ -118,5 +123,6 @@ function buildCommandDictionary() {
   commands["berto"] = commandBerto;
   commands["gohawks"] = commandGoHawks;
   commands["russell"] = commandRussell;
+  commands["coinflip"] = commandCoinFlip;
   commands["commands"] = listCommands;
 }
