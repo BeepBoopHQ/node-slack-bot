@@ -80,13 +80,15 @@ controller.on('bot_channel_join', function (bot, message) {
 //   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 // })
 
-controller.hears('!(.*)\s?(.*)?', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
-
-  console.log(message);
-  console.log(message.user);
-  console.log(message.match[2]);
+controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
   var command = message.match[1].toLowerCase();
+
+  command = command.substr(0, command.indexOf(' '));
+  var commandMsg = command.substr(command.indexOf(' ') + 1);
+
+  console.log(command);
+  console.log(commandMsg);
 
   if(!(command in commands)) {
     return;
@@ -97,7 +99,7 @@ controller.hears('!(.*)\s?(.*)?', ['ambient','mention','direct_message','direct_
   if (command === 'bug') {
     // log this to #russel_bot as well
     bot.say({
-      text: "a bug has been reported: " + message.match[2],
+      text: "a bug has been reported: " + commandMsg,
       channel: "C2AVCAC6L"
     });
 
