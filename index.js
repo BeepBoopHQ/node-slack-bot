@@ -84,7 +84,7 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
 
   var command = message.match[1];
 
-  if(!(command in commands) {
+  if(!(command in commands)) {
     return;
   }
 
