@@ -77,7 +77,7 @@ controller.on('bot_channel_join', function (bot, message) {
 
 controller.hears('!(.*)', ['direct_message','direct_mention'], function (bot, message) {
 
-  let command = message.match[1];
+  var command = message.match[1];
 
   var response = routeCommand(command);
 
