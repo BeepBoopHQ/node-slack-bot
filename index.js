@@ -76,6 +76,8 @@ controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, mess
   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 })
 
-controller.hears(['berto', 'bert'], ['message_received'], function (bot, message) {
-  bot.reply(message, 'ayo berto')
+controller.hears('message_received', function (bot, message) {
+  if (message === 'berto' || message === 'bert') {
+    bot.reply(message, 'ayo berto')
+  }
 })
