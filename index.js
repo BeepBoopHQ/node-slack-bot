@@ -30,7 +30,6 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "#gohawks")
 })
 
-
 // controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
 //   bot.reply(message, 'Hello.')
 // })
@@ -76,6 +75,27 @@ controller.on('bot_channel_join', function (bot, message) {
 //   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
 // })
 
-controller.hears(['testing', 'test'], ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
-  bot.reply(message, 'message_receieved')
+controller.hears('!(.*)', ['direct_message','direct_mention'], function (bot, message) {
+
+  let command = message.match[1];
+
+  var response = routeCommand(command)
+
+  if(response !== '') {
+    bot.reply(message, response)
+  }
 })
+
+function routeCommand(command) {
+  switch(command) {
+
+    case "berto":
+      return "ayo berto"
+
+    case "gohawks":
+      return "#gohawks"
+
+    case "commands":
+      return "call me with `!berto`, `!gohawks`"
+  }
+}
