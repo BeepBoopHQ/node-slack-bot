@@ -93,7 +93,7 @@ controller.hears('!(.*)', ['ambient','mention','direct_message','direct_mention'
   if (command === 'bug') {
     // log this to #russel_bot as well
     bot.say({
-      text: message.user + " has reported a bug: " + message.replace('!bug', ''),
+      text: message.user + " has reported a bug: " + message.text.replace('!bug', ''),
       channel: "#robo_russ"
     });
 
