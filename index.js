@@ -131,7 +131,7 @@ function getPollOptions(message) {
     console.log("found these options: " + options);
     return options;
   } else {
-    var option = message.substr(0, message.indexOf(' or ');
+    var option = message.substr(0, message.indexOf(' or '));
     options.push(option);
     getPollOptions(message.indexOf(' or ') + 4);
   }
