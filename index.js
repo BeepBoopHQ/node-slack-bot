@@ -148,18 +148,31 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
       return;
     }
 
-    console.log('vote value: ' + commandMsg);
+    var optionIndex = parseInt(commandMsg);
 
-    var optionIndex = Number.isInteger(commandMsg);
-
-    if (!optionIndex || optionIndex > pollVotes.length - 1) {
+    if (isNaN(optionIndex) || optionIndex  > pollVotes.length || optionIndex <= 0) {
       bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
       console.log('cancelling vote. optionIndex: ' + optionIndex + ' - pollVotes: ' + pollVotes);
       return;
     }
 
-    pollVotes[optionIndex] += 1;
-    bot.reply(message, 'your vote has been cast for `' + pollOptions[optionIndex] + '`');
+    pollVotes[optionIndex + 1] += 1;
+    bot.reply(message, 'your vote has been cast for `' + pollOptions[optionIndex + 1] + '`');
+    return;
+
+  }
+
+  if (command === 'results') {
+    if (pollOptions.length === 0) {
+      bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
+      return;
+    }
+
+    var resultsArray = pollOptions.map(function(e, i) {
+      return [e, pollVotes[i]];
+    });
+
+    bot.reply(message, 'poll results are: ' + resultsArray.join(', '));
     return;
 
   }
@@ -228,5 +241,6 @@ function buildCommandDictionary() {
   commands["version"] = showVersion;
   commands["poll"] = commandDoNothing;
   commands["vote"] = commandDoNothing;
+  commands["results"] = commandDoNothing;
   commands["commands"] = listCommands;
 }
