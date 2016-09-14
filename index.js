@@ -150,7 +150,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
       return;
     }
 
-    if (pollVotes.includes(message.user)) {
+    if (pollUsers.indexOf(message.user) !== -1) {
       // already voted
       bot.reply(message, '<@' + message.user + '>, you have already voted in this poll');
       return;
@@ -190,6 +190,9 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
     if (message.user !== pollOwner) {
       bot.reply(message, 'only <@' + pollOwner + '> can close this poll');
+      bot.reply(message, {
+        text: 'only <@' + pollOwner + '> can close this poll'
+      });
       return;
     }
 
