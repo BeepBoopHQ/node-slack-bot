@@ -133,7 +133,9 @@ function getPollOptions(message) {
   } else {
     var option = message.substr(0, message.indexOf(' or '));
     options.push(option);
-    getPollOptions(message.indexOf(' or ') + 4);
+    console.log("pushing option - " + option);
+    console.log("option array - " + options);
+    getPollOptions(message.substr(indexOf(' or ') + 4));
   }
 }
 
