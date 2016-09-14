@@ -190,9 +190,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
     if (message.user !== pollOwner) {
       bot.reply(message, 'only <@' + pollOwner + '> can close this poll');
-      bot.reply(message, {
-        text: 'only <@' + pollOwner + '> can close this poll'
-      });
       return;
     }
 
