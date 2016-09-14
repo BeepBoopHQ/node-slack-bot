@@ -5,6 +5,7 @@ var token = process.env.SLACK_TOKEN
 var commands = {};
 
 var pollOptions = [];
+var pollVotes = [];
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -110,15 +111,58 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   }
 
   if (command === 'poll') {
+
+    if (pollOptions.length !== 0) {
+      bot.reply(message, 'another poll is already active.');
+      return;
+    }
+
     // commandMsg should have a single instance of ' or '
-    if (commandMsg.indexOf(' or ') === -1) {
+    if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
       bot.reply(message, 'use `!poll <this> or <that>`');
+      return;
+    }
+
+    if (commandMsg.indexOf(' or ') === -1 && pollOptions.length !== 0) {
+      // display current poll
+      var formattedOptions = pollOptions.map(function(opt) {
+        return '`' + opt + '`'
+      });
+
+      bot.reply(message, '`!vote` for ' + pollOptions.join(', '));
+      return;
     }
 
     getPollOptions(commandMsg);
-    console.log("global poll choices " + pollOptions);
 
-    bot.reply(message, 'a poll has been started! !vote for ' + pollOptions.join(' '));
+    var formattedOptions = pollOptions.map(function(opt) {
+      return '`' + opt + '`'
+    });
+
+    bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', '));
+
+    pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
+    return;
+
+  }
+
+  if (command === 'vote') {
+
+    if (pollOptions.length === 0) {
+      bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
+      return;
+    }
+
+    var optionIndex = Number.isInteger(commandMsg);
+
+    if (!optionIndex || optionIndex > pollVotes.length - 1) {
+      bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
+      return;
+    }
+
+    pollVotes[optionIndex] += 1;
+    bot.reply(message, 'your vote has been cast for `' + pollOptions[optionIndex] + '`');
+    return;
 
   }
 
@@ -185,5 +229,6 @@ function buildCommandDictionary() {
   commands["bug"] = commandDoNothing;
   commands["version"] = showVersion;
   commands["poll"] = commandDoNothing;
+  commands["vote"] = commandDoNothing;
   commands["commands"] = listCommands;
 }
