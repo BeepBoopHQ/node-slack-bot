@@ -25,6 +25,16 @@ if (token) {
       throw new Error(err)
     }
 
+    bot.say({
+      text: 'russell_bot has connected',
+      channel: 'C2ARRKMPZ'
+    });
+
+    bot.say({
+      text: showVersion(),
+      channel: 'C2ARRKMPZ'
+    })
+
     console.log('Connected to Slack RTM')
   })
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
@@ -245,7 +255,7 @@ function commandDoNothing() {
 }
 
 function showVersion() {
-  return generateStaticMessage('russell_bot version: `v1.1 \'berto\'`');
+  return generateStaticMessage('russell_bot version: `v1.2 \'malibertyah\'`');
 }
 
 function generateStaticMessage(message) {
