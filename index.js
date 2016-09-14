@@ -6,6 +6,8 @@ var commands = {};
 
 var pollOptions = [];
 var pollVotes = [];
+var pollUsers = [];
+var pollOwner = '';
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -135,7 +137,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     });
 
     bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', '));
-
+    pollOwner = message.user;
     pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
     return;
 
@@ -148,16 +150,22 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
       return;
     }
 
+    if (pollVotes.includes(message.user)) {
+      // already voted
+      bot.reply(message, '<@' + message.user + '>, you have already voted in this poll');
+      return;
+    }
+
     var optionIndex = parseInt(commandMsg);
 
     if (isNaN(optionIndex) || optionIndex  > pollVotes.length || optionIndex <= 0) {
       bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
-      console.log('cancelling vote. optionIndex: ' + optionIndex + ' - pollVotes: ' + pollVotes);
       return;
     }
 
     pollVotes[optionIndex - 1] += 1;
-    bot.reply(message, 'your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
+    bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
+    pollVotes.push(message.user);
     return;
 
   }
@@ -174,6 +182,29 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     });
 
     bot.reply(message, 'poll results are: ' + resultsArray.join(', '));
+    return;
+
+  }
+
+  if (command === 'endpoll') {
+
+    if (message.user !== pollOwner) {
+      bot.reply(message, 'only <@' + pollOwner + '> can close this poll');
+      return;
+    }
+
+    var resultsArray = pollOptions.map(function(e, i) {
+      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+      return [formatted];
+    });
+
+    bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
+
+    pollOptions = [];
+    pollVotes = [];
+    pollUsers = [];
+    pollOwner = ''
+
     return;
 
   }
