@@ -274,5 +274,6 @@ function buildCommandDictionary() {
   commands["poll"] = commandDoNothing;
   commands["vote"] = commandDoNothing;
   commands["results"] = commandDoNothing;
+  commands["endpoll"] = commandDoNothing;
   commands["commands"] = listCommands;
 }
