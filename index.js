@@ -126,7 +126,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
 function getPollOptions(message) {
   if (message.indexOf(' or ') === -1) {
-    options.push(message);
+    pollOptions.push(message);
     return pollOptions;
   } else {
     var option = message.substr(0, message.indexOf(' or '));
