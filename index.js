@@ -114,22 +114,17 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
     if (pollOptions.length !== 0) {
       bot.reply(message, 'another poll is already active.');
+      var formattedOptions = pollOptions.map(function(opt) {
+        return '`' + opt + '`'
+      });
+
+      bot.reply(message, '`!vote` for ' + pollOptions.join(', '));
       return;
     }
 
     // commandMsg should have a single instance of ' or '
     if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
       bot.reply(message, 'use `!poll <this> or <that>`');
-      return;
-    }
-
-    if (commandMsg.indexOf(' or ') === -1 && pollOptions.length !== 0) {
-      // display current poll
-      var formattedOptions = pollOptions.map(function(opt) {
-        return '`' + opt + '`'
-      });
-
-      bot.reply(message, '`!vote` for ' + pollOptions.join(', '));
       return;
     }
 
@@ -153,10 +148,13 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
       return;
     }
 
+    console.log('vote value: ' + commandMsg);
+
     var optionIndex = Number.isInteger(commandMsg);
 
     if (!optionIndex || optionIndex > pollVotes.length - 1) {
       bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
+      console.log('cancelling vote. optionIndex: ' + optionIndex + ' - pollVotes: ' + pollVotes);
       return;
     }
 
