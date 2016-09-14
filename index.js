@@ -165,7 +165,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
     pollVotes[optionIndex - 1] += 1;
     bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
-    pollVotes.push(message.user);
+    pollUsers.push(message.user)
     return;
 
   }
