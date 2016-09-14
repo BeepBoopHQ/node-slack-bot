@@ -2,7 +2,9 @@ var Botkit = require('botkit')
 
 var token = process.env.SLACK_TOKEN
 
-var commands = {}
+var commands = {};
+
+var pollOptions = [];
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -123,18 +125,12 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 });
 
 function getPollOptions(message) {
-  console.log("getting poll options for " + message);
-  var options = []
-
   if (message.indexOf(' or ') === -1) {
     options.push(message);
-    console.log("found these options: " + options);
-    return options;
+    return pollOptions;
   } else {
     var option = message.substr(0, message.indexOf(' or '));
-    options.push(option);
-    console.log("pushing option - " + option);
-    console.log("option array - " + options);
+    pollOptions.push(option);
     getPollOptions(message.substr(message.indexOf(' or ') + 4));
   }
 }
