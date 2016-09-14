@@ -107,8 +107,35 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     return;
   }
 
+  if (command === 'poll') {
+    // commandMsg should have a single instance of ' or '
+    if (commandMsg.indexOf(' or ') === -1) {
+      bot.reply(message, 'use `!poll <this> or <that>`');
+    }
+
+    var pollOptions = getPollOptions(commandMsg);
+
+    bot.reply(message, 'a poll has been started! !vote for ' + pollOptions.join(' '));
+
+  }
+
   bot.reply(message, response);
 });
+
+function getPollOptions(message) {
+  console.log("getting poll options for " + message);
+  var options = []
+
+  if (message.indexOf(' or ') === -1) {
+    options.push(message);
+    console.log("found these options: " + options);
+    return options;
+  } else {
+    var option = message.substr(0, message.indexOf(' or ');
+    options.push(option);
+    getPollOptions(message.indexOf(' or ') + 4);
+  }
+}
 
 function commandBerto() {
   return generateStaticMessage('ayo berto :100:');
@@ -126,7 +153,7 @@ function commandFlipCoin() {
   return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'Heads!' : 'Tails!';
 }
 
-function commandBug() {
+function commandDoNothing() {
   return '';
 }
 
@@ -155,7 +182,8 @@ function buildCommandDictionary() {
   commands["gohawks"] = commandGoHawks;
   commands["russell"] = commandRussell;
   commands["flipcoin"] = commandFlipCoin;
-  commands["bug"] = commandBug;
+  commands["bug"] = commandDoNothing;
   commands["version"] = showVersion;
+  commands["poll"] = commandDoNothing;
   commands["commands"] = listCommands;
 }
