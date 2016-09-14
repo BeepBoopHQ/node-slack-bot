@@ -115,9 +115,10 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
       bot.reply(message, 'use `!poll <this> or <that>`');
     }
 
-    var pollOptions = getPollOptions(commandMsg);
+    var choices = getPollOptions(commandMsg);
+    console.log("poll choices: " + choices);
 
-    bot.reply(message, 'a poll has been started! !vote for ' + pollOptions.join(' '));
+    bot.reply(message, 'a poll has been started! !vote for ' + choices.join(' '));
 
   }
 
