@@ -156,8 +156,8 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
       return;
     }
 
-    pollVotes[optionIndex + 1] += 1;
-    bot.reply(message, 'your vote has been cast for `' + pollOptions[optionIndex + 1] + '`');
+    pollVotes[optionIndex - 1] += 1;
+    bot.reply(message, 'your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
     return;
 
   }
@@ -169,7 +169,8 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     }
 
     var resultsArray = pollOptions.map(function(e, i) {
-      return [e, pollVotes[i]];
+      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+      return [formatted];
     });
 
     bot.reply(message, 'poll results are: ' + resultsArray.join(', '));
