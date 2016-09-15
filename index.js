@@ -5,6 +5,8 @@ var version = '`v1.3 \'orange sher-bert\'`';
 
 var commands = {};
 
+var polls = [];
+
 var pollOptions = [];
 var pollVotes = [];
 var pollUsers = [];
