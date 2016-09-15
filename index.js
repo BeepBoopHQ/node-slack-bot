@@ -165,18 +165,18 @@ function commandPollResults(bot, message, commandMsg) {
   var pollNumber = parseInt(commandMsg.split(' ')[0]);
 
   if(isNaN(pollNumber)) {
-    bot.reply(message, '<@' + message.user + ', this is an invalid poll');
+    bot.reply(message, '<@' + message.user + '>, this is an invalid poll');
     return;
   }
 
   if(pollMap[pollNumber] === null) {
-    bot.reply(message, '<@' + message.user + ', this poll does not exist');
+    bot.reply(message, '<@' + message.user + '>, this poll does not exist');
     return;
   }
 
   var currentPoll = pollMap[pollNumber];
 
-  var resultsArray = polls[key].options.map(function(e, i) {
+  var resultsArray = currentPoll.options.map(function(e, i) {
     var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
     return [formatted];
   });
