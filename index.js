@@ -92,7 +92,7 @@ function formatPollOptions(message) {
     var option = message.substr(0, message.indexOf(' or '));
     console.log('got this option: ' + option);
     pollOptions.push(option);
-    formatPollOptions(message.substr(message.indexOf(' or ') + 4));
+    return formatPollOptions(message.substr(message.indexOf(' or ') + 4));
   }
 }
 
