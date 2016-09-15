@@ -44,7 +44,7 @@ if (token) {
     // run the poll timer
     setInterval(function() {
       for(key in polls) {
-        if(polls.hasOwnProperty(key)) {
+        if(polls.hasOwnProperty(key) && polls[key] !== null) {
 
           var currentTimeSeconds = new Date().getTime() / 1000;
 
