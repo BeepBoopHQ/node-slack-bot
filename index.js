@@ -40,6 +40,26 @@ if (token) {
       text: 'running ' + version,
       channel: 'C2ARE3TQU'
     });
+
+    // run the poll timer
+    setInterval(function() {
+      for(key in polls) {
+        if(polls.hasOwnProperty(poll)) {
+          var currentTimeMs = new Date().getTime() / 1000;
+          if (currentTimeMs - polls[key].startTime > 600000) { // if 10 minutes have passed
+
+            var resultsArray = polls[key].options.map(function(e, i) {
+              var formatted = '`' + e + ': ' + polls[key].votes[i] + '`'
+              return [formatted];
+            });
+
+            bot.say({
+              text: '<@' + key + '>\'s has ended. results are: ' + resultsArray.join(', ');
+            });
+          }
+        }
+      }
+    }, 10000);
   });
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
@@ -237,7 +257,7 @@ function commandPoll(bot, message, commandMsg) {
     console.log('pollChoices: ' + formattedPollChoices);
     console.log('commandMsg: ' + commandMsg);
 
-    polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: []};
+    polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
@@ -246,18 +266,7 @@ function commandPoll(bot, message, commandMsg) {
   // build the user list for majority vote
   buildUserList(bot, message);
 
-  console.log('polls: ' + polls);
-
   bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
-
-  // set the timer for the poll
-  polls[message.user].setTimeout(function() {
-
-    bot.reply(message, 'poll is closed! results are: ' + polls[message.user].options.join(', '));
-
-    clearPoll(message.user);
-    return;
-  }, 600000); // 10mins
 
   return;
 }
