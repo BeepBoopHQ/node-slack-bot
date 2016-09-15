@@ -246,8 +246,9 @@ function commandVote(bot, message, commandMsg) {
   }
 
   // user isnt in the list of current votes, add them
-  bot.reply(message, '<@>, your vote has been cast for ' + currentPoll.options[voteOption]);
-  currentPoll.votes[voteOption] += 1;
+  bot.reply(message, '<@' + message.user + '>, your vote has been cast for ' + currentPoll.options[voteOption - 1]);
+  currentPoll.votes[voteOption - 1] += 1;
+  currentPol.users.push({userId: message.user, vote: voteOption - 1});
   return;
 }
 
