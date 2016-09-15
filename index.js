@@ -211,7 +211,10 @@ function commandVote(bot, message, commandMsg) {
   pollVotes[optionIndex - 1] += 1;
   bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
 
-  var userVote = { user: message.user, vote: (optionIndex - 1)};
+  var userVote = { user: message.user, vote: optionIndex - 1};
+  console.log(userVote);
+  console.log(userVote.user);
+  console.log(userVote.vote);
 
   pollUsers.push(userVote);
   return;
