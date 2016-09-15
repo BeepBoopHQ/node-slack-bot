@@ -1,7 +1,7 @@
 var Botkit = require('botkit')
 
 var token = process.env.SLACK_TOKEN
-var version = 'v1.3 \'orange sher-bert\'';
+var version = '`v1.3 \'orange sher-bert\'`';
 
 var commands = {};
 
@@ -287,7 +287,7 @@ function commandTestCommands(bot, message, commandMsg) {
 
   for(var key in commands) {
     if (commands.hasOwnProperty(key)) {
-      commands[key]('');
+      commands[key](bot, message, '');
     }
   }
   return;
