@@ -169,12 +169,12 @@ function commandPollResults(bot, message, commandMsg) {
     return;
   }
 
-  if(pollMap[pollNumber] === null) {
+  if(pollMap[pollNumber - 1] === null) {
     bot.reply(message, '<@' + message.user + '>, this poll does not exist');
     return;
   }
 
-  var currentPoll = pollMap[pollNumber];
+  var currentPoll = pollMap[pollNumber - 1];
 
   var resultsArray = currentPoll.options.map(function(e, i) {
     var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
