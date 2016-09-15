@@ -72,19 +72,25 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 });
 
 function formatPollOptions(message) {
+  console.log('parsing this: ' + message);
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
+
+    console.log('pollOptions pre-format: ' + pollOptions);
 
     var formattedOptions = pollOptions.map(function(e, i) {
       var formatted = '`' + e + '`';
       return [formatted];
     });
 
+    console.log('formatted options: ' + formattedOptions);
+
     pollOptions = [];
 
     return formattedOptions;
   } else {
     var option = message.substr(0, message.indexOf(' or '));
+    console.log('got this option: ' + option);
     pollOptions.push(option);
     formatPollOptions(message.substr(message.indexOf(' or ') + 4));
   }
