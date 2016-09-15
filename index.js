@@ -251,7 +251,7 @@ function commandPoll(bot, message, commandMsg) {
   bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // set the timer for the poll
-  pollOptions[message.user].setTimeout(function() {
+  polls[message.user].setTimeout(function() {
 
     bot.reply(message, 'poll is closed! results are: ' + polls[message.user].options.join(', '));
 
@@ -263,11 +263,7 @@ function commandPoll(bot, message, commandMsg) {
 }
 
 function clearPoll(user) {
-  for (poll in polls) {
-    if(polls[poll].user === user) {
-      polls[poll] = null;
-    }
-  }
+  polls[user] = null;
 }
 
 function commandBug(bot, message, commandMsg) {
