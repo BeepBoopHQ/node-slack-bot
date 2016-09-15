@@ -9,6 +9,7 @@ var pollOptions = [];
 var pollVotes = [];
 var pollUsers = [];
 var pollOwner = '';
+var pollStartTime = '';
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -131,6 +132,9 @@ function commandResetPoll(bot, message, commandMsg) {
   });
 
   bot.reply(message, 'resetting current poll, `!vote` again for ' + formattedOptions);
+
+  pollVotes = [];
+  pollUsers = [];
   return;
 }
 
@@ -150,7 +154,8 @@ function commandEndPoll(bot, message, commandMsg) {
   pollOptions = [];
   pollVotes = [];
   pollUsers = [];
-  pollOwner = ''
+  pollOwner = '';
+  pollStartTime = '';
 
   return;
 }
@@ -176,12 +181,6 @@ function commandVote(bot, message, commandMsg) {
     return;
   }
 
-  if (pollUsers.indexOf(message.user) !== -1) {
-    // already voted
-    bot.reply(message, '<@' + message.user + '>, you have already voted in this poll');
-    return;
-  }
-
   var optionIndex = parseInt(commandMsg);
 
   if (isNaN(optionIndex) || optionIndex  > pollVotes.length || optionIndex <= 0) {
@@ -189,9 +188,24 @@ function commandVote(bot, message, commandMsg) {
     return;
   }
 
+  for(userVote in pollUsers) {
+    if (userVote.user === message.user) {
+      var newVoteIndex = optionIndex - 1;
+      var oldVoteIndex = pollUsers[userVote].vote;
+
+      bot.reply(message, '<@' + message.user + '> has changed their vote from `' + pollOptions[oldVoteIndex] + '` to `' + pollOptions[newVoteIndex] + '`');
+      pollVotes[newVoteIndex] += 1;
+      pollVotes[oldVoteIndex] -= 1;
+      return;
+    }
+  }
+
   pollVotes[optionIndex - 1] += 1;
   bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
-  pollUsers.push(message.user)
+
+  var userVote = { user: message.user, vote: (optionIndex - 1)};
+
+  pollUsers.push(userVote);
   return;
 }
 
@@ -220,7 +234,20 @@ function commandPoll(bot, message, commandMsg) {
 
   bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', '));
   pollOwner = message.user;
+  pollStartTime = new Date().getTime() / 1000;
   pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
+
+  // set the timer for the poll
+  setTimeout(function() {
+    bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
+
+    pollOptions = [];
+    pollVotes = [];
+    pollUsers = [];
+    pollOwner = '';
+    pollStartTime = '';
+  }, 10000);
+
   return;
 }
 
@@ -278,6 +305,17 @@ function commandLit(bot, message, commandMsg) {
   return;
 }
 
+function commandFeature(bot, message, commandMsg) {
+  // log this to #russel_bot as well
+  bot.say({
+    text: "feature request: " + commandMsg,
+    channel: "C2BRPHPS4"
+  });
+
+  bot.reply(message, 'thanks for your feature request, <@' + message.user + '>, we _definitely_ take them seriously.');
+  return;
+}
+
 function buildCommandDictionary() {
   commands["berto"] = commandBerto;
   commands["gohawks"] = commandGoHawks;
@@ -291,5 +329,6 @@ function buildCommandDictionary() {
   commands["endpoll"] = commandEndPoll;
   commands["resetpoll"] = commandResetPoll;
   commands["lit"] = commandLit;
+  commands["feature"] = commandFeature;
   commands["commands"] = listCommands;
 }
