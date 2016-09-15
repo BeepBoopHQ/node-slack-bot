@@ -236,7 +236,7 @@ function commandBug(bot, message, commandMsg) {
 }
 
 function commandBerto(bot, message, commandMsg) {
-  bot.reply(message, 'ayo berto :100:');
+  bot.reply(message, '<@U2ASHP5FT> ayo berto :100:');
   return;
 }
 
@@ -285,10 +285,12 @@ function commandTestCommands(bot, message, commandMsg) {
     return;
   }
 
-  for(var i = 0; i < commands.length; i++) {
-    commands[i]('');
+  for(var key in commands) {
+    if (commands.hasOwnProperty(key)) {
+      commands[key]('');
+    }
   }
-  return
+  return;
 }
 
 function buildCommandDictionary() {
