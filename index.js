@@ -162,23 +162,26 @@ function commandEndPoll(bot, message, commandMsg) {
 
 function commandPollResults(bot, message, commandMsg) {
 
-  // polls are one poll per user
-  if(!pollOptions[message.user] || pollOptions[message.user] === 0) {
-    // this user has no poll
+  var pollNumber = parseInt(commandMsg.split(' ')[0]);
 
-  }
-
-  if (pollOptions.length === 0) {
-    bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
+  if(isNaN(pollNumber)) {
+    bot.reply(message, '<@' + message.user + ', this is an invalid poll');
     return;
   }
 
-  var resultsArray = pollOptions.map(function(e, i) {
-    var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+  if(pollMap[pollNumber] === null) {
+    bot.reply(message, '<@' + message.user + ', this poll does not exist');
+    return;
+  }
+
+  var currentPoll = pollMap[pollNumber];
+
+  var resultsArray = polls[key].options.map(function(e, i) {
+    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
     return [formatted];
   });
 
-  bot.reply(message, 'poll results are: ' + resultsArray.join(', '));
+  bot.reply(message, '<@' + message.user + '>, this poll\'s results are: ' + resultsArray.join(', '));
   return;
 }
 
