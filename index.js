@@ -219,17 +219,17 @@ function commandVote(bot, message, commandMsg) {
     var existingVote = currentPoll.users[user].vote;
     if(userId === message.user) {
       // user has voted already
-      if(existingVote === voteOption) {
+      if(existingVote === (voteOption - 1)) {
         // already voted for this
         bot.reply(message, '<@' + message.user + '>, you already voted for this option');
         return;
       }
 
       // changing their vote
-      bot.reply(message, '<@' + message.user + '> has changed their vote from `' + currentPoll.options[existingVote] + '` to `' + currentPoll.options[voteOption] + '`');
+      bot.reply(message, '<@' + message.user + '> has changed their vote from ' + currentPoll.options[existingVote] + ' to ' + currentPoll.options[voteOption]);
       currentPoll.votes[existingVote] -= 1;
-      currentPoll.votes[voteOption] += 1;
-      currentPoll.users[user].vote = voteOption;
+      currentPoll.votes[voteOption - 1] += 1;
+      currentPoll.users[user].vote = voteOption - 1;
 
       if (checkForVoteMajority(pollVotes)) {
         var resultsArray = pollOptions.map(function(e, i) {
