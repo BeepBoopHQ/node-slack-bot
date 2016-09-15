@@ -190,7 +190,7 @@ function commandVote(bot, message, commandMsg) {
   }
 
   // check if this poll exists
-  if (!polls[pollNumber - 1]) {
+  if (polls[pollNumber - 1] === null) {
     bot.reply(message, pollNumber + ' is not a valid poll');
     return;
   }
