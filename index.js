@@ -364,7 +364,7 @@ function buildUserList(bot, message) {
       channelUsers = [];
       return;
     }
-
+    console.log('channel list response: ' + response);
     var jsonResponse = JSON.parse(response);
 
     for(var channel in jsonResponse.channels) {
