@@ -49,53 +49,8 @@ if (token) {
 buildCommandDictionary();
 
 controller.on('bot_channel_join', function (bot, message) {
-  bot.reply(message, "#gohawks")
+  bot.reply(message, '#gohawks')
 })
-
-// controller.hears(['hello', 'hi'], ['direct_mention'], function (bot, message) {
-//   bot.reply(message, 'Hello.')
-// })
-//
-// controller.hears(['hello', 'hi'], ['direct_message'], function (bot, message) {
-//   bot.reply(message, 'Hello.')
-//   bot.reply(message, 'It\'s nice to talk to you directly.')
-// })
-//
-// controller.hears('.*', ['mention'], function (bot, message) {
-//   bot.reply(message, 'You really do care about me. :heart:')
-// })
-//
-// controller.hears('help', ['direct_message', 'direct_mention'], function (bot, message) {
-//   var help = 'I will respond to the following messages: \n' +
-//       '`bot hi` for a simple message.\n' +
-//       '`bot attachment` to see a Slack attachment message.\n' +
-//       '`@<your bot\'s name>` to demonstrate detecting a mention.\n' +
-//       '`bot help` to see this again.'
-//   bot.reply(message, help)
-// })
-//
-// controller.hears(['attachment'], ['direct_message', 'direct_mention'], function (bot, message) {
-//   var text = 'Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots.'
-//   var attachments = [{
-//     fallback: text,
-//     pretext: 'We bring bots to life. :sunglasses: :thumbsup:',
-//     title: 'Host, deploy and share your bot in seconds.',
-//     image_url: 'https://storage.googleapis.com/beepboophq/_assets/bot-1.22f6fb.png',
-//     title_link: 'https://beepboophq.com/',
-//     text: text,
-//     color: '#7CD197'
-//   }]
-//
-//   bot.reply(message, {
-//     attachments: attachments
-//   }, function (err, resp) {
-//     console.log(err, resp)
-//   })
-// })
-//
-// controller.hears('.*', ['direct_message', 'direct_mention'], function (bot, message) {
-//   bot.reply(message, 'Sorry <@' + message.user + '>, I don\'t understand. \n')
-// })
 
 controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
@@ -117,7 +72,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 function getPollOptions(message) {
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
-    console.log("got these options: " + pollOptions);
     return pollOptions;
   } else {
     var option = message.substr(0, message.indexOf(' or '));
@@ -190,20 +144,18 @@ function commandVote(bot, message, commandMsg) {
 
 
   for(userVote in pollUsers) {
-    console.log(userVote);
-    console.log(userVote.user);
-    console.log(userVote.vote);
-    if (userVote.user === message.user) {
+    var existingUser = pollUsers[userVote].user;
+    var existingVote = pollUsers[userVote].vote;
+    if (existingUser === message.user) {
       var newVoteIndex = optionIndex - 1;
-      var oldVoteIndex = pollUsers[userVote].vote;
+      var oldVoteIndex = existingVote;
 
       bot.reply(message, '<@' + message.user + '> has changed their vote from `' + pollOptions[oldVoteIndex] + '` to `' + pollOptions[newVoteIndex] + '`');
-      console.log("new vote: " + newVoteIndex);
-      console.log("old vote: " + oldVoteIndex);
+
       pollUsers[userVote].vote = newVoteIndex;
       pollVotes[newVoteIndex] += 1;
       pollVotes[oldVoteIndex] -= 1;
-      console.log('pollvotes: ' + pollVotes);
+
       return;
     }
   }
@@ -212,9 +164,6 @@ function commandVote(bot, message, commandMsg) {
   bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
 
   var userVote = { user: message.user, vote: optionIndex - 1};
-  console.log(userVote);
-  console.log(userVote.user);
-  console.log(userVote.vote);
 
   pollUsers.push(userVote);
   return;
@@ -270,11 +219,11 @@ function commandPoll(bot, message, commandMsg) {
 function commandBug(bot, message, commandMsg) {
   // log this to #russel_bot as well
   bot.say({
-    text: "a bug has been reported: " + commandMsg,
-    channel: "C2AVCAC6L"
+    text: 'a bug has been reported: ' + commandMsg,
+    channel: 'C2AVCAC6L'
   });
 
-  bot.reply(message, "thanks for your bug report. you can find it in #robo_russ");
+  bot.reply(message, 'thanks for your bug report. you can find it in #robo_russ');
   return;
 }
 
@@ -304,7 +253,7 @@ function showVersion(bot, message, commandMsg) {
 }
 
 function listCommands(bot, message, commandMsg) {
-  var commandList = "commands available: ";
+  var commandList = 'commands available: ';
 
   for(var key in commands) {
     if (commands.hasOwnProperty(key)) {
@@ -324,8 +273,8 @@ function commandLit(bot, message, commandMsg) {
 function commandFeature(bot, message, commandMsg) {
   // log this to #russel_bot as well
   bot.say({
-    text: "feature request: " + commandMsg,
-    channel: "C2BRPHPS4"
+    text: 'feature request: ' + commandMsg,
+    channel: 'C2BRPHPS4'
   });
 
   bot.reply(message, 'thanks for your feature request, <@' + message.user + '>, we _definitely_ take them seriously.');
@@ -333,18 +282,18 @@ function commandFeature(bot, message, commandMsg) {
 }
 
 function buildCommandDictionary() {
-  commands["berto"] = commandBerto;
-  commands["gohawks"] = commandGoHawks;
-  commands["russell"] = commandRussell;
-  commands["flipcoin"] = commandFlipCoin;
-  commands["bug"] = commandBug;
-  commands["version"] = showVersion;
-  commands["poll"] = commandPoll;
-  commands["vote"] = commandVote;
-  commands["pollresults"] = commandPollResults;
-  commands["endpoll"] = commandEndPoll;
-  commands["resetpoll"] = commandResetPoll;
-  commands["lit"] = commandLit;
-  commands["feature"] = commandFeature;
-  commands["commands"] = listCommands;
+  commands['berto'] = commandBerto;
+  commands['gohawks'] = commandGoHawks;
+  commands['russell'] = commandRussell;
+  commands['flipcoin'] = commandFlipCoin;
+  commands['bug'] = commandBug;
+  commands['version'] = showVersion;
+  commands['poll'] = commandPoll;
+  commands['vote'] = commandVote;
+  commands['pollresults'] = commandPollResults;
+  commands['endpoll'] = commandEndPoll;
+  commands['resetpoll'] = commandResetPoll;
+  commands['lit'] = commandLit;
+  commands['feature'] = commandFeature;
+  commands['commands'] = listCommands;
 }
