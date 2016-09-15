@@ -111,9 +111,6 @@ function createPollMapKey(userId) {
   // add a new entry
   var newKey = Object.keys(pollMap).length;
 
-  // dont start at 0 for plebs
-  if (newKey === 0) newKey = 1;
-
   pollMap[newKey] = userId;
   return newKey;
 }
@@ -350,7 +347,7 @@ function commandPoll(bot, message, commandMsg) {
     return;
   }
 
-  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + pollMapKey + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + pollMapKey + 1 + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // build the user list for majority vote
   buildUserList(bot, message);
