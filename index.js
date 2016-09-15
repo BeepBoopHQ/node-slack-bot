@@ -12,6 +12,7 @@ var pollVotes = [];
 var pollUsers = [];
 var pollOwner = '';
 var channelUsers = [];
+var pollMap = [];
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -61,6 +62,11 @@ if (token) {
             });
 
             polls[key] = null;
+            for(var i = 0; i < pollMap.length; i++) {
+              if(pollMap[i] == key) {
+                pollMap = pollMap.splice(i, 1);
+              }
+            }
           }
         }
       }
@@ -189,21 +195,20 @@ function commandVote(bot, message, commandMsg) {
     return;
   }
 
+  // get the poll from the map
+  var currentPoll = pollMap[pollNumber - 1];
+
   // check if this poll exists
-  if (polls[pollNumber - 1] === null) {
+  if (currentPoll === null) {
     bot.reply(message, pollNumber + ' is not a valid poll');
     return;
   }
 
   // this poll exists, check if the vote option is legit
-  if(voteOption < 0 || voteOption > polls[pollNumber - 1].options.length) {
+  if(voteOption < 0 || voteOption > currentPoll.options.length) {
     bot.reply(message, voteOption + ' is not a valid poll option for this poll');
     return;
   }
-
-  // poll and vote are valid
-  // go thru this poll and see if this user has voted
-  var currentPoll = polls[pollNumber - 1];
 
   for(user in currentPoll.users) {
     // users: {userId, vote}
@@ -265,12 +270,13 @@ function commandPoll(bot, message, commandMsg) {
     console.log('commandMsg: ' + commandMsg);
 
     polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
+    pollMap.push(message.user);
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
   }
 
-  bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+  bot.reply(message, 'a poll has been started! `!vote ' + pollMap.length + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // build the user list for majority vote
   buildUserList(bot, message);
