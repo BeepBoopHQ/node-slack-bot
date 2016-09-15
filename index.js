@@ -399,7 +399,7 @@ function commandFlipCoin(bot, message, commandMsg) {
 }
 
 function showVersion(bot, message, commandMsg) {
-  bot.reply(message, 'russell_bot version: `' + version + '`');
+  bot.reply(message, 'russell_bot version: ' + version);
 }
 
 function listCommands(bot, message, commandMsg) {
