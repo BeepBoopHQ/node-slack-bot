@@ -105,126 +105,11 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     command = command.substr(0, command.indexOf(' '));
   }
 
-  if (command === 'testcommand') {
-    commands[command](bot, message);
-    return;
-  }
-
   if(!(command in commands)) {
     return;
   }
 
-  var response = commands[command]();
-
-  if (command === 'bug') {
-    // log this to #russel_bot as well
-    bot.say({
-      text: "a bug has been reported: " + commandMsg,
-      channel: "C2AVCAC6L"
-    });
-
-    bot.reply(message, "thanks for your bug report. you can find it in #robo_russ");
-    return;
-  }
-
-  if (command === 'poll') {
-
-    if (pollOptions.length !== 0) {
-      bot.reply(message, 'another poll is already active.');
-      var formattedOptions = pollOptions.map(function(opt) {
-        return '`' + opt + '`'
-      });
-
-      bot.reply(message, '`!vote` for ' + pollOptions.join(', '));
-      return;
-    }
-
-    // commandMsg should have a single instance of ' or '
-    if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
-      bot.reply(message, 'use `!poll <this> or <that>`');
-      return;
-    }
-
-    getPollOptions(commandMsg);
-
-    var formattedOptions = pollOptions.map(function(opt) {
-      return '`' + opt + '`'
-    });
-
-    bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', '));
-    pollOwner = message.user;
-    pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
-    return;
-
-  }
-
-  if (command === 'vote') {
-
-    if (pollOptions.length === 0) {
-      bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
-      return;
-    }
-
-    if (pollUsers.indexOf(message.user) !== -1) {
-      // already voted
-      bot.reply(message, '<@' + message.user + '>, you have already voted in this poll');
-      return;
-    }
-
-    var optionIndex = parseInt(commandMsg);
-
-    if (isNaN(optionIndex) || optionIndex  > pollVotes.length || optionIndex <= 0) {
-      bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
-      return;
-    }
-
-    pollVotes[optionIndex - 1] += 1;
-    bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
-    pollUsers.push(message.user)
-    return;
-
-  }
-
-  if (command === 'results') {
-    if (pollOptions.length === 0) {
-      bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
-      return;
-    }
-
-    var resultsArray = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
-      return [formatted];
-    });
-
-    bot.reply(message, 'poll results are: ' + resultsArray.join(', '));
-    return;
-
-  }
-
-  if (command === 'endpoll') {
-
-    if (message.user !== pollOwner) {
-      bot.reply(message, 'only <@' + pollOwner + '> can close this poll');
-      return;
-    }
-
-    var resultsArray = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
-      return [formatted];
-    });
-
-    bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
-
-    pollOptions = [];
-    pollVotes = [];
-    pollUsers = [];
-    pollOwner = ''
-
-    return;
-
-  }
-
-  bot.reply(message, response);
+  commands[command](bot, message, commandMsg);
 });
 
 function getPollOptions(message) {
@@ -239,49 +124,170 @@ function getPollOptions(message) {
   }
 }
 
-function commandBerto() {
-  return generateStaticMessage('ayo berto :100:');
+function commandResetPoll(bot, message, commandMsg) {
+  var formattedOptions = pollOptions.map(function(opt) {
+    return '`' + opt + '`'
+  });
+
+  bot.reply(message, 'resetting current poll, `!vote` again for ' + formattedOptions);
+  return;
 }
 
-function commandGoHawks() {
-  return generateStaticMessage('#gohawks');
+function commandEndPoll(bot, message, commandMsg) {
+  if (message.user !== pollOwner) {
+    bot.reply(message, 'only <@' + pollOwner + '> can close this poll');
+    return;
+  }
+
+  var resultsArray = pollOptions.map(function(e, i) {
+    var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+    return [formatted];
+  });
+
+  bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
+
+  pollOptions = [];
+  pollVotes = [];
+  pollUsers = [];
+  pollOwner = ''
+
+  return;
 }
 
-function commandRussell() {
-  return generateStaticMessage('`beep boop i am russell_bot`');
+function commandPollResults(bot, message, commandMsg) {
+  if (pollOptions.length === 0) {
+    bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
+    return;
+  }
+
+  var resultsArray = pollOptions.map(function(e, i) {
+    var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+    return [formatted];
+  });
+
+  bot.reply(message, 'poll results are: ' + resultsArray.join(', '));
+  return;
 }
 
-function commandFlipCoin() {
-  return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'Heads!' : 'Tails!';
+function commandVote(bot, message, commandMsg) {
+  if (pollOptions.length === 0) {
+    bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
+    return;
+  }
+
+  if (pollUsers.indexOf(message.user) !== -1) {
+    // already voted
+    bot.reply(message, '<@' + message.user + '>, you have already voted in this poll');
+    return;
+  }
+
+  var optionIndex = parseInt(commandMsg);
+
+  if (isNaN(optionIndex) || optionIndex  > pollVotes.length || optionIndex <= 0) {
+    bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
+    return;
+  }
+
+  pollVotes[optionIndex - 1] += 1;
+  bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
+  pollUsers.push(message.user)
+  return;
 }
 
-function commandDoNothing() {
-  return '';
+function commandPoll(bot, message, commandMsg) {
+  if (pollOptions.length !== 0) {
+    bot.reply(message, 'another poll is already active.');
+    var formattedOptions = pollOptions.map(function(opt) {
+      return '`' + opt + '`'
+    });
+
+    bot.reply(message, '`!vote` for ' + formattedOptions);
+    return;
+  }
+
+  // commandMsg should have a single instance of ' or '
+  if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
+    bot.reply(message, 'use `!poll <this> or <that>`');
+    return;
+  }
+
+  getPollOptions(commandMsg);
+
+  var formattedOptions = pollOptions.map(function(opt) {
+    return '`' + opt + '`'
+  });
+
+  bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', '));
+  pollOwner = message.user;
+  pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
+  return;
 }
 
-function showVersion() {
-  return generateStaticMessage('russell_bot version: `v1.2 \'malibertyah\'`');
+function commandBug(bot, message, commandMsg) {
+  // log this to #russel_bot as well
+  bot.say({
+    text: "a bug has been reported: " + commandMsg,
+    channel: "C2AVCAC6L"
+  });
+
+  bot.reply(message, "thanks for your bug report. you can find it in #robo_russ");
+  return;
 }
 
-function generateStaticMessage(message) {
-  return message;
+function commandBerto(bot, message, commandMsg) {
+  bot.reply(message, 'ayo berto :100:');
+  return;
 }
 
-function listCommands() {
-  var message = "commands available: ";
+function commandGoHawks(bot, message, commandMsg) {
+  bot.reply(message, '#gohawks');
+  return;
+}
+
+function commandRussell(bot message, commandMsg) {
+  bot.reply(message, '`beep boop i am russell_bot`');
+  return;
+}
+
+function commandFlipCoin(bot, message, commandMsg) {
+  bot.reply(message, '<@' + message.user + '> flipped a coin!');
+  bot.reply(message, (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!';
+  return;
+}
+
+function showVersion(bot, message, commandMsg) {
+  bot.reply(message, 'russell_bot version: `v1.3 \'orange sher-bert\'`');
+}
+
+function listCommands(bot, message, commandMsg) {
+  var commandList = "commands available: ";
 
   for(var key in commands) {
     if (commands.hasOwnProperty(key)) {
-      message += '`!' + key + '` ';
+      commandList += '`!' + key + '` ';
     }
   }
 
-  return message;
+  bot.reply(message, commandList);
+  return;
 }
 
-function testCommand(bot, message) {
-  bot.reply(message, '<@' + message.user + '> successfully ran the test command');
+function commandLit(bot, message, commandMsg) {
+  bot.reply(message, ':100::100::100::fire::fire::fire::champagne::champagne::champagne:');
   return;
+}
+
+function commandTestCommands(bot, message, commandMsg) {
+
+  if(message.user !== 'U2ARFPF62') {
+    bot.reply(message, 'only <@U2ARFPF62> can run the tests');
+    return;
+  }
+
+  for(var i = 0; i < commands.length; i++) {
+    commands[i]('');
+  }
+  return
 }
 
 function buildCommandDictionary() {
@@ -289,13 +295,14 @@ function buildCommandDictionary() {
   commands["gohawks"] = commandGoHawks;
   commands["russell"] = commandRussell;
   commands["flipcoin"] = commandFlipCoin;
-  commands["bug"] = commandDoNothing;
+  commands["bug"] = commandBug;
   commands["version"] = showVersion;
-  commands["poll"] = commandDoNothing;
-  commands["vote"] = commandDoNothing;
-  commands["results"] = commandDoNothing;
-  commands["endpoll"] = commandDoNothing;
-  commands["resetpoll"] = commandDoNothing;
+  commands["poll"] = commandPoll;
+  commands["vote"] = commandVote;
+  commands["pollresults"] = commandPollResults;
+  commands["endpoll"] = commandEndPoll;
+  commands["resetpoll"] = commandResetPoll;
+  commands["lit"] = commandLit;
+  commands["testcommands"] = commandTestCommands;
   commands["commands"] = listCommands;
-  commands["testcommand"] = testCommand;
 }
