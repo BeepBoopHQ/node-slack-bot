@@ -1,6 +1,7 @@
 var Botkit = require('botkit')
 
 var token = process.env.SLACK_TOKEN
+var version = 'v1.3 \'orange sher-bert\'';
 
 var commands = {};
 
@@ -31,7 +32,7 @@ if (token) {
     });
 
     bot.say({
-      text: showVersion(bot, message, ''),
+      text: 'runnng ' + version,
       channel: 'C2ARRKMPZ'
     })
 
@@ -256,7 +257,7 @@ function commandFlipCoin(bot, message, commandMsg) {
 }
 
 function showVersion(bot, message, commandMsg) {
-  bot.reply(message, 'russell_bot version: `v1.3 \'orange sher-bert\'`');
+  bot.reply(message, 'russell_bot version: `' + version + '`');
 }
 
 function listCommands(bot, message, commandMsg) {
