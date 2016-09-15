@@ -12,7 +12,7 @@ var pollVotes = [];
 var pollUsers = [];
 var pollOwner = '';
 var channelUsers = [];
-var pollMap = [];
+var pollMap = {};
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -62,11 +62,7 @@ if (token) {
             });
 
             polls[key] = null;
-            for(var i = 0; i < pollMap.length; i++) {
-              if(pollMap[i] == key) {
-                pollMap = pollMap.splice(i, 1);
-              }
-            }
+            deletePollMapKey(key);
           }
         }
       }
@@ -101,6 +97,32 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
   commands[command](bot, message, commandMsg);
 });
+
+function createPollMapKey(userId) {
+  for(key in pollMap) {
+    if(pollMap.hasOwnProperty(key)) {
+      if (pollMap[key] === null || pollMap[key] === undefined) {
+        pollMap[key] = userId;
+        return key;
+      }
+    }
+  }
+
+  // add a new entry
+  var newKey = Object.keys(pollMap).length;
+  pollMap[newKey] = userId;
+  return newKey;
+}
+
+function deletePollMapKey(userId) {
+  for(key in pollMap) {
+    if(pollMap.hasOwnProperty(key)) {
+      if (pollMap[key] === userId) {
+        pollMap[key] = null;
+      }
+    }
+  }
+}
 
 function formatPollOptions(message) {
   console.log('parsing this: ' + message);
@@ -187,14 +209,10 @@ function commandEndPoll(bot, message, commandMsg) {
     return [formatted];
   });
 
-  bot.reply(message, '<@' + currentPoll.user + '\'s poll is closed! results are: ' + resultsArray.join(', '));
+  bot.reply(message, '<@' + currentPoll.user + '>\'s poll is closed! results are: ' + resultsArray.join(', '));
 
   polls[pollUserId] = null;
-  for(var i = 0; i < pollMap.length; i++) {
-    if(pollMap[i] == key) {
-      pollMap = pollMap.splice(i, 1);
-    }
-  }
+  deletePollMapKey(pollUserId);
 
   return;
 }
@@ -322,13 +340,13 @@ function commandPoll(bot, message, commandMsg) {
     console.log('commandMsg: ' + commandMsg);
 
     polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
-    pollMap.push(message.user);
+    var pollMapKey = createPollMapKey(message.user);
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
   }
 
-  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + pollMap.length + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + pollMapKey + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // build the user list for majority vote
   buildUserList(bot, message);
