@@ -350,7 +350,7 @@ function commandPoll(bot, message, commandMsg) {
     return;
   }
 
-  var nonZeroIndexPollMapKey = pollMapKey + 1;
+  var nonZeroIndexPollMapKey = parseInt(pollMapKey) + 1;
 
   bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + (nonZeroIndexPollMapKey) + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
