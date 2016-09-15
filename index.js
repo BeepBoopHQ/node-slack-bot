@@ -105,6 +105,11 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     command = command.substr(0, command.indexOf(' '));
   }
 
+  if (command === 'testcommand') {
+    commands[command](bot, message);
+    return;
+  }
+
   if(!(command in commands)) {
     return;
   }
@@ -274,6 +279,11 @@ function listCommands() {
   return message;
 }
 
+function testCommand(bot, message) {
+  bot.reply(message, '<@' + message.user + '> successfully ran the test command');
+  return;
+}
+
 function buildCommandDictionary() {
   commands["berto"] = commandBerto;
   commands["gohawks"] = commandGoHawks;
@@ -285,5 +295,7 @@ function buildCommandDictionary() {
   commands["vote"] = commandDoNothing;
   commands["results"] = commandDoNothing;
   commands["endpoll"] = commandDoNothing;
+  commands["resetpoll"] = commandDoNothing;
   commands["commands"] = listCommands;
+  commands["testcommand"] = testCommand;
 }
