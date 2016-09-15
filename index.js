@@ -9,7 +9,7 @@ var pollOptions = [];
 var pollVotes = [];
 var pollUsers = [];
 var pollOwner = '';
-var pollStartTime = '';
+var channelUsers = [];
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -27,18 +27,18 @@ if (token) {
       throw new Error(err)
     }
 
+    console.log('Connected to Slack RTM');
+
     bot.say({
       text: 'russell_bot has connected',
-      channel: 'C2ARRKMPZ'
+      channel: 'C2ARE3TQU'
     });
 
     bot.say({
       text: 'running ' + version,
-      channel: 'C2ARRKMPZ'
-    })
-
-    console.log('Connected to Slack RTM')
-  })
+      channel: 'C2ARE3TQU'
+    });
+  });
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
   console.log('Starting in Beep Boop multi-team mode')
@@ -49,8 +49,8 @@ if (token) {
 buildCommandDictionary();
 
 controller.on('bot_channel_join', function (bot, message) {
-  bot.reply(message, '#gohawks')
-})
+  bot.reply(message, '#gohawks');
+});
 
 controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
@@ -109,7 +109,6 @@ function commandEndPoll(bot, message, commandMsg) {
   pollVotes = [];
   pollUsers = [];
   pollOwner = '';
-  pollStartTime = '';
 
   return;
 }
@@ -146,15 +145,30 @@ function commandVote(bot, message, commandMsg) {
   for(userVote in pollUsers) {
     var existingUser = pollUsers[userVote].user;
     var existingVote = pollUsers[userVote].vote;
+
     if (existingUser === message.user) {
       var newVoteIndex = optionIndex - 1;
       var oldVoteIndex = existingVote;
+
+      if(newVoteIndex === oldVoteIndex) {
+        bot.reply(message, '<@' + message.user + '>, you already voted for this option');
+        return;
+      }
 
       bot.reply(message, '<@' + message.user + '> has changed their vote from `' + pollOptions[oldVoteIndex] + '` to `' + pollOptions[newVoteIndex] + '`');
 
       pollUsers[userVote].vote = newVoteIndex;
       pollVotes[newVoteIndex] += 1;
       pollVotes[oldVoteIndex] -= 1;
+
+      if (checkForVoteMajority(pollVotes)) {
+        var resultsArray = pollOptions.map(function(e, i) {
+          var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+          return [formatted];
+        });
+
+        bot.reply(message, 'a majority has been reached in the poll. results are: ' + resultsArray.join(', '));
+      }
 
       return;
     }
@@ -166,7 +180,22 @@ function commandVote(bot, message, commandMsg) {
   var userVote = { user: message.user, vote: optionIndex - 1};
 
   pollUsers.push(userVote);
+
+  if (checkForVoteMajority(pollVotes)) {
+    var resultsArray = pollOptions.map(function(e, i) {
+      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+      return [formatted];
+    });
+
+    bot.reply(message, 'a majority has been reached in the poll. results are: ' + resultsArray.join(', '));
+  }
+
   return;
+}
+
+function checkForVoteMajority(poll) {
+  // check and see if this poll is over with
+  return false;
 }
 
 function commandPoll(bot, message, commandMsg) {
@@ -192,9 +221,11 @@ function commandPoll(bot, message, commandMsg) {
     return '`' + opt + '`'
   });
 
-  bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', '));
+  // build the user list for majority vote
+  buildUserList(bot, message);
+
+  bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', ') + '. this poll will be open for 10 minutes');
   pollOwner = message.user;
-  pollStartTime = new Date().getTime() / 1000;
   pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
 
   // set the timer for the poll
@@ -210,8 +241,7 @@ function commandPoll(bot, message, commandMsg) {
     pollVotes = [];
     pollUsers = [];
     pollOwner = '';
-    pollStartTime = '';
-  }, 10000);
+  }, 600000); // 10mins
 
   return;
 }
@@ -296,4 +326,10 @@ function buildCommandDictionary() {
   commands['lit'] = commandLit;
   commands['feature'] = commandFeature;
   commands['commands'] = listCommands;
+}
+
+function buildUserList(bot, message) {
+  bot.api.channels.list({}, function(err, response){
+    console.log(response);
+  });
 }
