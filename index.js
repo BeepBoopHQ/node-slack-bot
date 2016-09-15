@@ -174,10 +174,8 @@ function commandPollResults(bot, message, commandMsg) {
     return;
   }
 
-  var currentPoll = pollMap[pollNumber - 1];
-  console.log('pollnumber: ' + pollNumber);
-  console.log('currentPoll: ' + JSON.stringify(currentPoll));
-  console.log('pollmap: ' + JSON.stringify(pollMap));
+  var pollUserId = pollMap[pollNumber - 1];
+  var currentPoll = polls[pollUserId];
 
   var resultsArray = currentPoll.options.map(function(e, i) {
     var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
