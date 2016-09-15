@@ -76,7 +76,7 @@ function formatPollOptions(message) {
     pollOptions.push(message);
 
     var formattedOptions = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+      var formatted = '`' + e + '`';
       return [formatted];
     });
 
@@ -228,6 +228,8 @@ function commandPoll(bot, message, commandMsg) {
     // this user has no polls active
 
     var pollChoices = formatPollOptions(commandMsg);
+    console.log('pollChoices: ' + pollChoices);
+    console.log('commandMsg: ' + commandMsg);
 
     polls.push({user: message.user, options: pollChoices, votes: Array.apply(null, Array(pollChoices.length)).map(Number.prototype.valueOf, 0), users: []});
   } else {
