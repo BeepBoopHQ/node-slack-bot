@@ -244,7 +244,7 @@ function commandGoHawks(bot, message, commandMsg) {
   return;
 }
 
-function commandRussell(bot message, commandMsg) {
+function commandRussell(bot, message, commandMsg) {
   bot.reply(message, '`beep boop i am russell_bot`');
   return;
 }
