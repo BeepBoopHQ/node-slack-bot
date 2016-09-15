@@ -237,7 +237,7 @@ function commandPoll(bot, message, commandMsg) {
     console.log('pollChoices: ' + formattedPollChoices);
     console.log('commandMsg: ' + commandMsg);
 
-    polls.push({user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: []});
+    polls.push({user: message.user, { options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: []}});
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
@@ -245,6 +245,8 @@ function commandPoll(bot, message, commandMsg) {
 
   // build the user list for majority vote
   buildUserList(bot, message);
+
+  console.log('polls: ' + polls);
 
   bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
