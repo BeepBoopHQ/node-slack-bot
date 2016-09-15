@@ -31,7 +31,7 @@ if (token) {
     });
 
     bot.say({
-      text: showVersion(),
+      text: showVersion(bot, message, ''),
       channel: 'C2ARRKMPZ'
     })
 
