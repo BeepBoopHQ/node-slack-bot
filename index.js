@@ -194,8 +194,12 @@ function commandVote(bot, message, commandMsg) {
       var oldVoteIndex = pollUsers[userVote].vote;
 
       bot.reply(message, '<@' + message.user + '> has changed their vote from `' + pollOptions[oldVoteIndex] + '` to `' + pollOptions[newVoteIndex] + '`');
+      console.log("new vote: " + newVoteIndex);
+      console.log("old vote: " + oldVoteIndex);
+      pollUsers[userVote].vote = newVoteIndex;
       pollVotes[newVoteIndex] += 1;
       pollVotes[oldVoteIndex] -= 1;
+      console.log('pollvotes: ' + pollVotes);
       return;
     }
   }
@@ -239,6 +243,11 @@ function commandPoll(bot, message, commandMsg) {
 
   // set the timer for the poll
   setTimeout(function() {
+    var resultsArray = pollOptions.map(function(e, i) {
+      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+      return [formatted];
+    });
+
     bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
 
     pollOptions = [];
