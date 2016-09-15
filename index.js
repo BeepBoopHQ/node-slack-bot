@@ -204,6 +204,8 @@ function commandVote(bot, message, commandMsg) {
     return;
   }
 
+  console.log(JSON.stringify(currentPoll));
+
   // this poll exists, check if the vote option is legit
   if(voteOption < 0 || voteOption > currentPoll.options.length) {
     bot.reply(message, voteOption + ' is not a valid poll option for this poll');
