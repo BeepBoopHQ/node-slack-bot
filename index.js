@@ -48,7 +48,7 @@ if (token) {
 
           var currentTimeSeconds = new Date().getTime() / 1000;
 
-          if (currentTimeSeconds - polls[key].startTime > 3) { // if 10 minutes have passed (600000)
+          if (currentTimeSeconds - polls[key].startTime > (60 * 10)) { // if 10 minutes have passed
             console.log('ending poll ' + key);
             var resultsArray = polls[key].options.map(function(e, i) {
               var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
@@ -178,11 +178,13 @@ function commandPollResults(bot, message, commandMsg) {
 
 function commandVote(bot, message, commandMsg) {
 
+  console.log('commandMsg: ' + commandMsg);
+
   // we should have only 2 numbers in the command message
   var pollNumber = parseInt(commandMsg.split(' ')[0]);
   var voteOption = parseInt(commandMsg.split(' ')[1]);
 
-  if(isNan(pollNumber) || isNan(voteOption) || !pollNumber || !voteOption) {
+  if(isNaN(pollNumber) || isNaN(voteOption) || !pollNumber || !voteOption) {
     bot.reply(message, 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`');
     return;
   }
