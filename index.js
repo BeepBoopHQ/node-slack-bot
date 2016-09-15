@@ -233,11 +233,11 @@ function commandPoll(bot, message, commandMsg) {
   if (!pollOptions[message.user]) {
     // this user has no polls active
 
-    var pollChoices = formatPollOptions(commandMsg);
-    console.log('pollChoices: ' + pollChoices);
+    var formattedPollChoices = formatPollOptions(commandMsg);
+    console.log('pollChoices: ' + formattedPollChoices);
     console.log('commandMsg: ' + commandMsg);
 
-    polls.push({user: message.user, options: pollChoices, votes: Array.apply(null, Array(pollChoices.length)).map(Number.prototype.valueOf, 0), users: []});
+    polls.push({user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: []});
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
