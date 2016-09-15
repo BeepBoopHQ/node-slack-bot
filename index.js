@@ -231,7 +231,7 @@ function commandVote(bot, message, commandMsg) {
       }
 
       // changing their vote
-      bot.reply(message, '<@' + message.user + '> has changed their vote from ' + currentPoll.options[existingVote] + ' to ' + currentPoll.options[voteOption]);
+      bot.reply(message, '<@' + message.user + '> has changed their vote from ' + currentPoll.options[existingVote] + ' to ' + currentPoll.options[voteOption - 1]);
       currentPoll.votes[existingVote] -= 1;
       currentPoll.votes[voteOption - 1] += 1;
       currentPoll.users[user].vote = voteOption - 1;
