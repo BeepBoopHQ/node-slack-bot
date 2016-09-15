@@ -5,7 +5,7 @@ var version = '`v1.3 \'orange sher-bert\'`';
 
 var commands = {};
 
-var polls = [];
+var polls = {};
 
 var pollOptions = [];
 var pollVotes = [];
@@ -237,7 +237,7 @@ function commandPoll(bot, message, commandMsg) {
     console.log('pollChoices: ' + formattedPollChoices);
     console.log('commandMsg: ' + commandMsg);
 
-    polls.push({user: message.user, { options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: []}});
+    polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: []});
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
