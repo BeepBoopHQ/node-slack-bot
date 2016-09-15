@@ -32,7 +32,7 @@ if (token) {
     });
 
     bot.say({
-      text: 'runnng ' + version,
+      text: 'running ' + version,
       channel: 'C2ARRKMPZ'
     })
 
@@ -278,21 +278,6 @@ function commandLit(bot, message, commandMsg) {
   return;
 }
 
-function commandTestCommands(bot, message, commandMsg) {
-
-  if(message.user !== 'U2ARFPF62') {
-    bot.reply(message, 'only <@U2ARFPF62> can run the tests');
-    return;
-  }
-
-  for(var key in commands) {
-    if (commands.hasOwnProperty(key)) {
-      commands[key](bot, message, '');
-    }
-  }
-  return;
-}
-
 function buildCommandDictionary() {
   commands["berto"] = commandBerto;
   commands["gohawks"] = commandGoHawks;
@@ -306,6 +291,5 @@ function buildCommandDictionary() {
   commands["endpoll"] = commandEndPoll;
   commands["resetpoll"] = commandResetPoll;
   commands["lit"] = commandLit;
-  commands["testcommands"] = commandTestCommands;
   commands["commands"] = listCommands;
 }
