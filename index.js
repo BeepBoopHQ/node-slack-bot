@@ -251,7 +251,7 @@ function commandRussell(bot, message, commandMsg) {
 
 function commandFlipCoin(bot, message, commandMsg) {
   bot.reply(message, '<@' + message.user + '> flipped a coin!');
-  bot.reply(message, (Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!';
+  bot.reply(message, ((Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!'));
   return;
 }
 
