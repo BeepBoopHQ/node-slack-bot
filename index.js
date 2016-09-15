@@ -200,7 +200,7 @@ function commandVote(bot, message, commandMsg) {
   var currentPoll = polls[pollUserId];
 
   // check if this poll exists
-  if (currentPoll === null) {
+  if (currentPoll === null || pollNumber <= 0 || voteOption <= 0) {
     bot.reply(message, pollNumber + ' is not a valid poll');
     return;
   }
@@ -208,7 +208,7 @@ function commandVote(bot, message, commandMsg) {
   console.log(JSON.stringify(currentPoll));
 
   // this poll exists, check if the vote option is legit
-  if(voteOption <= 0 || voteOption > currentPoll.options.length) {
+  if(voteOption > currentPoll.options.length) {
     bot.reply(message, voteOption + ' is not a valid poll option for this poll');
     return;
   }
