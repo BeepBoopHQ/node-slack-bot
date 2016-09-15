@@ -103,6 +103,7 @@ function createPollMapKey(userId) {
     if(pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === null || pollMap[key] === undefined) {
         pollMap[key] = userId;
+        console.log('creating poll key: ' + key + ': ' + userId);
         return key;
       }
     }
@@ -112,6 +113,7 @@ function createPollMapKey(userId) {
   var newKey = Object.keys(pollMap).length;
 
   pollMap[newKey] = userId;
+  console.log('creating poll key: ' + newKey + ': ' + userId);
   return newKey;
 }
 
@@ -120,6 +122,7 @@ function deletePollMapKey(userId) {
     if(pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === userId) {
         pollMap[key] = null;
+        console.log('deleting poll key: ' + key);
       }
     }
   }
