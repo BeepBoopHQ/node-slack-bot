@@ -347,7 +347,9 @@ function commandPoll(bot, message, commandMsg) {
     return;
   }
 
-  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + pollMapKey + 1 + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+  var nonZeroIndexPollMapKey = pollMapKey + 1;
+
+  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + (nonZeroIndexPollMapKey) + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // build the user list for majority vote
   buildUserList(bot, message);
