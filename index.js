@@ -43,16 +43,12 @@ if (token) {
 
     // run the poll timer
     setInterval(function() {
-      console.log('checking polls...');
-      console.log(JSON.stringify(polls));
       for(key in polls) {
         if(polls.hasOwnProperty(key)) {
-          console.log('checking poll ' + key);
+
           var currentTimeSeconds = new Date().getTime() / 1000;
-          console.log('current time: ' + currentTimeSeconds);
-          console.log('poll created: ' + polls[key].startTime);
-          console.log('time diff: ' + currentTimeMs - polls[key].startTime);
-          if (currentTimeMs - polls[key].startTime > 3) { // if 10 minutes have passed (600000)
+
+          if (currentTimeSeconds - polls[key].startTime > 3) { // if 10 minutes have passed (600000)
             console.log('ending poll ' + key);
             var resultsArray = polls[key].options.map(function(e, i) {
               var formatted = '`' + e + ': ' + polls[key].votes[i] + '`'
