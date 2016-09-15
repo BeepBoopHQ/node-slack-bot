@@ -44,9 +44,9 @@ if (token) {
     // run the poll timer
     setInterval(function() {
       for(key in polls) {
-        if(polls.hasOwnProperty(poll)) {
+        if(polls.hasOwnProperty(key)) {
           var currentTimeMs = new Date().getTime() / 1000;
-          if (currentTimeMs - polls[key].startTime > 600000) { // if 10 minutes have passed
+          if (currentTimeMs - polls[key].startTime > 3000) { // if 10 minutes have passed (600000)
 
             var resultsArray = polls[key].options.map(function(e, i) {
               var formatted = '`' + e + ': ' + polls[key].votes[i] + '`'
