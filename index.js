@@ -200,8 +200,13 @@ function commandVote(bot, message, commandMsg) {
   var currentPoll = polls[pollUserId];
 
   // check if this poll exists
-  if (currentPoll === null || pollNumber <= 0 || voteOption <= 0) {
+  if (currentPoll === null || pollNumber <= 0) {
     bot.reply(message, pollNumber + ' is not a valid poll');
+    return;
+  }
+
+  if(voteOption <= 0) {
+    bot.reply(message, voteOption + ' is not a valid poll option');
     return;
   }
 
@@ -280,7 +285,7 @@ function commandPoll(bot, message, commandMsg) {
     return;
   }
 
-  bot.reply(message, 'a poll has been started! `!vote ' + pollMap.length + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + pollMap.length + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // build the user list for majority vote
   buildUserList(bot, message);
