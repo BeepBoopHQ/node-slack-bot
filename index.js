@@ -110,6 +110,10 @@ function createPollMapKey(userId) {
 
   // add a new entry
   var newKey = Object.keys(pollMap).length;
+
+  // dont start at 0 for plebs
+  if (newKey === 0) newKey = 1;
+
   pollMap[newKey] = userId;
   return newKey;
 }
