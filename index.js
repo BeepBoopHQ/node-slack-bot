@@ -69,14 +69,22 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   commands[command](bot, message, commandMsg);
 });
 
-function getPollOptions(message) {
+function formatPollOptions(message) {
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
-    return pollOptions;
+
+    var formattedOptions = pollOptions.map(function(e, i) {
+      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+      return [formatted];
+    });
+
+    pollOptions = [];
+
+    return formattedOptions;
   } else {
     var option = message.substr(0, message.indexOf(' or '));
     pollOptions.push(option);
-    getPollOptions(message.substr(message.indexOf(' or ') + 4));
+    formatPollOptions(message.substr(message.indexOf(' or ') + 4));
   }
 }
 
@@ -114,6 +122,13 @@ function commandEndPoll(bot, message, commandMsg) {
 }
 
 function commandPollResults(bot, message, commandMsg) {
+
+  // polls are one poll per user
+  if(!pollOptions[message.user] || pollOptions[message.user] === 0) {
+    // this user has no poll
+
+  }
+
   if (pollOptions.length === 0) {
     bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
     return;
@@ -129,37 +144,49 @@ function commandPollResults(bot, message, commandMsg) {
 }
 
 function commandVote(bot, message, commandMsg) {
-  if (pollOptions.length === 0) {
-    bot.reply(message, 'there is no active poll, use `!poll <this> or <that>` to start your own');
+
+  // we should have only 2 numbers in the command message
+  var pollNumber = parseInt(commandMsg.split(' ')[0]);
+  var voteOption = parseInt(commandMsg.split(' ')[1]);
+
+  if(isNan(pollNumber) || isNan(voteOption) || !pollNumber || !voteOption) {
+    bot.reply(message, 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`');
     return;
   }
 
-  var optionIndex = parseInt(commandMsg);
-
-  if (isNaN(optionIndex) || optionIndex  > pollVotes.length || optionIndex <= 0) {
-    bot.reply(message, 'your vote is invalid, use the number option to cast your vote: `!vote 1`');
+  // check if this poll exists
+  if (!polls[pollNumber - 1]) {
+    bot.reply(message, pollNumber + ' is not a valid poll');
     return;
   }
 
+  // this poll exists, check if the vote option is legit
+  if(voteOption < 0 || voteOption > polls[pollNumber].options.length) {
+    bot.reply(message, voteOption + ' is not a valid poll option for this poll');
+    return;
+  }
 
-  for(userVote in pollUsers) {
-    var existingUser = pollUsers[userVote].user;
-    var existingVote = pollUsers[userVote].vote;
+  // poll and vote are valid
+  // go thru this poll and see if this user has voted
+  var currentPoll = polls[pollNumber - 1];
 
-    if (existingUser === message.user) {
-      var newVoteIndex = optionIndex - 1;
-      var oldVoteIndex = existingVote;
-
-      if(newVoteIndex === oldVoteIndex) {
+  for(user in currentPoll.users) {
+    // users: {userId, vote}
+    var userId = currentPoll.users[user].userId;
+    var existingVote = currentPoll.users[user].vote;
+    if(userId === message.user) {
+      // user has voted already
+      if(existingVote === voteOption) {
+        // already voted for this
         bot.reply(message, '<@' + message.user + '>, you already voted for this option');
         return;
       }
 
-      bot.reply(message, '<@' + message.user + '> has changed their vote from `' + pollOptions[oldVoteIndex] + '` to `' + pollOptions[newVoteIndex] + '`');
-
-      pollUsers[userVote].vote = newVoteIndex;
-      pollVotes[newVoteIndex] += 1;
-      pollVotes[oldVoteIndex] -= 1;
+      // changing their vote
+      bot.reply(message, '<@' + message.user + '> has changed their vote from `' + currentPoll.options[existingVote] + '` to `' + currentPoll.options[voteOption] + '`');
+      currentPoll.votes[existingVote] -= 1;
+      currentPoll.votes[voteOption] += 1;
+      currentPoll.users[user].vote = voteOption;
 
       if (checkForVoteMajority(pollVotes)) {
         var resultsArray = pollOptions.map(function(e, i) {
@@ -168,28 +195,16 @@ function commandVote(bot, message, commandMsg) {
         });
 
         bot.reply(message, 'a majority has been reached in the poll. results are: ' + resultsArray.join(', '));
+        return;
       }
 
       return;
     }
   }
 
-  pollVotes[optionIndex - 1] += 1;
-  bot.reply(message, '<@' + message.user + '>, your vote has been cast for `' + pollOptions[optionIndex - 1] + '`');
-
-  var userVote = { user: message.user, vote: optionIndex - 1};
-
-  pollUsers.push(userVote);
-
-  if (checkForVoteMajority(pollVotes)) {
-    var resultsArray = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
-      return [formatted];
-    });
-
-    bot.reply(message, 'a majority has been reached in the poll. results are: ' + resultsArray.join(', '));
-  }
-
+  // user isnt in the list of current votes, add them
+  bot.reply(message, '<@>, your vote has been cast for ' + currentPoll.options[voteOption]);
+  currentPoll.votes[voteOption] += 1;
   return;
 }
 
@@ -199,51 +214,48 @@ function checkForVoteMajority(poll) {
 }
 
 function commandPoll(bot, message, commandMsg) {
-  if (pollOptions.length !== 0) {
-    bot.reply(message, 'another poll is already active.');
-    var formattedOptions = pollOptions.map(function(opt) {
-      return '`' + opt + '`'
-    });
 
-    bot.reply(message, '`!vote` for ' + formattedOptions);
-    return;
-  }
-
-  // commandMsg should have a single instance of ' or '
+  // commandMsg should have at least a single instance of ' or '
   if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
     bot.reply(message, 'use `!poll <this> or <that>`');
     return;
   }
 
-  getPollOptions(commandMsg);
+  // polls are one per user
+  if (!pollOptions[message.user]) {
+    // this user has no polls active
 
-  var formattedOptions = pollOptions.map(function(opt) {
-    return '`' + opt + '`'
-  });
+    var pollChoices = formatPollOptions(commandMsg);
+
+    polls.push({user: message.user, options: pollChoices, votes: Array.apply(null, Array(pollChoices.length)).map(Number.prototype.valueOf, 0), users: [];});
+  } else {
+    bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
+    return;
+  }
 
   // build the user list for majority vote
   buildUserList(bot, message);
 
-  bot.reply(message, 'a poll has been started! `!vote` for ' + pollOptions.join(', ') + '. this poll will be open for 10 minutes');
-  pollOwner = message.user;
-  pollVotes = Array.apply(null, Array(pollOptions.length)).map(Number.prototype.valueOf, 0);
+  bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   // set the timer for the poll
-  setTimeout(function() {
-    var resultsArray = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + ': ' + pollVotes[i] + '`'
-      return [formatted];
-    });
+  pollOptions[message.user].setTimeout(function() {
 
-    bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
+    bot.reply(message, 'poll is closed! results are: ' + polls[message.user].options.join(', '));
 
-    pollOptions = [];
-    pollVotes = [];
-    pollUsers = [];
-    pollOwner = '';
+    clearPoll(message.user);
+    return;
   }, 600000); // 10mins
 
   return;
+}
+
+function clearPoll(user) {
+  for (poll in polls) {
+    if(polls[poll].user === user) {
+      polls[poll] = null;
+    }
+  }
 }
 
 function commandBug(bot, message, commandMsg) {
@@ -330,6 +342,15 @@ function buildCommandDictionary() {
 
 function buildUserList(bot, message) {
   bot.api.channels.list({}, function(err, response){
-    console.log(response);
+    if (err) {
+      channelUsers = [];
+      return;
+    }
+
+    var jsonResponse = JSON.parse(response);
+
+    for(var channel in jsonResponse.channels) {
+      channelUsers.push({channel: jsonResponse.channels[channel].id, users: jsonResponse.channels[channel].members});
+    }
   });
 }
