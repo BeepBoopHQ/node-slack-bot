@@ -188,8 +188,11 @@ function commandVote(bot, message, commandMsg) {
     return;
   }
 
-  console.log('poll users: ' + pollUsers);
+
   for(userVote in pollUsers) {
+    console.log(userVote);
+    console.log(userVote.user);
+    console.log(userVote.vote);
     if (userVote.user === message.user) {
       var newVoteIndex = optionIndex - 1;
       var oldVoteIndex = pollUsers[userVote].vote;
