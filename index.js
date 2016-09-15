@@ -51,6 +51,7 @@ if (token) {
           if (currentTimeSeconds - polls[key].startTime > 3) { // if 10 minutes have passed (600000)
             console.log('ending poll ' + key);
             var resultsArray = polls[key].options.map(function(e, i) {
+              console.log(e);
               var formatted =  '`' + e.replace('`', '') + ': ' + polls[key].votes[i] + '`';
               return [formatted];
             });
