@@ -251,7 +251,7 @@ function commandPoll(bot, message, commandMsg) {
   }
 
   // polls are one per user
-  if (!pollOptions[message.user]) {
+  if (!polls[message.user]) {
     // this user has no polls active
 
     var formattedPollChoices = formatPollOptions(commandMsg);
@@ -268,6 +268,8 @@ function commandPoll(bot, message, commandMsg) {
 
   // build the user list for majority vote
   buildUserList(bot, message);
+
+  console.log('polls: ' + JSON.stringify(polls));
 
   return;
 }
