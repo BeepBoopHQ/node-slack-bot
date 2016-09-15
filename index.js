@@ -264,10 +264,10 @@ function commandPoll(bot, message, commandMsg) {
     return;
   }
 
+  bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+
   // build the user list for majority vote
   buildUserList(bot, message);
-
-  bot.reply(message, 'a poll has been started! `!vote` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
   return;
 }
@@ -360,11 +360,13 @@ function buildCommandDictionary() {
 
 function buildUserList(bot, message) {
   bot.api.channels.list({}, function(err, response){
+    console.log('err: ' + err);
+    console.log('response: ' + response);
     if (err) {
       channelUsers = [];
       return;
     }
-    console.log('channel list response: ' + response);
+
     var jsonResponse = JSON.parse(response);
 
     for(var channel in jsonResponse.channels) {
