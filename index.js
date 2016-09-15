@@ -54,7 +54,8 @@ if (token) {
             });
 
             bot.say({
-              text: '<@' + key + '>\'s has ended. results are: ' + resultsArray.join(', ');
+              text: '<@' + key + '>\'s has ended. results are: ' + resultsArray.join(', '),
+              channel: polls[key].channel
             });
           }
         }
