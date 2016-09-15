@@ -196,7 +196,8 @@ function commandVote(bot, message, commandMsg) {
   }
 
   // get the poll from the map
-  var currentPoll = pollMap[pollNumber - 1];
+  var pollUserId = pollMap[pollNumber - 1];
+  var currentPoll = polls[pollUserId];
 
   // check if this poll exists
   if (currentPoll === null) {
