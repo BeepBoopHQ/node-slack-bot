@@ -184,7 +184,7 @@ function commandVote(bot, message, commandMsg) {
   var pollNumber = parseInt(commandMsg.split(' ')[0]);
   var voteOption = parseInt(commandMsg.split(' ')[1]);
 
-  if(isNaN(pollNumber) || isNaN(voteOption) || !pollNumber || !voteOption) {
+  if(isNaN(pollNumber) || isNaN(voteOption)) {
     bot.reply(message, 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`');
     return;
   }
