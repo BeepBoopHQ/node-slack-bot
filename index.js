@@ -1,7 +1,7 @@
 var Botkit = require('botkit')
 
 var token = process.env.SLACK_TOKEN
-var version = '`v1.3 \'orange sher-bert\'`';
+var version = '`v1.4 \'earl sweatbert\'`';
 
 var commands = {};
 
@@ -104,7 +104,7 @@ function createPollMapKey(userId) {
       if (pollMap[key] === null || pollMap[key] === undefined) {
         pollMap[key] = userId;
         console.log('creating poll key: ' + key + ': ' + userId);
-        return key;
+        return parseInt(key);
       }
     }
   }
@@ -350,7 +350,7 @@ function commandPoll(bot, message, commandMsg) {
     return;
   }
 
-  var nonZeroIndexPollMapKey = parseInt(pollMapKey) + 1;
+  var nonZeroIndexPollMapKey = pollMapKey + 1;
 
   bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + (nonZeroIndexPollMapKey) + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
