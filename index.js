@@ -128,34 +128,73 @@ function formatPollOptions(message) {
 }
 
 function commandResetPoll(bot, message, commandMsg) {
-  var formattedOptions = pollOptions.map(function(opt) {
-    return '`' + opt + '`'
+  var pollNumber = parseInt(commandMsg.split(' ')[0]);
+
+  if(isNaN(pollNumber)) {
+    bot.reply(message, '<@' + message.user + '>, this is an invalid poll');
+    return;
+  }
+
+  if(pollMap[pollNumber - 1] === undefined) {
+    bot.reply(message, '<@' + message.user + '>, this poll does not exist');
+    return;
+  }
+
+  var pollUserId = pollMap[pollNumber - 1];
+  var currentPoll = polls[pollUserId];
+
+  if(currentPoll.user !== message.user) {
+    bot.reply(message, '<@' + message.user + '>, only <@' + currentPoll.user + '> can reset this poll');
+    return;
+  }
+
+  var resultsArray = currentPoll.options.map(function(e, i) {
+    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
+    return [formatted];
   });
 
-  bot.reply(message, 'resetting current poll, `!vote` again for ' + formattedOptions);
+  bot.reply(message, '<@' + message.user + '> has reset their poll. `!vote` again');
 
-  pollVotes = [];
-  pollUsers = [];
+  polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length);
+  polls[pollUserId].users = [];
+
   return;
 }
 
 function commandEndPoll(bot, message, commandMsg) {
-  if (message.user !== pollOwner) {
-    bot.reply(message, 'only <@' + pollOwner + '> can close this poll');
+  var pollNumber = parseInt(commandMsg.split(' ')[0]);
+
+  if(isNaN(pollNumber)) {
+    bot.reply(message, '<@' + message.user + '>, this is an invalid poll');
     return;
   }
 
-  var resultsArray = pollOptions.map(function(e, i) {
-    var formatted = '`' + e + ': ' + pollVotes[i] + '`'
+  if(pollMap[pollNumber - 1] === undefined) {
+    bot.reply(message, '<@' + message.user + '>, this poll does not exist');
+    return;
+  }
+
+  var pollUserId = pollMap[pollNumber - 1];
+  var currentPoll = polls[pollUserId];
+
+  if(currentPoll.user !== message.user) {
+    bot.reply(message, '<@' + message.user + '>, only <@' + currentPoll.user + '> can end this poll');
+    return;
+  }
+
+  var resultsArray = currentPoll.options.map(function(e, i) {
+    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
     return [formatted];
   });
 
-  bot.reply(message, 'poll is closed! results are: ' + resultsArray.join(', '));
+  bot.reply(message, '<@' + currentPoll.user + '\'s poll is closed! results are: ' + resultsArray.join(', '));
 
-  pollOptions = [];
-  pollVotes = [];
-  pollUsers = [];
-  pollOwner = '';
+  polls[pollUserId] = null;
+  for(var i = 0; i < pollMap.length; i++) {
+    if(pollMap[i] == key) {
+      pollMap = pollMap.splice(i, 1);
+    }
+  }
 
   return;
 }
@@ -176,10 +215,6 @@ function commandPollResults(bot, message, commandMsg) {
 
   var pollUserId = pollMap[pollNumber - 1];
   var currentPoll = polls[pollUserId];
-
-  if (currentPoll === null) {
-
-  }
 
   var resultsArray = currentPoll.options.map(function(e, i) {
     var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
