@@ -236,7 +236,7 @@ function commandPollResults(bot, message, commandMsg) {
   var currentPoll = polls[pollUserId];
 
   var resultsArray = currentPoll.options.map(function(e, i) {
-    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
+    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
     return [formatted];
   });
 
