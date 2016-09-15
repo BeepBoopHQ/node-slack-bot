@@ -155,7 +155,7 @@ function commandResetPoll(bot, message, commandMsg) {
 
   bot.reply(message, '<@' + message.user + '> has reset their poll. `!vote` again');
 
-  polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length);
+  polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length));
   polls[pollUserId].users = [];
 
   return;
