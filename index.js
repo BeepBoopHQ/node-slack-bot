@@ -169,13 +169,17 @@ function commandPollResults(bot, message, commandMsg) {
     return;
   }
 
-  if(pollMap[pollNumber - 1] === null) {
+  if(pollMap[pollNumber - 1] === undefined) {
     bot.reply(message, '<@' + message.user + '>, this poll does not exist');
     return;
   }
 
   var pollUserId = pollMap[pollNumber - 1];
   var currentPoll = polls[pollUserId];
+
+  if (currentPoll === null) {
+
+  }
 
   var resultsArray = currentPoll.options.map(function(e, i) {
     var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
@@ -204,7 +208,7 @@ function commandVote(bot, message, commandMsg) {
   var currentPoll = polls[pollUserId];
 
   // check if this poll exists
-  if (currentPoll === null || pollNumber <= 0) {
+  if (currentPoll === undefined || pollNumber <= 0) {
     bot.reply(message, pollNumber + ' is not a valid poll');
     return;
   }
