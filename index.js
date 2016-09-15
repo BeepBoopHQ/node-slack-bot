@@ -227,7 +227,7 @@ function commandPoll(bot, message, commandMsg) {
 
     var pollChoices = formatPollOptions(commandMsg);
 
-    polls.push({user: message.user, options: pollChoices, votes: Array.apply(null, Array(pollChoices.length)).map(Number.prototype.valueOf, 0), users: [];});
+    polls.push({user: message.user, options: pollChoices, votes: Array.apply(null, Array(pollChoices.length)).map(Number.prototype.valueOf, 0), users: []});
   } else {
     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
     return;
