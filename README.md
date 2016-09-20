@@ -1,38 +1,26 @@
 # starter-node-bot
 
 ## Overview
-A simple starting point for creating a Beep Boop hostable, Node.js based Slack bot with botkit
-
-Visit [Beep Boop](https://beepboophq.com/docs/article/overview) to get the scoop on the the Beep Boop hosting platform. The Slack API documentation can be found [here](https://api.slack.com/).
+A simple starting point for creating and understanding a Node.js-based Slack bot that leverages the Slapp library!
 
 ## Assumptions
 * You have already signed up with [Beep Boop](https://beepboophq.com) and have a local fork of this project.
 * You have sufficient rights in your Slack team to configure a bot and generate/access a Slack API token.
 
-## Usage
+## Configure Slapp Bot
+Visit [Beep Boop](https://beepboophq.com/docs/article/getting-started) to get an overview of how to setup and configure a Slapp app.
+Note that this starter-bot differs slightly in that it is not necessary to integrate 'Slash Commands'.
 
-### Run locally
-	npm install
-	SLACK_TOKEN=<YOUR_SLACK_TOKEN> npm start
+Starting with the section 'step #2' in the getting-started guide, you will be able to get this simple Slapp bot configured with Slack.
 
-Things are looking good if the console prints something like:
+Once you get everything configured and the bot has been successfully built and is running (within BeepBoop) you should then
+add it to your Slack team for testing. Type in the message "help" to see what "messages" this bot responds to.
 
-    ** API CALL: https://slack.com/api/rtm.start
-    ** BOT ID:  witty  ...attempting to connect to RTM!
-    ** API CALL: https://slack.com/api/chat.postMessage
+For a further dive, look at the server.js code to see how this NodeJS-based bot programmatically "responds" to various messages
 
-### Run locally in Docker
-	docker build -t starter-node .`
-	docker run --rm -it -e SLACK_TOKEN=<YOUR SLACK API TOKEN> starter-node
+Happy Slapp'ing!
 
-### Run in BeepBoop
-If you have linked your local repo with the Beep Boop service (check [here](https://beepboophq.com/0_o/my-projects)), changes pushed to the remote master branch will automatically deploy.
+# License
+MIT Copyright (c) 2016 Beep Boop, Robots & Pencils
 
-## Acknowledgements
-
-This code uses the [botkit](https://github.com/howdyai/botkit) npm module by the fine folks at Howdy.ai.
-
-## License
-
-See the [LICENSE](LICENSE.md) file (MIT).
 

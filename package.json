@@ -2,27 +2,27 @@
   "name": "node-slack-bot",
   "version": "1.0.0",
   "description": "A sample Beep Boop Node.js Slackbot",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beepboophq/node-slack-bot.git"
+    "url": "git+https://github.com/tschumaker/starter-node-bot.git"
   },
   "keywords": [
     "slackbot",
     "bot",
     "slack"
   ],
-  "author": "",
+  "author": "BeepBoop...",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/beepboophq/node-slack-bot/issues"
-  },
   "homepage": "https://github.com/beepboophq/node-slack-bot#readme",
   "dependencies": {
-    "beepboop-botkit": "^1.4.1",
-    "botkit": "~0.2.2"
+    "beepboop-slapp-presence-polyfill": "^1.1.1",
+    "express": "^4.14.0",
+    "slapp": "^1.2.0",
+    "slapp-context-beepboop": "^1.0.0",
+    "slapp-convo-beepboop": "^1.0.0"
   }
 }
