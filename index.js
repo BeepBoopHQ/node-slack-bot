@@ -136,6 +136,9 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
           var username = convo.extractResponses(usernameKey);
           var password = convo.extractResponses(passwordKey);
 
+          console.log(username);
+          console.log(password);
+
           // extract actual email
           username = username.substr(8, username.indexOf('|') - 8);
 
