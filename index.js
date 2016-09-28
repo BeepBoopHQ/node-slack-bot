@@ -133,8 +133,8 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
 
       convo.on('end', function(convo) {
         if (convo.status === 'completed') {
-          var username = convo.extractResponses(usernameKey);
-          var password = convo.extractResponses(passwordKey);
+          var username = convo.extractResponse(usernameKey);
+          var password = convo.extractResponse(passwordKey);
 
           console.log(username);
           console.log(password);
