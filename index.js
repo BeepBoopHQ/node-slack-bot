@@ -134,15 +134,19 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
       });
     };
 
-    bot.startConversation(message, askForUsername);
+    var convo =  bot.startConversation(message, askForUsername);
+
+    convo.on('end', function(convo) {
+      if (convo.status === 'completed') {
+        var responses = convo.extractResponses();
+        console.log(responses);
+      }
+    });
   } else if (token_data[message.user]) {
     // we already have a token
     bot.reply(message, 'you already are logged in, use the fantasy commands to make shit work');
     return;
   }
-
-  console.log('u: ' + nflUsername);
-  console.log('p: ' + nflPassword);
 
   return;
 });
