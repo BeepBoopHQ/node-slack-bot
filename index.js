@@ -109,8 +109,43 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
   // if someone says 'fantasy login' in a direct message to russell, start the fantasy login process
   // also jesus christ this seems so bad
 
+  // get the users id and see if we already have a token for them
+  if (!token_data || !token_data[message.user]) {
+    // we dont have a token
+    var askForUsername = function(err, convo) {
+      convo.ask('What is your fantasy username (email address)?', function(response, convo) {
+        console.log(response);
+        convo.say('username is ' + response.text);
+        askForPassword(response, convo);
+        convo.next();
+      });
+    };
+
+    var askForPassword = function(err, convo) {
+      convo.ask('What is your fantasy password (yes this is sketchy af)', function(response, convo) {
+        console.log(response);
+        var success = getNflAccessToken(response.text);
+        if(success) {
+          convo.say('You are all set, use the fantasy commands');
+          convo.next();
+        }
+      });
+    };
+
+    bot.startConversation(message, askForUsername);
+  } else if (token_data[message.user]) {
+    // we already have a token
+    bot.reply(message, 'you already are logged in, use the fantasy commands to make shit work');
+    return;
+  }
+
   return;
 });
+
+function getNflAccessToken(response) {
+  console.log(response);
+  return true;
+}
 
 function getTokensFromFirebase() {
   // get the tokens from firebase
@@ -127,6 +162,7 @@ function getTokensFromFirebase() {
       return;
     }
 
+    console.log('got tokens from firebase: ' + JSON.stringify(token_data));
     nflTokens = token_data;
     return;
 
@@ -466,41 +502,6 @@ function commandFeature(bot, message, commandMsg) {
   return;
 }
 
-function testSaveStorage(bot, message, commandMsg) {
-  var test = {
-    id: 'tokens',
-    tokens: [
-      {
-        user: 'testuser0',
-        token: 'asdf1234'
-      },
-      {
-        user: 'testuser1',
-        token: 'asdf1234'
-      },
-      {
-        user: 'testuser2',
-        token: 'asdf1234'
-      }
-    ]
-  };
-
-  controller.storage.teams.save(test);
-
-  bot.reply(message, 'saving ' + test);
-  return;
-}
-
-function testGetStorage(bot, message, commandMsg) {
-
-  controller.storage.teams.get('tokens', function(err, token_data) {
-    console.log(err);
-    console.log(JSON.stringify(token_data));
-
-    bot.reply(message, 'response: ' + err + ' and ' + JSON.stringify(token_data));
-    return;
-  });
-}
 
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
@@ -517,8 +518,6 @@ function buildCommandDictionary() {
   commands['lit'] = commandLit;
   commands['feature'] = commandFeature;
   commands['commands'] = listCommands;
-  commands['testsavestorage'] = testSaveStorage;
-  commands['testgetstorage'] = testGetStorage;
 }
 
 function buildUserList(bot, message) {
