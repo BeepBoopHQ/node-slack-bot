@@ -108,15 +108,14 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 controller.hears('fantasy login', 'direct_message', function (bot, message) {
   // if someone says 'fantasy login' in a direct message to russell, start the fantasy login process
   // also jesus christ this seems so bad
-  var nflUsername = '';
-  var nflPassword = '';
+  var usernameKey = 'What is your fantasy username (email address)?';
+  var passwordKey = 'What is your fantasy password (yes this is sketchy af)';
 
   // get the users id and see if we already have a token for them
   if (!nflTokens || !nflTokens[message.user]) {
     // we dont have a token
     var askForUsername = function(err, convo) {
-      convo.ask('What is your fantasy username (email address)?', function(response, convo) {
-        nflUsername = response.text;
+      convo.ask(usernameKey, function(response, convo) {
         convo.say('username is ' + response.text);
         askForPassword(response, convo);
         convo.next();
@@ -124,8 +123,7 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
     };
 
     var askForPassword = function(err, convo) {
-      convo.ask('What is your fantasy password (yes this is sketchy af)', function(response, convo) {
-        nflPassword = response.text;
+      convo.ask(passwordKey, function(response, convo) {
         var success = getNflAccessToken(response.text);
         if(success) {
           convo.say('You are all set, use the fantasy commands');
@@ -135,8 +133,15 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
 
       convo.on('end', function(convo) {
         if (convo.status === 'completed') {
-          var responses = convo.extractResponses();
-          console.log(responses);
+          var username = convo.extractResponses(usernameKey);
+          var password = convo.extractResponses(passwordKey);
+
+          // extract actual email
+          username = username.substr(8, username.indexOf('|') - 8);
+
+          console.log(username);
+          console.log(password);
+          return;
         }
       });
     };
