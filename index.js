@@ -108,13 +108,15 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 controller.hears('fantasy login', 'direct_message', function (bot, message) {
   // if someone says 'fantasy login' in a direct message to russell, start the fantasy login process
   // also jesus christ this seems so bad
+  var nflUsername = '';
+  var nflPassword = '';
 
   // get the users id and see if we already have a token for them
   if (!nflTokens || !nflTokens[message.user]) {
     // we dont have a token
     var askForUsername = function(err, convo) {
       convo.ask('What is your fantasy username (email address)?', function(response, convo) {
-        console.log(response);
+        nflUsername = response.text;
         convo.say('username is ' + response.text);
         askForPassword(response, convo);
         convo.next();
@@ -123,7 +125,7 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
 
     var askForPassword = function(err, convo) {
       convo.ask('What is your fantasy password (yes this is sketchy af)', function(response, convo) {
-        console.log(response);
+        nflPassword = response.text;
         var success = getNflAccessToken(response.text);
         if(success) {
           convo.say('You are all set, use the fantasy commands');
@@ -138,6 +140,9 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
     bot.reply(message, 'you already are logged in, use the fantasy commands to make shit work');
     return;
   }
+
+  console.log('u: ' + nflUsername);
+  console.log('p: ' + nflPassword);
 
   return;
 });
