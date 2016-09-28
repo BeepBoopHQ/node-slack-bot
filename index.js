@@ -1,6 +1,7 @@
-var Botkit = require('botkit')
+var Botkit = require('botkit');
+var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: 'gs://league-of-goons-bot.appspot.com'});
 
-var token = process.env.SLACK_TOKEN
+var token = process.env.SLACK_TOKEN;
 var version = '`v1.4 \'earl sweatbert\'`';
 
 var commands = {};
@@ -17,8 +18,9 @@ var pollMap = {};
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
-  debug: false
-})
+  debug: false,
+  storage: firebaseStorage
+});
 
 // Assume single team mode if we have a SLACK_TOKEN
 if (token) {
@@ -301,7 +303,7 @@ function commandVote(bot, message, commandMsg) {
       currentPoll.votes[voteOption - 1] += 1;
       currentPoll.users[user].vote = voteOption - 1;
 
-      if (checkForVoteMajority(pollVotes)) {
+      if (checkForVoteMajority(currentPoll)) {
         var resultsArray = pollOptions.map(function(e, i) {
           var formatted = '`' + e + ': ' + pollVotes[i] + '`'
           return [formatted];
@@ -322,7 +324,7 @@ function commandVote(bot, message, commandMsg) {
   return;
 }
 
-function checkForVoteMajority(poll) {
+function checkForVoteMajority(currentPoll) {
   // check and see if this poll is over with
   return false;
 }
@@ -431,6 +433,26 @@ function commandFeature(bot, message, commandMsg) {
   return;
 }
 
+function testSaveStorage(bot, message, commandMsg) {
+  var test = {
+    id: 'test',
+    foo: ['bar', 'baz']
+  };
+
+  controller.storage.teams.save(test);
+
+  bot.reply(message, 'testing save');
+  return;
+}
+
+function testGetStorage(bot, message, commandMsg) {
+
+  var test = controller.storage.teams.get('test');
+
+  bot.reply(message, 'got ' + test);
+  return;
+}
+
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
   commands['gohawks'] = commandGoHawks;
@@ -446,6 +468,8 @@ function buildCommandDictionary() {
   commands['lit'] = commandLit;
   commands['feature'] = commandFeature;
   commands['commands'] = listCommands;
+  commands['testsavestorage'] = testSaveStorage;
+  commands['testgetstorage'] = testGetStorage;
 }
 
 function buildUserList(bot, message) {
