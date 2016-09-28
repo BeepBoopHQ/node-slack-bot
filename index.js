@@ -110,7 +110,7 @@ controller.hears('fantasy login', 'direct_message', function (bot, message) {
   // also jesus christ this seems so bad
 
   // get the users id and see if we already have a token for them
-  if (!token_data || !token_data[message.user]) {
+  if (!nflTokens || !nflTokens[message.user]) {
     // we dont have a token
     var askForUsername = function(err, convo) {
       convo.ask('What is your fantasy username (email address)?', function(response, convo) {
