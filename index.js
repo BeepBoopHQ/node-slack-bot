@@ -495,9 +495,9 @@ function testGetStorage(bot, message, commandMsg) {
 
   controller.storage.teams.get('tokens', function(err, token_data) {
     console.log(err);
-    console.log(token_data);
+    console.log(JSON.stringify(token_data));
 
-    bot.reply(message, 'response: ' + err + ' and ' + JSON.parse(token_data));
+    bot.reply(message, 'response: ' + err + ' and ' + JSON.stringify(token_data));
     return;
   });
 }
