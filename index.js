@@ -1,5 +1,5 @@
 var Botkit = require('botkit');
-var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: 'gs://league-of-goons-bot.appspot.com'});
+var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: 'https://league-of-goons-bot.firebaseio.com/'});
 
 var token = process.env.SLACK_TOKEN;
 var version = '`v1.4 \'earl sweatbert\'`';
