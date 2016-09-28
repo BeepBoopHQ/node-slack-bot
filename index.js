@@ -15,6 +15,8 @@ var pollOwner = '';
 var channelUsers = [];
 var pollMap = {};
 
+var nflTokens = {};
+
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
@@ -79,6 +81,9 @@ if (token) {
 // build the command dictionary
 buildCommandDictionary();
 
+// grab the access keys from firebase
+getTokensFromFirebase();
+
 controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, '#gohawks');
 });
@@ -99,6 +104,34 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
   commands[command](bot, message, commandMsg);
 });
+
+controller.hears('fantasy login', 'direct_message', function (bot, message) {
+  // if someone says 'fantasy login' in a direct message to russell, start the fantasy login process
+  // also jesus christ this seems so bad
+
+  return;
+});
+
+function getTokensFromFirebase() {
+  // get the tokens from firebase
+  // format is:
+  // id: 'tokens',
+  // tokens: [{user: '', token: ''}]
+
+  controller.storage.teams.get('tokens', function(err, token_data) {
+    console.log(err);
+    console.log(token_data);
+
+    if(err || !token_data) {
+      console.log('error getting tokens from firebase');
+      return;
+    }
+
+    nflTokens = token_data;
+    return;
+
+  });
+}
 
 function createPollMapKey(userId) {
   for(key in pollMap) {
@@ -435,8 +468,21 @@ function commandFeature(bot, message, commandMsg) {
 
 function testSaveStorage(bot, message, commandMsg) {
   var test = {
-    id: 'test',
-    foo: ['bar', 'baz']
+    id: 'tokens',
+    tokens: [
+      {
+        user: 'testuser0',
+        token: 'asdf1234'
+      },
+      {
+        user: 'testuser1',
+        token: 'asdf1234'
+      },
+      {
+        user: 'testuser2',
+        token: 'asdf1234'
+      }
+    ]
   };
 
   controller.storage.teams.save(test);
@@ -447,16 +493,13 @@ function testSaveStorage(bot, message, commandMsg) {
 
 function testGetStorage(bot, message, commandMsg) {
 
-  var test = controller.storage.teams.get('test', function(err, team_data) {
+  controller.storage.teams.get('tokens', function(err, token_data) {
     console.log(err);
-    console.log(team_data);
+    console.log(token_data);
 
-    bot.reply(message, 'response: ' + err + ' and ' + team_data);
+    bot.reply(message, 'response: ' + err + ' and ' + JSON.parse(token_data));
     return;
   });
-
-  bot.reply(message, 'got ' + test);
-  return;
 }
 
 function buildCommandDictionary() {
