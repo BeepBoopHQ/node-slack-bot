@@ -439,14 +439,9 @@ function testSaveStorage(bot, message, commandMsg) {
     foo: ['bar', 'baz']
   };
 
-  controller.storage.fantasy.save(test, function(err) {
-    console.log(err);
+  controller.storage.fantasy.save(test);
 
-    bot.reply(message, 'error: ' + err);
-    return;
-  });
-
-  bot.reply(message, 'testing save');
+  bot.reply(message, 'saving ' + test);
   return;
 }
 
@@ -455,7 +450,7 @@ function testGetStorage(bot, message, commandMsg) {
   var test = controller.storage.fantasy.get('test', function(err, team_data) {
     console.log(err);
     console.log(team_data);
-    
+
     bot.reply(message, 'response: ' + err + ' and ' + team_data);
     return;
   });
