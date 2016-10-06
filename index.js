@@ -1,5 +1,6 @@
 var Botkit = require('botkit');
 var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: 'https://league-of-goons-bot.firebaseio.com/'});
+var request = require('superagent');
 
 var token = process.env.SLACK_TOKEN;
 var version = '`v1.4 \'earl sweatbert\'`';
@@ -104,65 +105,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
   commands[command](bot, message, commandMsg);
 });
-
-controller.hears('fantasy login', 'direct_message', function (bot, message) {
-  // if someone says 'fantasy login' in a direct message to russell, start the fantasy login process
-  // also jesus christ this seems so bad
-  var usernameKey = 'What is your fantasy username (email address)?';
-  var passwordKey = 'What is your fantasy password (yes this is sketchy af)';
-
-  // get the users id and see if we already have a token for them
-  if (!nflTokens || !nflTokens[message.user]) {
-    // we dont have a token
-    var askForUsername = function(err, convo) {
-      convo.ask(usernameKey, function(response, convo) {
-        convo.say('username is ' + response.text);
-        askForPassword(response, convo);
-        convo.next();
-      });
-    };
-
-    var askForPassword = function(err, convo) {
-      convo.ask(passwordKey, function(response, convo) {
-        var success = getNflAccessToken(response.text);
-        if(success) {
-          convo.say('You are all set, use the fantasy commands');
-          convo.next();
-        }
-      });
-
-      convo.on('end', function(convo) {
-        if (convo.status === 'completed') {
-          var username = convo.extractResponse(usernameKey);
-          var password = convo.extractResponse(passwordKey);
-
-          console.log(username);
-          console.log(password);
-
-          // extract actual email
-          username = username.substr(8, username.indexOf('|') - 8);
-
-          console.log(username);
-          console.log(password);
-          return;
-        }
-      });
-    };
-
-    bot.startConversation(message, askForUsername);
-  } else if (token_data[message.user]) {
-    // we already have a token
-    bot.reply(message, 'you already are logged in, use the fantasy commands to make shit work');
-    return;
-  }
-
-  return;
-});
-
-function getNflAccessToken(response) {
-  console.log(response);
-  return true;
-}
 
 function getTokensFromFirebase() {
   // get the tokens from firebase
@@ -515,7 +457,13 @@ function commandFeature(bot, message, commandMsg) {
     channel: 'C2BRPHPS4'
   });
 
-  bot.reply(message, 'thanks for your feature request, <@' + message.user + '>, we _definitely_ take them seriously.');
+  bot.reply(message, 'thanks for your feature request, <@' + message.user + '>');
+  return;
+}
+
+function commandExbert(bot, message, commandMsg) {
+  // lol
+  bot.reply(message, '<@U2ASHP5FT>, <@' + message.user + '> needs an exbert: ' + commandMsg);
   return;
 }
 
@@ -534,6 +482,7 @@ function buildCommandDictionary() {
   commands['resetpoll'] = commandResetPoll;
   commands['lit'] = commandLit;
   commands['feature'] = commandFeature;
+  commands['exbert'] = commandExbert;
   commands['commands'] = listCommands;
 }
 

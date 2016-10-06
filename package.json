@@ -24,6 +24,7 @@
   "dependencies": {
     "beepboop-botkit": "^1.4.1",
     "botkit": "~0.2.2",
-    "botkit-storage-firebase": "*"
+    "botkit-storage-firebase": "^1.0.0",
+    "superagent": "^2.3.0"
   }
 }
