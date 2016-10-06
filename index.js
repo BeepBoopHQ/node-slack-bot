@@ -471,6 +471,13 @@ function commandCeleryMan(bot, message, commandMsg) {
     convo.say('`Yes, Paul.`');
     convo.say('http://i.imgur.com/zSr6jEB.gif');
   });
+
+  return;
+}
+
+function commandTrapHorns(bot, message, commandMsg) {
+  bot.reply(message, 'https://www.youtube.com/watch?v=Ip1SYl97kh4 :trumpet::trumpet::trumpet::trumpet:');
+  return;
 }
 
 
@@ -490,6 +497,7 @@ function buildCommandDictionary() {
   commands['feature'] = commandFeature;
   commands['exbert'] = commandExbert;
   commands['celeryman'] = commandCeleryMan;
+  commands['traphorns'] = commandTrapHorns;
   commands['commands'] = listCommands;
 }
 
