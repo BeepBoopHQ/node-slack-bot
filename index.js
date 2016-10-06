@@ -16,8 +16,6 @@ var pollOwner = '';
 var channelUsers = [];
 var pollMap = {};
 
-var nflTokens = {};
-
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
@@ -467,6 +465,14 @@ function commandExbert(bot, message, commandMsg) {
   return;
 }
 
+function commandCeleryMan(bot, message, commandMsg) {
+  // computer load up celery man
+  bot.startConversation(message, function(err, convo) {
+    convo.say('`Yes, Paul.`');
+    convo.say('http://i.imgur.com/zSr6jEB.gif');
+  });
+}
+
 
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
@@ -483,6 +489,7 @@ function buildCommandDictionary() {
   commands['lit'] = commandLit;
   commands['feature'] = commandFeature;
   commands['exbert'] = commandExbert;
+  commands['celeryman'] = commandCeleryMan;
   commands['commands'] = listCommands;
 }
 
