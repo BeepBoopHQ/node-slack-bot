@@ -86,6 +86,8 @@ if (token) {
     setInterval(function() {
       var currentDay = new Date().getDay();
       if(!nflSchedule) {
+        console.log(nflScheduleUri);
+
         // if we have a blank schedule, we need to get one
         var req = request.get(nflScheduleUri)
                     .end(function(err, res) {
