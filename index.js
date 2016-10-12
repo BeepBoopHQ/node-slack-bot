@@ -82,24 +82,24 @@ if (token) {
     }, 10000);
 
     // run the timer for the weekly pickems
-    setInterval(function() {
-      if(!nflSchedule) {
-        // go get the json
-        console.log('getting nfl json');
-        var req = request
-                    .get('http://www.nfl.com/liveupdate/scorestrip/ss.json')
-                    .end(function(err, res) {
-                      if(err) {
-                        console.log('error retrieving nfl schedule');
-                        console.log(JSON.stringify(err));
-                        console.log('response: ' + JSON.stringify(res));
-                        return;
-                      }
-                      populateSchedule(res.body);
-                    });
-      }
-    }, 10000); // 86400000 ms = 24h
-  });
+  //   setInterval(function() {
+  //     if(!nflSchedule || (new Date().GetDay() === 2)) { // check on tuesdays?
+  //       // go get the json
+  //       console.log('getting nfl json');
+  //       var req = request
+  //                   .get('http://www.nfl.com/liveupdate/scorestrip/ss.json')
+  //                   .end(function(err, res) {
+  //                     if(err) {
+  //                       console.log('error retrieving nfl schedule');
+  //                       console.log(JSON.stringify(err));
+  //                       console.log('response: ' + JSON.stringify(res));
+  //                       return;
+  //                     }
+  //                     populateSchedule(res.body);
+  //                   });
+  //     }
+  //   }, 86400000); // 86400000 ms = 24h
+  // });
 
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
