@@ -159,7 +159,7 @@ function populateSchedule(response) {
       'games' : []
     };
 
-  scheduleJson['gms'].map(function(game) {
+  responseJson['gms'].map(function(game) {
     nflSchedule['games'].push({
       'home' : game['hnn'],
       'away' : game['vnn']
