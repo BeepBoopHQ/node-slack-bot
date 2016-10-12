@@ -83,23 +83,23 @@ if (token) {
     }, 10000);
 
     // get the nfl schedule for this week
-    setInterval(function() {
-      var currentDay = new Date().getDay();
-      if(!nflSchedule) {
-        console.log(nflScheduleUri);
-
-        // if we have a blank schedule, we need to get one
-        var req = request.get(nflScheduleUri)
-                    .end(function(err, res) {
-                      if(err) {
-                        console.log('error getting schedule: ' + JSON.stringify(err));
-                        return;
-                      }
-                      buildNflSchedule(res);
-                    });
-
-      }
-    },  10000);
+    // setInterval(function() {
+    //   var currentDay = new Date().getDay();
+    //   if(!nflSchedule) {
+    //     console.log(nflScheduleUri);
+    //
+    //     // if we have a blank schedule, we need to get one
+    //     var req = request.get(nflScheduleUri)
+    //                 .end(function(err, res) {
+    //                   if(err) {
+    //                     console.log('error getting schedule: ' + JSON.stringify(err));
+    //                     return;
+    //                   }
+    //                   buildNflSchedule(res);
+    //                 });
+    //
+    //   }
+    // },  10000);
 
   });
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
