@@ -87,7 +87,7 @@ if (token) {
         // go get the json
         console.log('getting nfl json');
         var req = request
-                    .get('http://http://www.nfl.com/liveupdate/scorestrip/ss.json')
+                    .get('http://www.nfl.com/liveupdate/scorestrip/ss.json')
                     .end(function(err, res) {
                       if(err) {
                         console.log('error retrieving nfl schedule');
