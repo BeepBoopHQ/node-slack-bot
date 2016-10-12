@@ -16,6 +16,16 @@ var pollOwner = '';
 var channelUsers = [];
 var pollMap = {};
 
+// nflSchedule:
+// {
+//   "week" : x
+//   "games" : [
+//     {"home": y, "away" : z},
+//         . . .
+//   ]
+// }
+var nflSchedule = {};
+
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
@@ -70,7 +80,25 @@ if (token) {
         }
       }
     }, 10000);
+
+    // run the timer for the weekly pickems
+    setInterval(function() {
+      if(!nflSchedule) {
+        // go get the json
+        console.log('getting nfl json');
+        var req = request
+                    .get('http://http://www.nfl.com/liveupdate/scorestrip/ss.json')
+                    .end(function(err, res) {
+                      if(err) {
+                        console.log('error retrieving nfl schedule');
+                        return;
+                      }
+                      populateSchedule(res);
+                    });
+      }
+    }, 100); // 86400000 ms = 24h
   });
+
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
   console.log('Starting in Beep Boop multi-team mode')
@@ -79,9 +107,6 @@ if (token) {
 
 // build the command dictionary
 buildCommandDictionary();
-
-// grab the access keys from firebase
-getTokensFromFirebase();
 
 controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, '#gohawks');
@@ -104,28 +129,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   commands[command](bot, message, commandMsg);
 });
 
-function getTokensFromFirebase() {
-  // get the tokens from firebase
-  // format is:
-  // id: 'tokens',
-  // tokens: [{user: '', token: ''}]
-
-  controller.storage.teams.get('tokens', function(err, token_data) {
-    console.log(err);
-    console.log(token_data);
-
-    if(err || !token_data) {
-      console.log('error getting tokens from firebase');
-      return;
-    }
-
-    console.log('got tokens from firebase: ' + JSON.stringify(token_data));
-    nflTokens = token_data;
-    return;
-
-  });
-}
-
 function createPollMapKey(userId) {
   for(key in pollMap) {
     if(pollMap.hasOwnProperty(key)) {
@@ -143,6 +146,26 @@ function createPollMapKey(userId) {
   pollMap[newKey] = userId;
   console.log('creating poll key: ' + newKey + ': ' + userId);
   return newKey;
+}
+
+function populateSchedule(response) {
+  console.log('got response: ' + response);
+  var responseJson = JSON.parse(response);
+  var scheduleJson =
+    {
+      'week' : responseJson['w'],
+      'games' : []
+    };
+
+  scheduleJson['gms'].map(function(game) {
+    nflSchedule['games'].push({
+      'home' : game['hnn'],
+      'away' : game['vnn']
+    });
+  });
+
+  nflSchedule = scheduleJson;
+  console.log('setting schedule: ' + JSON.stringify(nflSchedule));
 }
 
 function deletePollMapKey(userId) {
