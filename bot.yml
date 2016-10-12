@@ -6,9 +6,13 @@ config:
  - name: FootballNerdToken
    friendly_name: Football Nerd Token
    info: Auth token
+   tyoe: text
+   global: true
 - name: FirebaseUri
   friendly_name: Firebase URI
   info: Firebase Uri
+  type: text
+  global: true
 #screenshots:
 #  - screenshot: resources/screenshot1.png
 #  - screenshot: resources/screenshot2.jpg
