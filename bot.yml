@@ -3,15 +3,15 @@ description: \#notimetosleep
 avatar: resources/avatar.jpeg
 #background: resources/background.png
 config:
- - name: FootballNerdToken
-   friendly_name: Football Nerd Token
-   info: Auth token
-   type: text
-   global: true
+- name: FootballNerdToken
+  friendly_name: Football Nerd Token
+  info: Auth token
+  type: secret
+  global: true
 - name: FirebaseUri
   friendly_name: Firebase URI
   info: Firebase Uri
-  type: text
+  type: secret
   global: true
 #screenshots:
 #  - screenshot: resources/screenshot1.png
