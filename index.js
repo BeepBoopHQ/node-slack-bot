@@ -134,8 +134,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 });
 
 function buildNflSchedule(response) {
-  console.log('got this schedule: ' + JSON.stringify(response.text));
-
   var scheduleJson =
   {
     'week' : response.text['currentWeek'],
@@ -143,6 +141,8 @@ function buildNflSchedule(response) {
 
     ]
   };
+
+    console.log('got this schedule: ' + JSON.stringify(response.text['Schedule']));
 
   response.text['Schedule'].map(function(game) {
     scheduleJson['schedule'].push({
