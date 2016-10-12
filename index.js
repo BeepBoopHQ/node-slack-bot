@@ -1,8 +1,9 @@
 var Botkit = require('botkit');
-var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: 'https://league-of-goons-bot.firebaseio.com/'});
+var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.env.FirebaseUri});
 var request = require('superagent');
 
 var token = process.env.SLACK_TOKEN;
+var footballNerdAuth = 'mc3vru77v3n3';
 var version = '`v1.4 \'earl sweatbert\'`';
 
 var commands = {};
@@ -128,26 +129,6 @@ function createPollMapKey(userId) {
   pollMap[newKey] = userId;
   console.log('creating poll key: ' + newKey + ': ' + userId);
   return newKey;
-}
-
-function populateSchedule(response) {
-  console.log('got response: ' + JSON.stringify(response));
-  var responseJson = JSON.parse(JSON.stringify(response));
-  var scheduleJson =
-    {
-      'week' : responseJson['w'],
-      'games' : []
-    };
-
-  responseJson['gms'].map(function(game) {
-    scheduleJson['games'].push({
-      'home' : game['hnn'],
-      'away' : game['vnn']
-    });
-  });
-
-  nflSchedule = scheduleJson;
-  console.log('setting schedule: ' + JSON.stringify(nflSchedule));
 }
 
 function deletePollMapKey(userId) {
