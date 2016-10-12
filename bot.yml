@@ -6,7 +6,7 @@ config:
  - name: FootballNerdToken
    friendly_name: Football Nerd Token
    info: Auth token
-   tyoe: text
+   type: text
    global: true
 - name: FirebaseUri
   friendly_name: Firebase URI
