@@ -91,8 +91,8 @@ if (token) {
                     .end(function(err, res) {
                       if(err) {
                         console.log('error retrieving nfl schedule');
-                        console.log(err);
-                        console.log('response: ' + res.body);
+                        console.log(JSON.stringify(err));
+                        console.log('response: ' + JSON.stringify(res));
                         return;
                       }
                       populateSchedule(res.body);
