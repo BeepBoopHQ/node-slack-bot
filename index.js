@@ -134,7 +134,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 });
 
 function buildNflSchedule(response) {
-  console.log('got this schedule: ' + JSON.stringify(response));
+  console.log('got this schedule: ' + JSON.stringify(response.text));
 
   var scheduleJson =
   {
