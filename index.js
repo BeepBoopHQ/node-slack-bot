@@ -93,7 +93,7 @@ if (token) {
                         console.log('error getting schedule: ' + JSON.stringify(err));
                         return;
                       }
-
+                      console.log('got this response: ' + JSON.stringify(res));
                       buildNflSchedule(res);
                     });
 
