@@ -138,13 +138,13 @@ function buildNflSchedule(response) {
 
   var scheduleJson =
   {
-    'week' : response['currentWeek'],
+    'week' : response.text['currentWeek'],
     'schedule' : [
 
     ]
   };
 
-  response['Schedule'].map(function(game) {
+  response.text['Schedule'].map(function(game) {
     scheduleJson['schedule'].push({
       'week': game['gameWeek'],
       'home': game['homeTeam'],
