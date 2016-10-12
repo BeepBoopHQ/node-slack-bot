@@ -98,7 +98,7 @@ if (token) {
                     });
 
       }
-    });
+    },  10000);
 
   });
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
