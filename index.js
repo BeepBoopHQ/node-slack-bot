@@ -24,7 +24,7 @@ var pollMap = {};
 //         . . .
 //   ]
 // }
-var nflSchedule = {};
+var nflSchedule = null;
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
