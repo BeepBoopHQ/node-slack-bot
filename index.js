@@ -95,7 +95,6 @@ if (token) {
                         console.log('error getting schedule: ' + JSON.stringify(err));
                         return;
                       }
-                      console.log('got this response: ' + JSON.stringify(res));
                       buildNflSchedule(res);
                     });
 
@@ -141,8 +140,8 @@ function buildNflSchedule(response) {
 
     ]
   };
-
-    console.log('got this schedule: ' + JSON.stringify(response.text['Schedule']));
+  console.log('building schedule ------------------------');
+  console.log('got this schedule: ' + JSON.stringify(response.text));
 
   response.text['Schedule'].map(function(game) {
     scheduleJson['schedule'].push({
