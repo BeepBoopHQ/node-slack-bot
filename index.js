@@ -152,7 +152,7 @@ function createPollMapKey(userId) {
 
 function populateSchedule(response) {
   console.log('got response: ' + JSON.stringify(response));
-  var responseJson = JSON.parse(response);
+  var responseJson = JSON.parse(JSON.stringify(response));
   var scheduleJson =
     {
       'week' : responseJson['w'],
