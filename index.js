@@ -92,10 +92,10 @@ if (token) {
                       if(err) {
                         console.log('error retrieving nfl schedule');
                         console.log(err);
-                        console.log('response: ' + res);
+                        console.log('response: ' + res.body);
                         return;
                       }
-                      populateSchedule(res);
+                      populateSchedule(res.body);
                     });
       }
     }, 10000); // 86400000 ms = 24h
