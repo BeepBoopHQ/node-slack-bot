@@ -141,7 +141,7 @@ function buildNflSchedule(response) {
     ]
   };
   console.log('building schedule ------------------------');
-  console.log('got this schedule: ' + JSON.stringify(response.text));
+  console.log('so far: ' + JSON.stringify(scheduleJson));
 
   response.text['Schedule'].map(function(game) {
     scheduleJson['schedule'].push({
