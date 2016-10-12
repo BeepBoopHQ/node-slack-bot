@@ -91,12 +91,14 @@ if (token) {
                     .end(function(err, res) {
                       if(err) {
                         console.log('error retrieving nfl schedule');
+                        console.log(err);
+                        console.log('response: ' + res);
                         return;
                       }
                       populateSchedule(res);
                     });
       }
-    }, 100); // 86400000 ms = 24h
+    }, 10000); // 86400000 ms = 24h
   });
 
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
