@@ -425,8 +425,8 @@ function clearPoll(user) {
 
 function commandShot(bot, message, commandMsg) {
   // get the user and get the number
-  var user = commandMsg.Split(' ')[0];
-  var number = parseInt(commandMsg.Split(' ')[1]);
+  var user = commandMsg.split(' ')[0];
+  var number = parseInt(commandMsg.split(' ')[1]);
 
   if (!user || !number) {
     bot.reply(message, 'use `!shot <person> <number>`');
