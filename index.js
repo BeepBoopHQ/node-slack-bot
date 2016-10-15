@@ -433,7 +433,7 @@ function commandShot(bot, message, commandMsg) {
     return;
   }
 
-  if (roll < 0 || roll > 20) {
+  if (number < 0 || number > 20) {
     bot.reply(message, 'use a number between 1 and 20`');
     return;
   }
