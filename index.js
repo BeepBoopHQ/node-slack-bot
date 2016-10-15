@@ -1,8 +1,9 @@
 var Botkit = require('botkit');
-var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: 'https://league-of-goons-bot.firebaseio.com/'});
+var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.env.FirebaseUri});
 var request = require('superagent');
 
 var token = process.env.SLACK_TOKEN;
+var nflScheduleUri = 'http://www.fantasyfootballnerd.com/service/schedule/json/' + process.env.FootballNerdToken;
 var version = '`v1.4 \'earl sweatbert\'`';
 
 var commands = {};
@@ -80,6 +81,26 @@ if (token) {
         }
       }
     }, 10000);
+
+    // get the nfl schedule for this week
+    // setInterval(function() {
+    //   var currentDay = new Date().getDay();
+    //   if(!nflSchedule) {
+    //     console.log(nflScheduleUri);
+    //
+    //     // if we have a blank schedule, we need to get one
+    //     var req = request.get(nflScheduleUri)
+    //                 .end(function(err, res) {
+    //                   if(err) {
+    //                     console.log('error getting schedule: ' + JSON.stringify(err));
+    //                     return;
+    //                   }
+    //                   buildNflSchedule(res);
+    //                 });
+    //
+    //   }
+    // },  10000);
+
   });
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
@@ -111,6 +132,29 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   commands[command](bot, message, commandMsg);
 });
 
+function buildNflSchedule(response) {
+  var scheduleJson =
+  {
+    'week' : response.text['currentWeek'],
+    'schedule' : [
+
+    ]
+  };
+  console.log('building schedule ------------------------');
+  console.log('so far: ' + JSON.stringify(scheduleJson));
+
+  response.text['Schedule'].map(function(game) {
+    scheduleJson['schedule'].push({
+      'week': game['gameWeek'],
+      'home': game['homeTeam'],
+      'away': game['awayTeam']
+    })
+  });
+
+  console.log('formatted schedule: ' + JSON.stringify(scheduleJson));
+
+}
+
 function createPollMapKey(userId) {
   for(key in pollMap) {
     if(pollMap.hasOwnProperty(key)) {
@@ -128,26 +172,6 @@ function createPollMapKey(userId) {
   pollMap[newKey] = userId;
   console.log('creating poll key: ' + newKey + ': ' + userId);
   return newKey;
-}
-
-function populateSchedule(response) {
-  console.log('got response: ' + JSON.stringify(response));
-  var responseJson = JSON.parse(JSON.stringify(response));
-  var scheduleJson =
-    {
-      'week' : responseJson['w'],
-      'games' : []
-    };
-
-  responseJson['gms'].map(function(game) {
-    scheduleJson['games'].push({
-      'home' : game['hnn'],
-      'away' : game['vnn']
-    });
-  });
-
-  nflSchedule = scheduleJson;
-  console.log('setting schedule: ' + JSON.stringify(nflSchedule));
 }
 
 function deletePollMapKey(userId) {
