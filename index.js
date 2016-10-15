@@ -4,7 +4,7 @@ var request = require('superagent');
 
 var token = process.env.SLACK_TOKEN;
 var nflScheduleUri = 'http://www.fantasyfootballnerd.com/service/schedule/json/' + process.env.FootballNerdToken;
-var version = '`v1.4 \'earl sweatbert\'`';
+var version = '`v2.0 \'chef boyarberto\'`';
 
 var commands = {};
 
@@ -433,6 +433,11 @@ function commandShot(bot, message, commandMsg) {
     return;
   }
 
+  if (roll < 0 || roll > 20) {
+    bot.reply(message, 'use a number between 1 and 20`');
+    return;
+  }
+
   var roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
 
   if(roll === 1) {
@@ -440,7 +445,7 @@ function commandShot(bot, message, commandMsg) {
   } else if (roll === number || roll === 20) {
     bot.reply(message, 'you rolled a *' + roll + '*, success! ' + user + ' has to take a shot!');
   } else {
-    bot.reply(message, 'you rolled a *' + 1 + '*, too bad!');
+    bot.reply(message, 'you rolled a *' + roll + '*, too bad!');
   }
 
   return;
