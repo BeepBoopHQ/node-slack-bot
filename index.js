@@ -436,7 +436,7 @@ function commandShot(bot, message, commandMsg) {
   var roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
 
   if(roll === 1) {
-    bot.reply(message, 'you rolled a *' + 1 + '*, <@' + message.user '>, you have to take a shot!');
+    bot.reply(message, 'you rolled a *' + roll + '*, <@' + message.user + '>, you have to take a shot!');
   } else if (roll === number || roll === 20) {
     bot.reply(message, 'you rolled a *' + roll + '*, success! ' + user + ' has to take a shot!');
   } else {
