@@ -561,7 +561,7 @@ function commandSaveFaded(bot, message, commandMsg) {
   responses.push('testing 2');
   responses.push('testing 3');
 
-  controller.storage.save(responses, function(err) {
+  controller.storage.faded.save(responses, function(err) {
     console.log(error);
     return;
   })
