@@ -540,15 +540,19 @@ function commandTrapHorns(bot, message, commandMsg) {
 
 function commandFaded(bot, message, commandMsg) {
 
-  var responses = controller.storage.teams.get('faded', function(err, res) {
+  var responses = null;
+
+  controller.storage.teams.get('faded', function(err, res) {
     if (err) {
       bot.reply(':ok-hand::ok-hand: _im faded fam_ :ok-hand::ok-hand:');
       return;
     }
 
-    console.log('err: ' + err);
-    console.log('res: ' + res);
+    responses = JSON.parse(res);
+      console.log(responses);
   });
+
+  console.log(responses);
 
   // responses = JSON.parse(responses);
   //
