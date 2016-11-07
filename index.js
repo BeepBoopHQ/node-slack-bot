@@ -548,11 +548,9 @@ function commandFaded(bot, message, commandMsg) {
       return;
     }
 
-    responses = JSON.parse(res);
-      console.log(responses);
-  });
+    console.log(res);
 
-  console.log(responses);
+  });
 
   // responses = JSON.parse(responses);
   //
