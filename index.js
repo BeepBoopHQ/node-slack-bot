@@ -539,25 +539,13 @@ function commandTrapHorns(bot, message, commandMsg) {
 }
 
 function commandFaded(bot, message, commandMsg) {
-  
-  controller.storage.teams.get('faded', function(err, res) {
-    console.log(err);
-    console.log(res);
-  });
+
+  var responses = controller.storage.teams.get('faded');
+
+  console.log(responses);
 
   var response = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
 }
-
-function commandSaveFaded(bot, message, commandMsg) {
-
-  var faded = {id: 'faded', 0: 'test 0', 1: 'test 1'};
-
-  controller.storage.teams.save(faded, function(err) {
-    console.log(err);
-    return;
-  })
-}
-
 
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
