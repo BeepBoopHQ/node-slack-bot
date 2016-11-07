@@ -562,7 +562,7 @@ function commandSaveFaded(bot, message, commandMsg) {
   responses.push('testing 3');
 
   controller.storage.teams.save(responses, function(err) {
-    console.log(error);
+    console.log(err);
     return;
   })
 }
