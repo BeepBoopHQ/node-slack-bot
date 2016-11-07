@@ -545,6 +545,9 @@ function commandFaded(bot, message, commandMsg) {
       bot.reply(':ok-hand::ok-hand: _im faded fam_ :ok-hand::ok-hand:');
       return;
     }
+
+    console.log('err: ' + err);
+    console.log('res: ' + res);
   });
 
   responses = JSON.parse(responses);
