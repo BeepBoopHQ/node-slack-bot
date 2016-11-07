@@ -555,7 +555,7 @@ function commandFaded(bot, message, commandMsg) {
 
     if(commandMsg) {
       // save a message
-      responses[numResponses] = commandMsg;
+      responses[numResponses - 1] = commandMsg;
       return;
     }
 
@@ -564,10 +564,10 @@ function commandFaded(bot, message, commandMsg) {
     console.log(numResponses);
     console.log(num);
     console.log(responses);
-    console.log(responses[num]);
+    console.log(responses[num - 1]);
     console.log(message);
 
-    bot.reply(message, responses[num]);
+    bot.reply(message, responses[num - 1]);
     return;
 
   });
