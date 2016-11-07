@@ -541,27 +541,18 @@ function commandTrapHorns(bot, message, commandMsg) {
 function commandFaded(bot, message, commandMsg) {
   var responses = [];
 
-  controller.storage.faded.get('responses', function(err, res) {
-    if (err) {
-      bot.reply(message, ':ok_hand::ok_hand: _im faded_ :ok_hand::ok_hand:');
-      return;
-    }
+  var responses = controller.storage.teams.get('faded');
 
-
-
-  });
+  console.log(responses);
 
   var response = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
 }
 
 function commandSaveFaded(bot, message, commandMsg) {
 
-  var responses = [];
-  responses.push('testing 1');
-  responses.push('testing 2');
-  responses.push('testing 3');
+  var faded = {id: 'faded', 0: 'test 0', 1: 'test 1'};
 
-  controller.storage.teams.save(responses, function(err) {
+  controller.storage.teams.save(faded, function(err) {
     console.log(err);
     return;
   })
@@ -587,6 +578,7 @@ function buildCommandDictionary() {
   commands['traphorns'] = commandTrapHorns;
   commands['shot'] = commandShot;
   commands['savefaded'] = commandSaveFaded;
+  commands['faded'] = commandFaded;
   commands['commands'] = listCommands;
 }
 
