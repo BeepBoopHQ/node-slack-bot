@@ -539,11 +539,11 @@ function commandTrapHorns(bot, message, commandMsg) {
 }
 
 function commandFaded(bot, message, commandMsg) {
-  var responses = [];
-
-  var responses = controller.storage.teams.get('faded');
-
-  console.log(responses);
+  
+  controller.storage.teams.get('faded', function(err, res) {
+    console.log(err);
+    console.log(res);
+  });
 
   var response = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
 }
