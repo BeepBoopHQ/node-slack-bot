@@ -544,7 +544,7 @@ function commandFaded(bot, message, commandMsg) {
 
   controller.storage.teams.get('faded', function(err, res) {
     if (err) {
-      bot.reply(':ok-hand::ok-hand: _im faded fam_ :ok-hand::ok-hand:');
+      bot.reply(':ok_hand::ok_hand: _im faded fam_ :ok_hand::ok_hand:');
       return;
     }
 
@@ -559,20 +559,14 @@ function commandFaded(bot, message, commandMsg) {
 
       saveFadedResponse(responses);
 
-      bot.reply(message, ':ok-hand::ok-hand: _' + commandMsg + '_ :ok-hand::ok-hand:');
+      bot.reply(message, ':ok_hand::ok_hand: _' + commandMsg + '_ :ok_hand::ok_hand:');
 
       return;
     }
 
     var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
 
-    console.log(numResponses);
-    console.log(num);
-    console.log(responses);
-    console.log(responses[num - 1]);
-    console.log(message);
-
-    bot.reply(message, ':ok-hand::ok-hand: _' + responses[num - 1] + '_ :ok-hand::ok-hand:');
+    bot.reply(message, ':ok_hand::ok_hand: _' + responses[num - 1] + '_ :ok_hand::ok_hand:');
     return;
 
   });
