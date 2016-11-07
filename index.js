@@ -555,11 +555,11 @@ function commandFaded(bot, message, commandMsg) {
 
     if(commandMsg) {
       // save a message
-      responses[numResponses - 1] = commandMsg;
+      responses[numResponses] = commandMsg;
 
       saveFadedResponse(responses);
 
-      bot.reply(message, commandMsg);
+      bot.reply(message, ':ok-hand::ok-hand: _' + commandMsg + '_ :ok-hand::ok-hand:');
 
       return;
     }
@@ -572,7 +572,7 @@ function commandFaded(bot, message, commandMsg) {
     console.log(responses[num - 1]);
     console.log(message);
 
-    bot.reply(message, responses[num - 1]);
+    bot.reply(message, ':ok-hand::ok-hand: _' + responses[num - 1] + '_ :ok-hand::ok-hand:');
     return;
 
   });
