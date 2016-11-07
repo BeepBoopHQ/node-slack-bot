@@ -556,6 +556,11 @@ function commandFaded(bot, message, commandMsg) {
     if(commandMsg) {
       // save a message
       responses[numResponses - 1] = commandMsg;
+
+      saveFadedResponse(responses);
+
+      bot.reply(message, commandMsg);
+
       return;
     }
 
@@ -571,6 +576,10 @@ function commandFaded(bot, message, commandMsg) {
     return;
 
   });
+}
+
+function saveFadedResponse(responses) {
+  controller.storeage.teams.save(responses);
 }
 
 function buildCommandDictionary() {
