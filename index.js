@@ -561,6 +561,9 @@ function commandFaded(bot, message, commandMsg) {
 
     var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
 
+    console.log(numResponses);
+    console.log(num);
+    console.log(responses);
     console.log(responses[num]);
     console.log(message);
 
