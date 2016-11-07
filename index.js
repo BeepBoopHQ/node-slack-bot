@@ -548,24 +548,22 @@ function commandFaded(bot, message, commandMsg) {
       return;
     }
 
-    console.log(res);
+    responses = res;
 
   });
 
-  // responses = JSON.parse(responses);
-  //
-  // // get ct - 1 (for id)
-  // var numResponses = Object.keys(responses).length - 1;
-  //
-  // if(commandMsg) {
-  //   // save a message
-  //   responses[numResponses] = commandMsg;
-  //   return;
-  // }
-  //
-  // var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
-  //
-  // bot.reply(message, responses[num]);
+  // get ct - 1 (for id)
+  var numResponses = Object.keys(responses).length - 1;
+
+  if(commandMsg) {
+    // save a message
+    responses[numResponses] = commandMsg;
+    return;
+  }
+
+  var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
+
+  bot.reply(message, responses[num]);
   return;
 }
 
