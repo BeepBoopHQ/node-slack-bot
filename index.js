@@ -579,7 +579,7 @@ function commandFaded(bot, message, commandMsg) {
 }
 
 function saveFadedResponse(responses) {
-  controller.storeage.teams.save(responses);
+  controller.storage.teams.save(responses);
 }
 
 function buildCommandDictionary() {
