@@ -541,13 +541,27 @@ function commandTrapHorns(bot, message, commandMsg) {
 function commandFaded(bot, message, commandMsg) {
 
   var responses = controller.storage.teams.get('faded', function(err, res) {
-    console.log(err);
-    console.log(res);
+    if (err) {
+      bot.reply(':ok-hand::ok-hand: _im faded fam_ :ok-hand::ok-hand:');
+      return;
+    }
   });
 
-  console.log(responses);
+  responses = JSON.parse(responses);
 
-  var response = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+  // get ct - 1 (for id)
+  var numResponses = Object.keys(responses).length - 1;
+
+  if(commandMsg) {
+    // save a message
+    responses[numResponses] = commandMsg;
+    return;
+  }
+
+  var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
+
+  bot.reply(message, responses[num]);
+  return;
 }
 
 function buildCommandDictionary() {
