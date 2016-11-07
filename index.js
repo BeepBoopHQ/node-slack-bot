@@ -550,21 +550,21 @@ function commandFaded(bot, message, commandMsg) {
 
     responses = res;
 
-  });
+    // get ct - 1 (for id)
+    var numResponses = Object.keys(responses).length - 1;
 
-  // get ct - 1 (for id)
-  var numResponses = Object.keys(responses).length - 1;
+    if(commandMsg) {
+      // save a message
+      responses[numResponses] = commandMsg;
+      return;
+    }
 
-  if(commandMsg) {
-    // save a message
-    responses[numResponses] = commandMsg;
+    var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
+
+    bot.reply(message, responses[num]);
     return;
-  }
 
-  var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
-
-  bot.reply(message, responses[num]);
-  return;
+  });
 }
 
 function buildCommandDictionary() {
