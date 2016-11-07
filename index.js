@@ -538,6 +538,35 @@ function commandTrapHorns(bot, message, commandMsg) {
   return;
 }
 
+function commandFaded(bot, message, commandMsg) {
+  var responses = [];
+
+  controller.storage.faded.get('responses', function(err, res) {
+    if (err) {
+      bot.reply(message, ':ok_hand::ok_hand: _im faded_ :ok_hand::ok_hand:');
+      return;
+    }
+
+
+
+  });
+
+  var response = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+}
+
+function commandSaveFaded(bot, message, commandMsg) {
+
+  var responses = [];
+  responses.push('testing 1');
+  responses.push('testing 2');
+  responses.push('testing 3');
+
+  controller.storage.save(responses, function(err) {
+    console.log(error);
+    return;
+  })
+}
+
 
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
@@ -557,6 +586,7 @@ function buildCommandDictionary() {
   commands['celeryman'] = commandCeleryMan;
   commands['traphorns'] = commandTrapHorns;
   commands['shot'] = commandShot;
+  commands['saveFaded'] = commandSaveFaded;
   commands['commands'] = listCommands;
 }
 
