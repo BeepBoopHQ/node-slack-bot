@@ -565,7 +565,6 @@ function buildCommandDictionary() {
   commands['celeryman'] = commandCeleryMan;
   commands['traphorns'] = commandTrapHorns;
   commands['shot'] = commandShot;
-  commands['savefaded'] = commandSaveFaded;
   commands['faded'] = commandFaded;
   commands['commands'] = listCommands;
 }
