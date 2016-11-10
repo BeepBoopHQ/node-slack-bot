@@ -544,7 +544,7 @@ function commandEscalate(bot, message, commandMsg) {
     return;
   }
 
-  bot.reply(message, ':fire::fire: [HIGH PRIORITY] :fire::fire: ' + commandMsg + ' :fire::fire: [HIGH PRIORITY] :fire::fire:');
+  bot.reply(message, '<@U2ASHP5FT> :fire::fire: [HIGH PRIORITY] :fire::fire: ' + commandMsg + ' :fire::fire: [HIGH PRIORITY] :fire::fire:');
   return;
 
 }
