@@ -538,6 +538,17 @@ function commandTrapHorns(bot, message, commandMsg) {
   return;
 }
 
+function commandEscalate(bot, message, commandMsg) {
+  if (message.user !== "U2ARFPF62") {
+    bot.reply(message, 'Thanks for your ticket, an associate will be with you shortly.');
+    return;
+  }
+
+  bot.reply(message, ':fire::fire: [HIGH PRIORITY] :fire::fire: ' + commandMsg + ' :fire::fire: [HIGH PRIORITY] :fire::fire:');
+  return;
+
+}
+
 function commandFaded(bot, message, commandMsg) {
 
   var responses = null;
@@ -595,6 +606,7 @@ function buildCommandDictionary() {
   commands['traphorns'] = commandTrapHorns;
   commands['shot'] = commandShot;
   commands['faded'] = commandFaded;
+  commands['escalate'] = commandEscalate;
   commands['commands'] = listCommands;
 }
 
