@@ -606,13 +606,18 @@ function commandIChooseYou(bot, message, commandMsg) {
   var foundPokemon = false;
 
   for (i in pokemonList) {
+    console.log(pokemonList[i]);
+    console.log(pokemonList[i].name);
+    console.log(pokemonList[i].img);
     if(pokemonList[i].name.toLowerCase() === commandMsg.toLowerCase()) {
       var reply = {
-        'username': 'Professor Oak',
-        'text': '<@' + message.user + '> chooses ' + pokemonList[i].name + '!',
-        'attachments': [
+        "username": "Professor Oak",
+	      "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
+	      "attachments": [
           {
-          'image_url': pokemonList[i].img
+            "fallback": "<@" + message.user + "> chooses " + pokemonList[i].name + "!",
+            "text": "<@" + message.user + "> chooses " + pokemonList[i].name + "!",
+            "image_url": pokemonList[i].img
           }
         ]
       };
@@ -622,7 +627,12 @@ function commandIChooseYou(bot, message, commandMsg) {
     }
   }
 
-    bot.reply(message, '<@' + message.user +'>, no such pokemon! use `!pokemon`');
+  var reply = {
+    'username': 'Professor Oak',
+    'text': '<@' + message.user +'>, no such pokemon! use `!pokemon`'
+  };
+
+    bot.reply(message, reply);
     return;
 }
 
