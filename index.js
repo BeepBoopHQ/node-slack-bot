@@ -497,7 +497,7 @@ function commandFlipCoin(bot, message, commandMsg) {
   if(commandMsg) {
     var side = commandMsg.split(' ')[0];
 
-    if(side.toLowerCase() !== 'heads' || side.toLowerCase() !== 'tails') {
+    if(side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
       bot.reply(message, 'side must be `heads` or `tails`');
       return;
     }
