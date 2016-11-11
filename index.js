@@ -632,7 +632,9 @@ function commandPokemon(bot, message, commandMsg) {
   var response = 'here are the pokemon at your disposal:\n```';
 
   for (pokemon in pokemonList) {
-    response += pokemon.name;
+    console.log(pokemon);
+    console.log(pokemon.name);
+    response += pokemon.name + '\n';
   }
 
   response += '```';
