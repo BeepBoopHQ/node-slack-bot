@@ -495,7 +495,9 @@ function commandRussell(bot, message, commandMsg) {
 function commandFlipCoin(bot, message, commandMsg) {
 
   if(commandMsg) {
+    console.log(commandMsg);
     var side = commandMsg.split(' ')[0];
+    console.log(side);
 
     if(side.toLower() !== 'heads' || side.toLower() !== 'tails') {
       bot.reply(message, 'side must be `heads` or `tails`');
