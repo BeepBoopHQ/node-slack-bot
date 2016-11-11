@@ -502,7 +502,7 @@ function commandFlipCoin(bot, message, commandMsg) {
       return;
     }
 
-    var text = commandMsg.substr(commandMsg.indexOf(' '));
+    var text = commandMsg.substr(commandMsg.indexOf(' ') + 1);
 
     if(!text) {
       bot.reply(message, 'cant leave the text blank!');
@@ -514,12 +514,12 @@ function commandFlipCoin(bot, message, commandMsg) {
     var flip = (Math.floor(Math.random() * (2 - 1 + 1)) + 1);
 
     if(flip === 1) {
-      bot.reply(message, 'It\'s heads! <@' + message.user + '> said: ' + text);
+      bot.reply(message, 'It\'s *heads*! <@' + message.user + '> said: ' + text);
       return;
     }
 
     if(flip === 2) {
-      bot.reply(message, 'It\'s tails! <@' + message.user + '> said: ' + text);
+      bot.reply(message, 'It\'s *tails*! <@' + message.user + '> said: ' + text);
       return;
     }
   }
