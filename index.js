@@ -611,7 +611,9 @@ function commandIChooseYou(bot, message, commandMsg) {
         'username': 'Professor Oak',
         'text': '<@' + message.user + '> chooses ' + pokemon.name + '!',
         'attachments': [
+          {
           'image_url': pokemon.img
+          }
         ]
       };
 
