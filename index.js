@@ -605,14 +605,14 @@ function commandIChooseYou(bot, message, commandMsg) {
   // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
   var foundPokemon = false;
 
-  for (pokemon in pokemonList) {
-    if(pokemon.name.toLowerCase() === commandMsg.toLowerCase()) {
+  for (i in pokemonList) {
+    if(pokemonList[i].name.toLowerCase() === commandMsg.toLowerCase()) {
       var reply = {
         'username': 'Professor Oak',
-        'text': '<@' + message.user + '> chooses ' + pokemon.name + '!',
+        'text': '<@' + message.user + '> chooses ' + pokemonList[i].name + '!',
         'attachments': [
           {
-          'image_url': pokemon.img
+          'image_url': pokemonList[i].img
           }
         ]
       };
@@ -631,10 +631,8 @@ function commandPokemon(bot, message, commandMsg) {
 
   var response = 'here are the pokemon at your disposal:\n```';
 
-  for (pokemon in pokemonList) {
-    console.log(pokemon);
-    console.log(pokemon.name);
-    response += pokemon.name + '\n';
+  for (i in pokemonList) {
+    response += pokemonList[i].name + '\n';
   }
 
   response += '```';
