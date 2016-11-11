@@ -606,7 +606,7 @@ function commandIChooseYou(bot, message, commandMsg) {
   var foundPokemon = false;
 
   for (pokemon in pokemonList) {
-    if(pokemon.name.toLowerCase() === foundPokemon.toLowerCase()) {
+    if(pokemon.name.toLowerCase() === commandMsg.toLowerCase()) {
       var reply = {
         'username': 'Professor Oak',
         'text': '<@' + message.user + '> chooses ' + pokemon.name + '!',
@@ -618,11 +618,10 @@ function commandIChooseYou(bot, message, commandMsg) {
       bot.reply(message, reply);
       return;
     }
-    else {
-      bot.reply(message, '<@' + message.user +'>, no such pokemon! use `!pokemon`');
-      return;
-    }
   }
+
+    bot.reply(message, '<@' + message.user +'>, no such pokemon! use `!pokemon`');
+    return;
 }
 
 function commandPokemon(bot, message, commandMsg) {
