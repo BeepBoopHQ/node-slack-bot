@@ -493,6 +493,37 @@ function commandRussell(bot, message, commandMsg) {
 }
 
 function commandFlipCoin(bot, message, commandMsg) {
+
+  if(commandMsg) {
+    var side = commandMsg.split(' ')[0];
+
+    if(side.toLower() !== 'heads' || side.toLower() !== 'tails') {
+      bot.reply(message, 'side must be `heads` or `tails`');
+      return;
+    }
+
+    var text = commandMsg.substr(commandMsg.indexOf(' '));
+
+    if(!text) {
+      bot.reply(message, 'cant leave the text blank!');
+      return;
+    }
+
+    bot.reply(message, '<@' + message.user +'> is flipping a coin! if ' + side + ' then <@' + message.user + '> ' + text);
+    
+    var flip = (Math.floor(Math.random() * (2 - 1 + 1)) + 1);
+
+    if(flip === 1) {
+      bot.reply(message, 'It\'s heads! <@' + message.user + '> said: ' + text);
+      return;
+    }
+
+    if(flip === 2) {
+      bot.reply(message, 'It\'s tails! <@' + message.user + '> said: ' + text);
+      return;
+    }
+  }
+
   bot.reply(message, '<@' + message.user + '> flipped a coin!');
   bot.reply(message, ((Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!'));
   return;
