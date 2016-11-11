@@ -629,6 +629,7 @@ function commandIChooseYou(bot, message, commandMsg) {
 
   var reply = {
     'username': 'Professor Oak',
+    "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
     'text': '<@' + message.user +'>, no such pokemon! use `!pokemon`'
   };
 
@@ -639,7 +640,7 @@ function commandIChooseYou(bot, message, commandMsg) {
 function commandPokemon(bot, message, commandMsg) {
   // list the pkmn
 
-  var response = 'here are the pokemon at your disposal:\n```';
+  var response = 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```';
 
   for (i in pokemonList) {
     response += pokemonList[i].name + '\n';
