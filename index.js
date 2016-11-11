@@ -606,9 +606,6 @@ function commandIChooseYou(bot, message, commandMsg) {
   var foundPokemon = false;
 
   for (i in pokemonList) {
-    console.log(pokemonList[i]);
-    console.log(pokemonList[i].name);
-    console.log(pokemonList[i].img);
     if(pokemonList[i].name.toLowerCase() === commandMsg.toLowerCase()) {
       var reply = {
         "username": "Professor Oak",
@@ -640,15 +637,19 @@ function commandIChooseYou(bot, message, commandMsg) {
 function commandPokemon(bot, message, commandMsg) {
   // list the pkmn
 
-  var response = 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```';
+  var reply = {
+    'username': 'Professor Oak',
+    "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
+    'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```'
+  };
 
   for (i in pokemonList) {
-    response += pokemonList[i].name + '\n';
+    reply.text += pokemonList[i].name + '\n';
   }
 
-  response += '```';
+  reply.text += '```';
 
-  bot.reply(message, response);
+  bot.reply(message, reply);
   return;
 }
 
