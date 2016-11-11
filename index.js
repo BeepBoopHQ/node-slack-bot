@@ -17,6 +17,20 @@ var pollOwner = '';
 var channelUsers = [];
 var pollMap = {};
 
+var pokemonList = [
+  {name: 'pidgeot', img: 'http://media-cerulean.cursecdn.com/avatars/274/719/018_00.png' },
+  {name: 'mewtwo', img: 'http://pkmn.net/sprites/blackwhite/front/150.png' },
+  {name: 'arcanine', img: 'https://i.dstatic.com/images/pokemon/front/normal/arcanine.png' },
+  {name: 'poliwrath', img: 'https://urpgstatic.com/img_library/pokemon_sprites/062.png' },
+  {name: 'victreebel', img: 'http://pokedream.com/pokedex/images/blackwhite/front/071.png' },
+  {name: 'ampharos', img: 'https://media.pocketmonsters.net/dex//5/bw/181.png' },
+  {name: 'squirtle', img: 'http://pokedream.com/pokedex/images/blackwhite/front-alt/007.png' },
+  {name: 'lugia', img: 'http://pokedream.com/pokedex/images/blackwhite/front-alt/249.png' },
+  {name: 'wigglytuff', img: 'https://i.dstatic.com/images/pokemon/front/normal/wigglytuff.png' },
+  {name: 'bulbasaur', img: 'https://i.dstatic.com/images/pokemon/front/retro/bulbasaur.png' },
+  {name: 'gengar', img: 'http://cdn.bulbagarden.net/upload/2/21/Spr_5b_094.png'}
+];
+
 // nflSchedule:
 // {
 //   "week" : x
@@ -587,6 +601,45 @@ function saveFadedResponse(responses) {
   controller.storage.teams.save(responses);
 }
 
+function commandIChooseYou(bot, message, commandMsg) {
+  // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
+  var foundPokemon = false;
+
+  for (pokemon in pokemonList) {
+    if(pokemon.name.toLowerCase() === foundPokemon.toLowerCase()) {
+      var reply = {
+        'username': 'Professor Oak',
+        'text': '<@' + message.user + '> chooses ' + pokemon.name + '!',
+        'attachments': [
+          'image_url': pokemon.img
+        ]
+      };
+
+      bot.reply(message, reply);
+      return;
+    }
+    else {
+      bot.reply(message, '<@' + message.user +'>, no such pokemon! use `!pokemon`');
+      return;
+    }
+  }
+}
+
+function commandPokemon(bot, message, commandMsg) {
+  // list the pkmn
+
+  var response = 'here are the pokemon at your disposal:\n```';
+
+  for (pokemon in pokemonList) {
+    response += pokemon.name;
+  }
+
+  response += '```';
+
+  bot.reply(message, response);
+  return;
+}
+
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
   commands['gohawks'] = commandGoHawks;
@@ -607,6 +660,8 @@ function buildCommandDictionary() {
   commands['shot'] = commandShot;
   commands['faded'] = commandFaded;
   commands['escalate'] = commandEscalate;
+  commands['ichooseyou'] = commandIChooseYou;
+  commands['pokemon'] = commandPokemon;
   commands['commands'] = listCommands;
 }
 
