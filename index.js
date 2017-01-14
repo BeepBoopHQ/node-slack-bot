@@ -38,15 +38,12 @@ var controller = Botkit.slackbot({
 
 // Assume single team mode if we have a SLACK_TOKEN
 if (token) {
-  console.log('Starting in single-team mode')
   controller.spawn({
     token: token
   }).startRTM(function (err, bot, payload) {
     if (err) {
       throw new Error(err)
     }
-
-    console.log('Connected to Slack RTM');
 
     bot.say({
       text: 'russell_bot has connected',
@@ -66,7 +63,6 @@ if (token) {
           var currentTimeSeconds = new Date().getTime() / 1000;
 
           if (currentTimeSeconds - polls[key].startTime > (60 * 10)) { // if 10 minutes have passed
-            console.log('ending poll ' + key);
             var resultsArray = polls[key].options.map(function(e, i) {
               var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
               return [formatted];
@@ -87,7 +83,6 @@ if (token) {
 
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
-  console.log('Starting in Beep Boop multi-team mode')
   require('beepboop-botkit').start(controller, { debug: true })
 }
 
@@ -120,7 +115,6 @@ function createPollMapKey(userId) {
     if(pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === null || pollMap[key] === undefined) {
         pollMap[key] = userId;
-        console.log('creating poll key: ' + key + ': ' + userId);
         return parseInt(key);
       }
     }
@@ -130,7 +124,6 @@ function createPollMapKey(userId) {
   var newKey = Object.keys(pollMap).length;
 
   pollMap[newKey] = userId;
-  console.log('creating poll key: ' + newKey + ': ' + userId);
   return newKey;
 }
 
@@ -139,32 +132,23 @@ function deletePollMapKey(userId) {
     if(pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === userId) {
         pollMap[key] = null;
-        console.log('deleting poll key: ' + key);
       }
     }
   }
 }
 
 function formatPollOptions(message) {
-  console.log('parsing this: ' + message);
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
-
-    console.log('pollOptions pre-format: ' + pollOptions);
-
     var formattedOptions = pollOptions.map(function(e, i) {
       var formatted = '`' + e + '`';
       return [formatted];
     });
-
-    console.log('formatted options: ' + formattedOptions);
-
     pollOptions = [];
 
     return formattedOptions;
   } else {
     var option = message.substr(0, message.indexOf(' or '));
-    console.log('got this option: ' + option);
     pollOptions.push(option);
     return formatPollOptions(message.substr(message.indexOf(' or ') + 4));
   }
@@ -266,8 +250,6 @@ function commandPollResults(bot, message, commandMsg) {
 
 function commandVote(bot, message, commandMsg) {
 
-  console.log('commandMsg: ' + commandMsg);
-
   // we should have only 2 numbers in the command message
   var pollNumber = parseInt(commandMsg.split(' ')[0]);
   var voteOption = parseInt(commandMsg.split(' ')[1]);
@@ -291,8 +273,6 @@ function commandVote(bot, message, commandMsg) {
     bot.reply(message, voteOption + ' is not a valid poll option');
     return;
   }
-
-  console.log(JSON.stringify(currentPoll));
 
   // this poll exists, check if the vote option is legit
   if(voteOption > currentPoll.options.length) {
@@ -357,8 +337,6 @@ function commandPoll(bot, message, commandMsg) {
     // this user has no polls active
 
     var formattedPollChoices = formatPollOptions(commandMsg);
-    console.log('pollChoices: ' + formattedPollChoices);
-    console.log('commandMsg: ' + commandMsg);
 
     polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
     var pollMapKey = createPollMapKey(message.user);
@@ -373,8 +351,6 @@ function commandPoll(bot, message, commandMsg) {
 
   // build the user list for majority vote
   buildUserList(bot, message);
-
-  console.log('polls: ' + JSON.stringify(polls));
 
   return;
 }
@@ -657,8 +633,6 @@ function buildCommandDictionary() {
 
 function buildUserList(bot, message) {
   bot.api.channels.list({}, function(err, response){
-    console.log('err: ' + err);
-    console.log('response: ' + response);
     if (err) {
       channelUsers = [];
       return;
