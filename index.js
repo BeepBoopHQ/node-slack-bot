@@ -611,6 +611,11 @@ function commandPokemon(bot, message, commandMsg) {
   return;
 }
 
+function commandBlessUp(bot, message, commandMsg) {
+ bot.reply(message, 'bless up :djkhaled::key:');
+ return;
+}
+
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
   commands['gohawks'] = commandGoHawks;
@@ -633,6 +638,7 @@ function buildCommandDictionary() {
   commands['escalate'] = commandEscalate;
   commands['ichooseyou'] = commandIChooseYou;
   commands['pokemon'] = commandPokemon;
+  commands['blessup'] = commandBlessUp;
   commands['commands'] = listCommands;
 }
 
