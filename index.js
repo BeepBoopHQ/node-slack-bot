@@ -456,13 +456,15 @@ function showVersion(bot, message, commandMsg) {
 }
 
 function listCommands(bot, message, commandMsg) {
-  var commandList = 'commands available: ';
+  var commandList = 'commands available: \r\n ```';
 
   for(var key in commands) {
     if (commands.hasOwnProperty(key)) {
-      commandList += '`!' + key + '` ';
+      commandList += '!' + key + '/r/n';
     }
   }
+
+  commandList += '```'
 
   bot.reply(message, commandList);
   return;
