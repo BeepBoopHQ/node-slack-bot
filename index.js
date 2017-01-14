@@ -460,7 +460,7 @@ function listCommands(bot, message, commandMsg) {
 
   for(var key in commands) {
     if (commands.hasOwnProperty(key)) {
-      commandList += '!' + key + '/r/n';
+      commandList += '!' + key + '\r\n';
     }
   }
 
