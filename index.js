@@ -1,9 +1,7 @@
 var Botkit = require('botkit');
 var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.env.FirebaseUri});
-var request = require('superagent');
 
 var token = process.env.SLACK_TOKEN;
-var nflScheduleUri = 'http://www.fantasyfootballnerd.com/service/schedule/json/' + process.env.FootballNerdToken;
 var version = '`v2.0 \'chef boyarberto\'`';
 
 var commands = {};
@@ -30,16 +28,6 @@ var pokemonList = [
   {name: 'bulbasaur', img: 'https://i.dstatic.com/images/pokemon/front/retro/bulbasaur.png' },
   {name: 'gengar', img: 'http://cdn.bulbagarden.net/upload/2/21/Spr_5b_094.png'}
 ];
-
-// nflSchedule:
-// {
-//   "week" : x
-//   "games" : [
-//     {"home": y, "away" : z},
-//         . . .
-//   ]
-// }
-var nflSchedule = null;
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -95,27 +83,8 @@ if (token) {
         }
       }
     }, 10000);
-
-    // get the nfl schedule for this week
-    // setInterval(function() {
-    //   var currentDay = new Date().getDay();
-    //   if(!nflSchedule) {
-    //     console.log(nflScheduleUri);
-    //
-    //     // if we have a blank schedule, we need to get one
-    //     var req = request.get(nflScheduleUri)
-    //                 .end(function(err, res) {
-    //                   if(err) {
-    //                     console.log('error getting schedule: ' + JSON.stringify(err));
-    //                     return;
-    //                   }
-    //                   buildNflSchedule(res);
-    //                 });
-    //
-    //   }
-    // },  10000);
-
   });
+
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
 } else {
   console.log('Starting in Beep Boop multi-team mode')
@@ -145,29 +114,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
   commands[command](bot, message, commandMsg);
 });
-
-function buildNflSchedule(response) {
-  var scheduleJson =
-  {
-    'week' : response.text['currentWeek'],
-    'schedule' : [
-
-    ]
-  };
-  console.log('building schedule ------------------------');
-  console.log('so far: ' + JSON.stringify(scheduleJson));
-
-  response.text['Schedule'].map(function(game) {
-    scheduleJson['schedule'].push({
-      'week': game['gameWeek'],
-      'home': game['homeTeam'],
-      'away': game['awayTeam']
-    })
-  });
-
-  console.log('formatted schedule: ' + JSON.stringify(scheduleJson));
-
-}
 
 function createPollMapKey(userId) {
   for(key in pollMap) {
