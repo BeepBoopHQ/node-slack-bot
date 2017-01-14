@@ -391,7 +391,7 @@ function commandShot(bot, message, commandMsg) {
 function commandBug(bot, message, commandMsg) {
   // log this to #russel_bot as well
   bot.say({
-    text: 'a bug has been reported: ' + commandMsg,
+    text: '<@' + message.user +'> has reported a bug: ' + commandMsg,
     channel: 'C2AVCAC6L'
   });
 
@@ -481,7 +481,7 @@ function commandLit(bot, message, commandMsg) {
 function commandFeature(bot, message, commandMsg) {
   // log this to #russel_bot as well
   bot.say({
-    text: 'feature request: ' + commandMsg,
+    text: '<@' + message.user +'> has requested a feature: ' + commandMsg,
     channel: 'C2BRPHPS4'
   });
 
