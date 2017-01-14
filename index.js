@@ -466,7 +466,10 @@ function listCommands(bot, message, commandMsg) {
 
   commandList += '```'
 
-  bot.reply(message, commandList);
+  bot.say({
+    text: commandList,
+    channel: message.channel
+  });
   return;
 }
 
