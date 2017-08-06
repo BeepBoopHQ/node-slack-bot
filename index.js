@@ -617,7 +617,7 @@ function commandBlessUp(bot, message, commandMsg) {
  return;
 }
 
-function listWeeklyMatchups(bot, message, commandMsg) {
+function commandWeeklyMatchup(bot, message, commandMsg) {
   var weekNum = parseInt(commandMsg);
 
   if (!weekNum) {
@@ -661,6 +661,7 @@ function buildCommandDictionary() {
   commands['ichooseyou'] = commandIChooseYou;
   commands['pokemon'] = commandPokemon;
   commands['blessup'] = commandBlessUp;
+  commands['matchup'] = commandWeeklyMatchup;
   commands['commands'] = listCommands;
 }
 
