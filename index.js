@@ -1,5 +1,6 @@
 var Botkit = require('botkit');
 var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.env.FirebaseUri});
+var utils = require('./utils');
 
 var token = process.env.SLACK_TOKEN;
 var version = '`v2.0 \'chef boyarberto\'`';
@@ -616,6 +617,27 @@ function commandBlessUp(bot, message, commandMsg) {
  return;
 }
 
+function listWeeklyMatchups(bot, message, commandMsg) {
+  var weekNum = parseInt(commandMsg);
+
+  if (!weekNum) {
+    bot.reply(message, 'specify a week: `!matchup <week>`');
+    return;
+  }
+
+  if (weekNum < 1 || weekNum > 17) {
+    bot.reply(message, 'use a week between 1 and 17`');
+    return;
+  }
+
+  // todo: save this shit in a db somewhere cause this is a nightmare
+  var weeklyMatchupString = utils.getWeeklyMatchups(weekNum);
+
+  bot.reply(message, weeklyMatchupString);
+  return;
+
+}
+
 function buildCommandDictionary() {
   commands['berto'] = commandBerto;
   commands['gohawks'] = commandGoHawks;
@@ -642,17 +664,4 @@ function buildCommandDictionary() {
   commands['commands'] = listCommands;
 }
 
-// function buildUserList(bot, message) {
-//   bot.api.channels.list({}, function(err, response){
-//     if (err) {
-//       channelUsers = [];
-//       return;
-//     }
 
-//     var jsonResponse = JSON.parse(JSON.stringify(response));
-
-//     for(var channel in jsonResponse.channels) {
-//       channelUsers.push({channel: jsonResponse.channels[channel].id, users: jsonResponse.channels[channel].members});
-//     }
-//   });
-// }
