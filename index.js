@@ -3,7 +3,7 @@ var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.
 var utils = require('./utils');
 
 // import commands
-var commands = require('./commands/commands');
+var cmds = require('./commands/commands');
 
 var token = process.env.SLACK_TOKEN;
 var version = '`v2.0 \'chef boyarberto\'`';
@@ -587,8 +587,8 @@ function buildCommandDictionary() {
   commands['shot'] = commandShot;
   commands['faded'] = commandFaded;
   commands['escalate'] = commandEscalate;
-  commands['ichooseyou'] = commands.pokemon.commandIChooseYou;
-  commands['pokemon'] = commands.pokemon.commandPokemon;
+  commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;
+  commands['pokemon'] = cmds.pokemon.commandPokemon;
   commands['blessup'] = commandBlessUp;
   commands['matchup'] = commandWeeklyMatchup;
   commands['commands'] = listCommands;
