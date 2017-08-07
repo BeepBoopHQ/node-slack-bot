@@ -168,7 +168,7 @@ exports.commandEndPoll = function(message, args) {
     polls[pollUserId] = null;
     deletePollMapKey(pollUserId);
 
-    return `<@${currentPoll.users}>'s poll is closed. results are: ${resultsArray.join(', ')}`;
+    return `<@${currentPoll.user}>'s poll is closed. results are: ${resultsArray.join(', ')}`;
 };
 
 exports.commandPollResults = function(message, args) {

@@ -227,9 +227,9 @@ function buildCommandDictionary() {
   // poll commands
   commands['poll'] = cmds.poll.commandPoll;
   commands['vote'] = cmds.poll.commandVote;
-  commands['pollresults'] = cmds.poll.pollresults;
+  commands['pollresults'] = cmds.poll.commandPollResults;
   commands['endpoll'] = cmds.poll.commandEndPoll;
-  commands['resetpoll'] = cmds.poll.resetpoll;
+  commands['resetpoll'] = cmds.poll.commandResetPoll;
 
   // pokemans
   commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;
