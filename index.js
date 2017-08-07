@@ -6,16 +6,8 @@ var cmds = require('./commands/commands');
 
 var token = process.env.SLACK_TOKEN;
 
+// command list
 var commands = {};
-
-var polls = {};
-
-var pollOptions = [];
-var pollVotes = [];
-var pollUsers = [];
-var pollOwner = '';
-var channelUsers = [];
-var pollMap = {};
 
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
@@ -45,27 +37,17 @@ if (token) {
 
     // run the poll timer
     setInterval(function() {
-      for(key in polls) {
-        if(polls.hasOwnProperty(key) && polls[key] !== null) {
+      var expiredPolls = cmd.poll.getExpiredPolls();
 
-          var currentTimeSeconds = new Date().getTime() / 1000;
-
-          if (currentTimeSeconds - polls[key].startTime > (60 * 10)) { // if 10 minutes have passed
-            var resultsArray = polls[key].options.map(function(e, i) {
-              var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
-              return [formatted];
-            });
-
-            bot.say({
-              text: '<@' + key + '>\'s poll has ended. results are: ' + resultsArray.join(', '),
-              channel: polls[key].channel
-            });
-
-            polls[key] = null;
-            deletePollMapKey(key);
-          }
+      if (expiredPolls && expiredPolls.length > 0) {
+        for (var poll in expiredPolls) {
+          bot.say({
+            text: `<@${expiredPolls[poll].user}>'s poll has ended. results are: ${expiredPolls[poll].results}`,
+            channel: expiredPolls[poll].channel
+          });
         }
       }
+
     }, 10000);
   });
 
@@ -100,255 +82,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   bot.reply(message, commands[command](message, commandMsg));
   return;
 });
-
-function createPollMapKey(userId) {
-  for(key in pollMap) {
-    if(pollMap.hasOwnProperty(key)) {
-      if (pollMap[key] === null || pollMap[key] === undefined) {
-        pollMap[key] = userId;
-        return parseInt(key);
-      }
-    }
-  }
-
-  // add a new entry
-  var newKey = Object.keys(pollMap).length;
-
-  pollMap[newKey] = userId;
-  return newKey;
-}
-
-function deletePollMapKey(userId) {
-  for(key in pollMap) {
-    if(pollMap.hasOwnProperty(key)) {
-      if (pollMap[key] === userId) {
-        pollMap[key] = null;
-      }
-    }
-  }
-}
-
-function formatPollOptions(message) {
-  if (message.indexOf(' or ') === -1) {
-    pollOptions.push(message);
-    var formattedOptions = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + '`';
-      return [formatted];
-    });
-    pollOptions = [];
-
-    return formattedOptions;
-  } else {
-    var option = message.substr(0, message.indexOf(' or '));
-    pollOptions.push(option);
-    return formatPollOptions(message.substr(message.indexOf(' or ') + 4));
-  }
-}
-
-function commandResetPoll(bot, message, commandMsg) {
-  var pollNumber = parseInt(commandMsg.split(' ')[0]);
-
-  if(isNaN(pollNumber)) {
-    bot.reply(message, '<@' + message.user + '>, this is an invalid poll');
-    return;
-  }
-
-  if(pollMap[pollNumber - 1] === undefined) {
-    bot.reply(message, '<@' + message.user + '>, this poll does not exist');
-    return;
-  }
-
-  var pollUserId = pollMap[pollNumber - 1];
-  var currentPoll = polls[pollUserId];
-
-  if(currentPoll.user !== message.user) {
-    bot.reply(message, '<@' + message.user + '>, only <@' + currentPoll.user + '> can reset this poll');
-    return;
-  }
-
-  var resultsArray = currentPoll.options.map(function(e, i) {
-    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
-    return [formatted];
-  });
-
-  bot.reply(message, '<@' + message.user + '> has reset their poll. `!vote` again');
-
-  polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length));
-  polls[pollUserId].users = [];
-
-  return;
-}
-
-function commandEndPoll(bot, message, commandMsg) {
-  var pollNumber = parseInt(commandMsg.split(' ')[0]);
-
-  if(isNaN(pollNumber)) {
-    bot.reply(message, '<@' + message.user + '>, this is an invalid poll');
-    return;
-  }
-
-  if(pollMap[pollNumber - 1] === undefined) {
-    bot.reply(message, '<@' + message.user + '>, this poll does not exist');
-    return;
-  }
-
-  var pollUserId = pollMap[pollNumber - 1];
-  var currentPoll = polls[pollUserId];
-
-  if(currentPoll.user !== message.user) {
-    bot.reply(message, '<@' + message.user + '>, only <@' + currentPoll.user + '> can end this poll');
-    return;
-  }
-
-  var resultsArray = currentPoll.options.map(function(e, i) {
-    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
-    return [formatted];
-  });
-
-  bot.reply(message, '<@' + currentPoll.user + '>\'s poll is closed! results are: ' + resultsArray.join(', '));
-
-  polls[pollUserId] = null;
-  deletePollMapKey(pollUserId);
-
-  return;
-}
-
-function commandPollResults(bot, message, commandMsg) {
-
-  var pollNumber = parseInt(commandMsg.split(' ')[0]);
-
-  if(isNaN(pollNumber)) {
-    bot.reply(message, '<@' + message.user + '>, this is an invalid poll');
-    return;
-  }
-
-  if(pollMap[pollNumber - 1] === undefined) {
-    bot.reply(message, '<@' + message.user + '>, this poll does not exist');
-    return;
-  }
-
-  var pollUserId = pollMap[pollNumber - 1];
-  var currentPoll = polls[pollUserId];
-
-  var resultsArray = currentPoll.options.map(function(e, i) {
-    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
-    return [formatted];
-  });
-
-  bot.reply(message, '<@' + message.user + '>, this poll\'s results are: ' + resultsArray.join(', '));
-  return;
-}
-
-function commandVote(bot, message, commandMsg) {
-
-  // we should have only 2 numbers in the command message
-  var pollNumber = parseInt(commandMsg.split(' ')[0]);
-  var voteOption = parseInt(commandMsg.split(' ')[1]);
-
-  if(isNaN(pollNumber) || isNaN(voteOption)) {
-    bot.reply(message, 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`');
-    return;
-  }
-
-  // get the poll from the map
-  var pollUserId = pollMap[pollNumber - 1];
-  var currentPoll = polls[pollUserId];
-
-  // check if this poll exists
-  if (currentPoll === undefined || pollNumber <= 0) {
-    bot.reply(message, pollNumber + ' is not a valid poll');
-    return;
-  }
-
-  if(voteOption <= 0) {
-    bot.reply(message, voteOption + ' is not a valid poll option');
-    return;
-  }
-
-  // this poll exists, check if the vote option is legit
-  if(voteOption > currentPoll.options.length) {
-    bot.reply(message, voteOption + ' is not a valid poll option for this poll');
-    return;
-  }
-
-  for(user in currentPoll.users) {
-    // users: {userId, vote}
-    var userId = currentPoll.users[user].userId;
-    var existingVote = currentPoll.users[user].vote;
-    if(userId === message.user) {
-      // user has voted already
-      if(existingVote === (voteOption - 1)) {
-        // already voted for this
-        bot.reply(message, '<@' + message.user + '>, you already voted for this option');
-        return;
-      }
-
-      // changing their vote
-      bot.reply(message, '<@' + message.user + '> has changed their vote from ' + currentPoll.options[existingVote] + ' to ' + currentPoll.options[voteOption - 1]);
-      currentPoll.votes[existingVote] -= 1;
-      currentPoll.votes[voteOption - 1] += 1;
-      currentPoll.users[user].vote = voteOption - 1;
-
-      if (checkForVoteMajority(currentPoll)) {
-        var resultsArray = pollOptions.map(function(e, i) {
-          var formatted = '`' + e + ': ' + pollVotes[i] + '`'
-          return [formatted];
-        });
-
-        bot.reply(message, 'a majority has been reached in the poll. results are: ' + resultsArray.join(', '));
-        return;
-      }
-
-      return;
-    }
-  }
-
-  // user isnt in the list of current votes, add them
-  bot.reply(message, '<@' + message.user + '>, your vote has been cast for ' + currentPoll.options[voteOption - 1]);
-  currentPoll.votes[voteOption - 1] += 1;
-  currentPoll.users.push({userId: message.user, vote: voteOption - 1});
-  return;
-}
-
-function checkForVoteMajority(currentPoll) {
-  // check and see if this poll is over with
-  return false;
-}
-
-// function commandPoll(bot, message, commandMsg) {
-
-//   // commandMsg should have at least a single instance of ' or '
-//   if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
-//     bot.reply(message, 'use `!poll <this> or <that>`');
-//     return;
-//   }
-
-//   // polls are one per user
-//   if (!polls[message.user]) {
-//     // this user has no polls active
-
-//     var formattedPollChoices = formatPollOptions(commandMsg);
-
-//     polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
-//     var pollMapKey = createPollMapKey(message.user);
-//   } else {
-//     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
-//     return;
-//   }
-
-//   var nonZeroIndexPollMapKey = pollMapKey + 1;
-
-//   bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + (nonZeroIndexPollMapKey) + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
-
-//   // // build the user list for majority vote
-//   // buildUserList(bot, message);
-
-//   return;
-// }
-
-function clearPoll(user) {
-  polls[user] = null;
-}
 
 function commandBug(bot, message, commandMsg) {
   // log this to #russel_bot as well
@@ -493,10 +226,10 @@ function buildCommandDictionary() {
 
   // poll commands
   commands['poll'] = cmds.poll.commandPoll;
-  commands['vote'] = commandVote;
-  commands['pollresults'] = commandPollResults;
-  commands['endpoll'] = commandEndPoll;
-  commands['resetpoll'] = commandResetPoll;
+  commands['vote'] = cmds.poll.commandVote;
+  commands['pollresults'] = cmds.poll.pollresults;
+  commands['endpoll'] = cmds.poll.commandEndPoll;
+  commands['resetpoll'] = cmds.poll.resetpoll;
 
   // pokemans
   commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;

@@ -40,6 +40,16 @@ function createPollMapKey(userId) {
   return newKey;
 }
 
+function deletePollMapKey(userId) {
+  for(key in pollMap) {
+    if(pollMap.hasOwnProperty(key)) {
+      if (pollMap[key] === userId) {
+        pollMap[key] = null;
+      }
+    }
+  }
+}
+
 // export obj
 exports.commandPoll = function(message, args) {
 
@@ -70,4 +80,177 @@ exports.commandPoll = function(message, args) {
     var pollMapKey = createPollMapKey(message.user) + 1;
 
     return `<@${message.user}> has started a poll. \`!vote ${pollMapKey} <option>\` for ${polls[message.user].options.join(', ')}. this poll will be open for 10 minutes`;
+}
+
+exports.commandVote = function(message, args) {
+    
+    //we expect only 2 numbers in the args, one for the poll # and one for the vote option
+    var pollNumber = parseInt(args.split(' ')[0]);
+    var voteOption = parseInt(args.split(' ')[1]);
+
+    if (isNaN(pollNumber) || isNaN(voteOption)) {
+        return 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`';
+    }
+
+    // get the poll from the poll map
+    var pollUserId = pollMap[pollNumber - 1];
+    var currentPoll = polls[pollUserId];
+
+    // check if the poll exists
+    if (!currentPoll || pollNumber <= 0) {
+        return `${pollNumber} is not a valid poll`;
+    }
+
+    // check for valid vote
+    if (voteOption <= 0 || voteOption > currentPoll.options.length) {
+        return `${voteOption} is not a valid poll option`;
+    }
+
+    // try and do the vote
+    for (user in currentPoll.users) {
+        var userId = currentPoll.users[user].userId;
+        var existingVote = currentPoll.users[user].vote;
+
+        // check for an existing vote
+        if (userId === message.user) {
+            
+            // check and see if this is the same vote option
+            if (existingVote === (voteOption - 1)) {
+                return `<@${message.user}>, you have already voted for this option`;
+            }
+
+            // user wants to change their vote
+            currentPoll.votes[existingVote] -= 1;
+            currentPoll.votes[voteOption - 1] += 1;
+            currentPoll.votes[user].vote = voteOption - 1;
+
+            return `<@${message.user}> has changed their vote from ${currentPoll.options[existingVote]} to ${currentPoll.options[voteOption - 1]}`;
+        }
+    }
+
+    // this user hasn't voted yet
+    currentPoll.votes[voteOption - 1] += 1;
+    currentPoll.users.push({
+        userId: message.user,
+        vote: (voteOption - 1)
+    });
+
+    return `<@${message.user}>, your vote has been cast for ${currentPoll.options[voteOption - 1]}`;
+}
+
+exports.commandEndPoll = function(message, args) {
+
+    // validate poll number
+    var pollNumber = parseInt(args.split(' ')[0]);
+
+    if (isNaN(pollNumber)) {
+        return `<@${message.user}>, this is an invalid poll`;
+    }
+
+    if (!pollMap[pollNumber - 1]) {
+        return `<@${message.user}>, this poll does not exist`;
+    }
+
+    var pollUserId = pollMap[pollNumber - 1];
+    var currentPoll = polls[pollUserId];
+
+    // check if this user owns this poll
+    if (currentPoll.user !== message.user) {
+        return `<@${message.user}>, only <@${currentPoll.user}> can end this poll`;
+    }
+
+    // generate poll results
+    var resultsArray = currentPoll.options.map(function(e, i) {
+        var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
+        return [formatted];
+    });
+
+    polls[pollUserId] = null;
+    deletePollMapKey(pollUserId);
+
+    return `<@${currentPoll.users}>'s poll is closed. results are: ${resultsArray.join(', ')}`;
+};
+
+exports.commandPollResults = function(message, args) {
+
+    // validate
+    var pollNumber = parseInt(args.split(' ')[0]);
+
+    if (isNaN(pollNumber)) {
+        return `<@${message.user}>, this is an invalid poll`;
+    }
+
+    if (!pollMap[pollNumber - 1]) {
+        return `<@${message.user}>, this poll does not exist`;
+    }
+
+    var pollUserId = pollMap[pollNumber - 1];
+    var currentPoll = polls[pollUserId];
+
+    var resultsArray = currentPoll.options.map(function(e, i) {
+        var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
+        return [formatted];
+    });
+
+    return `<@${message.user}>, this poll's results are: ${resultsArray.join(', ')}`;
+}
+
+exports.commandResetPoll = function(message, args) {
+
+    // validate
+    var pollNumber = parseInt(args.split(' ')[0]);
+
+    if (isNaN(pollNumber)) {
+        return `<@${message.user}>, this is an invalid poll`;
+    }
+
+    if (!pollMap[pollNumber - 1]) {
+        return `<@${message.user}>, this poll does not exist`;
+    }
+
+    var pollUserId = pollMap[pollNumber - 1];
+    var currentPoll = polls[pollUserId];
+
+    // check if this user owns this poll
+    if (currentPoll.user !== message.user) {
+        return `<@${message.user}>, only <@${currentPoll.user}> can reset this poll`;
+    }
+
+    var resultsArray = currentPoll.options.map(function(e, i) {
+        var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
+        return [formatted];
+    });
+
+    polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length));
+    polls[pollUserId].users = [];
+
+    return `<@${message.user}> has reset their poll. \`!vote\` again`;
+}
+
+exports.getExpiredPolls = function() {
+    var expiredPolls = [];
+    for(key in polls) {
+        if(polls.hasOwnProperty(key) && polls[key] !== null) {
+
+            var currentTimeSeconds = new Date().getTime() / 1000;
+
+            if (currentTimeSeconds - polls[key].startTime > (60 * 10)) { // if 10 minutes have passed
+                var resultsArray = polls[key].options.map(function(e, i) {
+                    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
+                    return [formatted];
+                });
+
+                expiredPolls.push({
+                    user: key,
+                    results: resultsArray.join(', '),
+                    channel: polls[key].channel
+                });
+
+                polls[key] = null;
+                deletePollMapKey(key);
+            }
+        }
+    }
+
+    return expiredPolls;
 }
