@@ -44,7 +44,7 @@ function createPollMapKey(userId) {
 exports.commandPoll = function(message, args) {
 
     // args should have at least one ' or '
-    if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
+    if (args.indexOf(' or ') === -1 && pollOptions.length === 0) {
         return 'use `!poll <this> or <that>`';
     }
 
