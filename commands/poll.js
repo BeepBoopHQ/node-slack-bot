@@ -187,6 +187,11 @@ exports.commandPollResults = function(message, args) {
     var pollUserId = pollMap[pollNumber - 1];
     var currentPoll = polls[pollUserId];
 
+    // check if there are no votes
+    if (!currentPoll.options || currentPoll.options.length < 1) {
+        return `<@${message.user}>, there are no votes for this poll yet`;
+    }
+
     var resultsArray = currentPoll.options.map(function(e, i) {
         var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
         return [formatted];
