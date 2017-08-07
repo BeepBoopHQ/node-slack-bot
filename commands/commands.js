@@ -1,5 +1,3 @@
-var pokemon = require('pokemon');
-
 module.exports = {
-    pokemon: pokemon.exports
+    pokemon: require('./pokemon')
 }
