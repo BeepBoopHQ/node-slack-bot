@@ -38,8 +38,10 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
     var reply = {};
 
     console.log('args: ' + args);
+    console.log('pokemonList len: ' + pokemonList.length);
 
     for (i in pokemonList) {
+        console.log('pokemon: ' + pokemonList[i].name);
         if(pokemonList[i].name.toLowerCase() === args.toLowerCase()) {
             chosenPokemon = pokemonList[i].name;
             chosenPokemonImg = pokemonList[i].img;
