@@ -618,20 +618,8 @@ function commandBlessUp(bot, message, commandMsg) {
 }
 
 function commandWeeklyMatchup(bot, message, commandMsg) {
-  var weekNum = parseInt(commandMsg);
-
-  if (!weekNum) {
-    bot.reply(message, 'specify a week: `!matchup <week>`');
-    return;
-  }
-
-  if (weekNum < 1 || weekNum > 17) {
-    bot.reply(message, 'use a week between 1 and 17`');
-    return;
-  }
-
   // todo: save this shit in a db somewhere cause this is a nightmare
-  var weeklyMatchupString = utils.getWeeklyMatchups(weekNum);
+  var weeklyMatchupString = utils.getWeeklyMatchups(commandMsg);
 
   bot.reply(message, weeklyMatchupString);
   return;
