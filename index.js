@@ -39,7 +39,7 @@ if (token) {
     });
 
     bot.say({
-      text: 'running ' + cmds.version.version,
+      text: 'running ' + cmds.version.version(),
       channel: 'C2ARE3TQU'
     });
 
