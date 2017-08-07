@@ -1,5 +1,6 @@
-module.exports = {
-    getWeeklyMatchups: function(weekNum) {
+var exports = module.exports = {};
+
+function getMatchups(weekNum) {
 
         if (!weekNum || weekNum === 0) {
             var now = Date.now();
@@ -406,4 +407,14 @@ Sun Dec 31 @ 10:00 AM - Bills at Dolphins
 
         return  matchupString + '```';
     }
+
+exports.commandMatchups = function commandMatchups(message, commandMsg) {
+  var weekNum = parseInt(commandMsg);
+
+  if (!weekNum) weekNum = 0;
+
+  // todo: save this shit in a db somewhere cause this is a nightmare
+  var weeklyMatchupString = getMatchups(weekNum);
+
+  return weeklyMatchupString;
 }

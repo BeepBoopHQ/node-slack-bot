@@ -1,12 +1,10 @@
 var Botkit = require('botkit');
 var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.env.FirebaseUri});
-var utils = require('./utils');
 
 // import commands
 var cmds = require('./commands/commands');
 
 var token = process.env.SLACK_TOKEN;
-var version = '`v2.0 \'chef boyarberto\'`';
 
 var commands = {};
 
@@ -41,7 +39,7 @@ if (token) {
     });
 
     bot.say({
-      text: 'running ' + version,
+      text: 'running ' + cmds.version.version,
       channel: 'C2ARE3TQU'
     });
 
@@ -363,21 +361,6 @@ function commandBug(bot, message, commandMsg) {
   return;
 }
 
-function commandBerto(bot, message, commandMsg) {
-  bot.reply(message, '<@U2ASHP5FT> ayo berto :100:');
-  return;
-}
-
-function commandGoHawks(bot, message, commandMsg) {
-  bot.reply(message, '#gohawks');
-  return;
-}
-
-function commandRussell(bot, message, commandMsg) {
-  bot.reply(message, '`beep boop i am russell_bot`');
-  return;
-}
-
 function commandFlipCoin(bot, message, commandMsg) {
 
   if(commandMsg) {
@@ -415,10 +398,6 @@ function commandFlipCoin(bot, message, commandMsg) {
   return;
 }
 
-function showVersion(bot, message, commandMsg) {
-  bot.reply(message, 'russell_bot version: ' + version);
-}
-
 function listCommands(bot, message, commandMsg) {
   var commandList = 'commands available: \r\n ```';
 
@@ -437,11 +416,6 @@ function listCommands(bot, message, commandMsg) {
   return;
 }
 
-function commandLit(bot, message, commandMsg) {
-  bot.reply(message, ':100::100::100::fire::fire::fire::champagne::champagne::champagne:');
-  return;
-}
-
 function commandFeature(bot, message, commandMsg) {
   // log this to #russel_bot as well
   bot.say({
@@ -453,12 +427,6 @@ function commandFeature(bot, message, commandMsg) {
   return;
 }
 
-function commandExbert(bot, message, commandMsg) {
-  // lol
-  bot.reply(message, '<@U2ASHP5FT>, <@' + message.user + '> needs an exbert: ' + commandMsg);
-  return;
-}
-
 function commandCeleryMan(bot, message, commandMsg) {
   // computer load up celery man
   bot.startConversation(message, function(err, convo) {
@@ -467,22 +435,6 @@ function commandCeleryMan(bot, message, commandMsg) {
   });
 
   return;
-}
-
-function commandTrapHorns(bot, message, commandMsg) {
-  bot.reply(message, 'https://www.youtube.com/watch?v=Ip1SYl97kh4 :trumpet::trumpet::trumpet::trumpet:');
-  return;
-}
-
-function commandEscalate(bot, message, commandMsg) {
-  if (message.user !== "U2ARFPF62") {
-    bot.reply(message, 'Thanks for your ticket, an associate will be with you shortly.');
-    return;
-  }
-
-  bot.reply(message, '<@U2ASHP5FT> :fire::fire: [HIGH PRIORITY] :fire::fire: ' + commandMsg + ' :fire::fire: [HIGH PRIORITY] :fire::fire:');
-  return;
-
 }
 
 function commandFaded(bot, message, commandMsg) {
@@ -523,48 +475,51 @@ function saveFadedResponse(responses) {
   controller.storage.teams.save(responses);
 }
 
-function commandBlessUp(bot, message, commandMsg) {
- bot.reply(message, 'bless up :djkhaled::key:');
- return;
-}
-
-function commandWeeklyMatchup(bot, message, commandMsg) {
-  var weekNum = parseInt(commandMsg);
-
-  if (!weekNum) weekNum = 0;
-
-  // todo: save this shit in a db somewhere cause this is a nightmare
-  var weeklyMatchupString = utils.getWeeklyMatchups(weekNum);
-
-  bot.reply(message, weeklyMatchupString);
-  return;
-
-}
-
 function buildCommandDictionary() {
-  commands['berto'] = commandBerto;
-  commands['gohawks'] = commandGoHawks;
-  commands['russell'] = commandRussell;
+  // simple replies
+  commands['berto'] = cmds.replies.commandBerto;
+  commands['gohawks'] = cmds.replies.commandGoHawks;
+  commands['russell'] = cmds.replies.commandRussell;
+  commands['lit'] = cmds.replies.commandLit;
+  commands['version'] = cmds.replies.commandVersion;
+  commands['exbert'] = cmds.replies.exbert;
+  commands['traphorns'] = cmds.replies.commandTrapHorns;
+  commands['escalate'] = cmds.replies.commandEscalate;
+  commands['blessup'] = cmds.replies.commandBlessUp;
+
+  // games/random stuff
+  commands['shot'] = cmds.shot.commandShot;
   commands['flipcoin'] = commandFlipCoin;
-  commands['bug'] = commandBug;
-  commands['version'] = showVersion;
+
+  // poll commands
+
   commands['poll'] = commandPoll;
   commands['vote'] = commandVote;
   commands['pollresults'] = commandPollResults;
   commands['endpoll'] = commandEndPoll;
   commands['resetpoll'] = commandResetPoll;
-  commands['lit'] = commandLit;
-  commands['feature'] = commandFeature;
-  commands['exbert'] = commandExbert;
-  commands['celeryman'] = commandCeleryMan;
-  commands['traphorns'] = commandTrapHorns;
-  commands['shot'] = cmds.shot.commandShot;
-  commands['faded'] = commandFaded;
-  commands['escalate'] = commandEscalate;
+
+  // pokemans
   commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;
   commands['pokemon'] = cmds.pokemon.commandPokemon;
-  commands['blessup'] = commandBlessUp;
-  commands['matchup'] = commandWeeklyMatchup;
+
+  // football-related
+  commands['matchup'] = cmds.matchups.commandMatchups;
+
+  // cross-channel replies
+  commands['feature'] = commandFeature;
+  commands['bug'] = commandBug;
+
+  // todo
+  commands['celeryman'] = commandCeleryMan;
+
+    
+  
+  commands['faded'] = commandFaded;
+  
+
+  
+  
   commands['commands'] = listCommands;
 }
 
