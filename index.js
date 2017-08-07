@@ -588,7 +588,7 @@ function buildCommandDictionary() {
   commands['faded'] = commandFaded;
   commands['escalate'] = commandEscalate;
   commands['ichooseyou'] = commandIChooseYou;
-  commands['pokemon'] = commands.pokemon.commanndPokemon;
+  commands['pokemon'] = commands.pokemon.commandPokemon;
   commands['blessup'] = commandBlessUp;
   commands['matchup'] = commandWeeklyMatchup;
   commands['commands'] = listCommands;
