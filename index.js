@@ -3,6 +3,7 @@ var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.
 
 // import commands
 var cmds = require('./commands/commands');
+var test = require('./statetest');
 
 var token = process.env.SLACK_TOKEN;
 
@@ -512,15 +513,14 @@ function buildCommandDictionary() {
 
   // todo
   commands['celeryman'] = commandCeleryMan;
-
-    
-  
   commands['faded'] = commandFaded;
   
-
-  
-  
+  // directory
   commands['commands'] = listCommands;
+
+  // testing
+  commands['testaddstate'] = test.addToArray;
+  commands['testliststate'] = test.theArray;
 }
 
 

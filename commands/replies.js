@@ -40,5 +40,5 @@ exports.commandBlessUp = function commandBlessUp(message, commandMsg) {
 }
 
 exports.commandVersion = function showVersion(message, commandMsg) {
-  return `russell_bot version: ${version.version}`;
+  return `russell_bot version: \`${version.version}\``;
 }
