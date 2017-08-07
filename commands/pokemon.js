@@ -37,13 +37,16 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
     var chosenPokemonImg = '';
     var reply = {};
 
+    console.log('args: ' + args);
+
     for (i in pokemonList) {
         if(pokemonList[i].name.toLowerCase() === args.toLowerCase()) {
             chosenPokemon = pokemonList[i].name;
             chosenPokemonImg = pokemonList[i].img;
         }
-
-        if (chosenPokemon && chosenPokemonImg) {
+        console.log(chosenPokemon);
+        console.log(chosenPokemonImg);
+        if (chosenPokemon != '' && chosenPokemonImg != '') {
             reply = {
                 'username': 'Professor Oak',
                 'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
