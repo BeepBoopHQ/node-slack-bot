@@ -3,7 +3,6 @@ var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.
 
 // import commands
 var cmds = require('./commands/commands');
-var test = require('./statetest');
 
 var token = process.env.SLACK_TOKEN;
 
@@ -316,36 +315,36 @@ function checkForVoteMajority(currentPoll) {
   return false;
 }
 
-function commandPoll(bot, message, commandMsg) {
+// function commandPoll(bot, message, commandMsg) {
 
-  // commandMsg should have at least a single instance of ' or '
-  if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
-    bot.reply(message, 'use `!poll <this> or <that>`');
-    return;
-  }
+//   // commandMsg should have at least a single instance of ' or '
+//   if (commandMsg.indexOf(' or ') === -1 && pollOptions.length === 0) {
+//     bot.reply(message, 'use `!poll <this> or <that>`');
+//     return;
+//   }
 
-  // polls are one per user
-  if (!polls[message.user]) {
-    // this user has no polls active
+//   // polls are one per user
+//   if (!polls[message.user]) {
+//     // this user has no polls active
 
-    var formattedPollChoices = formatPollOptions(commandMsg);
+//     var formattedPollChoices = formatPollOptions(commandMsg);
 
-    polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
-    var pollMapKey = createPollMapKey(message.user);
-  } else {
-    bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
-    return;
-  }
+//     polls[message.user] = {user: message.user, options: formattedPollChoices, votes: Array.apply(null, Array(formattedPollChoices.length)).map(Number.prototype.valueOf, 0), users: [], startTime: new Date().getTime() / 1000, channel: message.channel};
+//     var pollMapKey = createPollMapKey(message.user);
+//   } else {
+//     bot.reply(message, '<@' + message.user + '>, you already have an active poll: ' + polls[message.user].options.join(', '));
+//     return;
+//   }
 
-  var nonZeroIndexPollMapKey = pollMapKey + 1;
+//   var nonZeroIndexPollMapKey = pollMapKey + 1;
 
-  bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + (nonZeroIndexPollMapKey) + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
+//   bot.reply(message, '<@' + message.user + '> has started a poll. `!vote ' + (nonZeroIndexPollMapKey) + ' <option>` for ' + polls[message.user].options.join(', ') + '. this poll will be open for 10 minutes');
 
-  // // build the user list for majority vote
-  // buildUserList(bot, message);
+//   // // build the user list for majority vote
+//   // buildUserList(bot, message);
 
-  return;
-}
+//   return;
+// }
 
 function clearPoll(user) {
   polls[user] = null;
@@ -493,8 +492,7 @@ function buildCommandDictionary() {
   commands['flipcoin'] = commandFlipCoin;
 
   // poll commands
-
-  commands['poll'] = commandPoll;
+  commands['poll'] = cmds.poll.commandPoll;
   commands['vote'] = commandVote;
   commands['pollresults'] = commandPollResults;
   commands['endpoll'] = commandEndPoll;
@@ -517,10 +515,6 @@ function buildCommandDictionary() {
   
   // directory
   commands['commands'] = listCommands;
-
-  // testing
-  commands['testaddstate'] = test.addToArray;
-  commands['testliststate'] = test.theArray;
 }
 
 
