@@ -618,8 +618,12 @@ function commandBlessUp(bot, message, commandMsg) {
 }
 
 function commandWeeklyMatchup(bot, message, commandMsg) {
+  var weekNum = parseInt(commandMsg);
+
+  if (!weekNum) weekNum = 0;
+
   // todo: save this shit in a db somewhere cause this is a nightmare
-  var weeklyMatchupString = utils.getWeeklyMatchups(commandMsg);
+  var weeklyMatchupString = utils.getWeeklyMatchups(weekNum);
 
   bot.reply(message, weeklyMatchupString);
   return;
