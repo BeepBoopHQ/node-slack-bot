@@ -352,35 +352,6 @@ function clearPoll(user) {
   polls[user] = null;
 }
 
-function commandShot(bot, message, commandMsg) {
-  // get the user and get the number
-  var user = commandMsg.split(' ')[0];
-  var number = parseInt(commandMsg.split(' ')[1]);
-
-  if (!user || !number) {
-    bot.reply(message, 'use `!shot <person> <number>`');
-    return;
-  }
-
-  if (number < 0 || number > 20) {
-    bot.reply(message, 'use a number between 1 and 20`');
-    return;
-  }
-
-  var roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
-
-  if(roll === 1) {
-    bot.reply(message, 'you rolled a *' + roll + '*, <@' + message.user + '>, you have to take a shot!');
-  } else if (roll === number || roll === 20) {
-    bot.reply(message, 'you rolled a *' + roll + '*, success! ' + user + ' has to take a shot!');
-  } else {
-    bot.reply(message, 'you rolled a *' + roll + '*, too bad!');
-  }
-
-  return;
-
-}
-
 function commandBug(bot, message, commandMsg) {
   // log this to #russel_bot as well
   bot.say({
@@ -587,7 +558,7 @@ function buildCommandDictionary() {
   commands['exbert'] = commandExbert;
   commands['celeryman'] = commandCeleryMan;
   commands['traphorns'] = commandTrapHorns;
-  commands['shot'] = commandShot;
+  commands['shot'] = cmds.shot.commandShot;
   commands['faded'] = commandFaded;
   commands['escalate'] = commandEscalate;
   commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;
