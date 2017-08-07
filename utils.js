@@ -77,7 +77,7 @@ Sun Sep 10 @ 10:00 AM - Cardinals at Lions
              10:00 AM - Buccaneers at Dolphins
              1:05 PM - Colts at Rams
              1:25 PM - Panthers at 49ers
-             1:25 PM - Seahawks at Packers
+             1:25 PM - **Seahawks** at Packers
              5:30 PM - Giants at Cowboys
 Mon Sep 11 @ 4:10 PM - Saints at Vikings
              7:20 PM - Chargers at Broncos
@@ -97,7 +97,7 @@ Sun Sep 17 @ 10:00 AM - Cardinals at Colts
              1:05 PM - Dolphins at Chargers
              1:05 PM - Jets at Raiders
              1:25 PM - Cowboys at Broncos
-             1:25 PM - 49ers at Seahawks
+             1:25 PM - 49ers at **Seahawks**
              1:25 PM - Redskins at Rams
              5:30 PM - Packers at Falcons
 Mon Sep 18 @ 5:30 PM - Lions at Giants
@@ -106,7 +106,7 @@ Mon Sep 18 @ 5:30 PM - Lions at Giants
             case 3:
                 matchupString += `
 Thu Sep 21 @ 5:25 PM - Rams at 49ers
-Sun Sep 24 @ 6:30 AM - Ravens at Jaguars ¹
+Sun Sep 24 @ 6:30 AM - Ravens at Jaguars (London)
              10:00 AM - Falcons at Lions
              10:00 AM - Browns at Colts
              10:00 AM - Broncos at Bills
@@ -116,7 +116,7 @@ Sun Sep 24 @ 6:30 AM - Ravens at Jaguars ¹
              10:00 AM - Giants at Eagles
              10:00 AM - Steelers at Bears
              10:00 AM - Buccaneers at Vikings
-             1:05 PM - Seahawks at Titans
+             1:05 PM - **Seahawks** at Titans
              1:25 PM - Bengals at Packers
              1:25 PM - Chiefs at Chargers
              5:30 PM - Raiders at Redskins
@@ -126,7 +126,7 @@ Mon Sep 25 @ 5:30 PM - Cowboys at Cardinals
             case 4:
                 matchupString += `
 Thu Sep 28 @ 5:25 PM - Bears at Packers
-Sun Oct 1 @ 6:30 AM - Saints at Dolphins ¹
+Sun Oct 1 @ 6:30 AM - Saints at Dolphins (London)
             10:00 AM - Bills at Falcons
             10:00 AM - Panthers at Patriots
             10:00 AM - Bengals at Browns
@@ -139,7 +139,7 @@ Sun Oct 1 @ 6:30 AM - Saints at Dolphins ¹
             1:05 PM - Eagles at Chargers
             1:05 PM - 49ers at Cardinals
             1:25 PM - Raiders at Broncos
-            5:30 PM - Colts at Seahawks
+            5:30 PM - Colts at **Seahawks**
 Mon Oct 2 @ 5:30 PM - Redskins at Chiefs
                 `;
                 break;
@@ -155,10 +155,12 @@ Sun Oct 8 @ 10:00 AM - Cardinals at Eagles
             10:00 AM - 49ers at Colts
             10:00 AM - Titans at Dolphins
             1:05 PM - Ravens at Raiders
-            1:05 PM - Seahawks at Rams
+            1:05 PM - **Seahawks** at Rams
             1:25 PM - Packers at Cowboys
             5:30 PM - Chiefs at Texans
 Mon Oct 9 @ 5:30 PM - Vikings at Bears
+
+Bye: Atlanta, Denver, New Orleans, Washington
                 `;
                 break;
             case 6:
@@ -177,12 +179,14 @@ Sun Oct 15 @ 10:00 AM - Bears at Ravens
              1:25 PM - Steelers at Chiefs
              5:30 PM - Giants at Broncos
 Mon Oct 16 @ 5:30 PM - Colts at Titans
+
+Bye: Buffalo, Cincinnati, Dallas, Seattle
                 `;
                 break;
             case 7:
                 matchupString += `
 Thu Oct 19 @ 5:25 PM - Chiefs at Raiders
-Sun Oct 22 @ 10:00 AM - Cardinals at Rams ¹
+Sun Oct 22 @ 10:00 AM - Cardinals at Rams (London)
              10:00 AM - Ravens at Vikings
              10:00 AM - Panthers at Bears
              10:00 AM - Bengals at Steelers
@@ -193,15 +197,17 @@ Sun Oct 22 @ 10:00 AM - Cardinals at Rams ¹
              10:00 AM - Titans at Browns
              1:05 PM - Cowboys at 49ers
              1:25 PM - Broncos at Chargers
-             1:25 PM - Seahawks at Giants
+             1:25 PM - **Seahawks** at Giants
              5:30 PM - Falcons at Patriots
 Mon Oct 23 @ 5:30 PM - Redskins at Eagles
+
+Bye: Detroit, Houston
                 `;
                 break;
             case 8:
                 matchupString += `
 Thu Oct 26 @ 5:25 PM - Dolphins at Ravens
-Sun Oct 29 @ 6:30 AM - Vikings at Browns ¹
+Sun Oct 29 @ 6:30 AM - Vikings at Browns (London)
             10:00 AM - Falcons at Jets
             10:00 AM - Panthers at Buccaneers
             10:00 AM - Bears at Saints
@@ -209,10 +215,12 @@ Sun Oct 29 @ 6:30 AM - Vikings at Browns ¹
             10:00 AM - Chargers at Patriots
             10:00 AM - Raiders at Bills
             10:00 AM - 49ers at Eagles
-            1:05 PM - Texans at Seahawks
+            1:05 PM - Texans at **Seahawks**
             1:25 PM - Cowboys at Redskins
             5:30 PM - Steelers at Lions
 Mon Oct 30 @ 5:30 PM - Broncos at Chiefs
+
+Bye: Arizona, Green Bay, Jacksonville, Los Angeles, N.Y. Giants, Tennessee
                 `;
                 break;
             case 9:
@@ -226,15 +234,17 @@ Sun Nov 5 @ 10:00 AM - Falcons at Panthers
             10:00 AM - Rams at Giants
             10:00 AM - Buccaneers at Saints
             1:05 PM - Cardinals at 49ers
-            1:05 PM - Redskins at Seahawks
+            1:05 PM - Redskins at **Seahawks**
             1:25 PM - Chiefs at Cowboys
             5:30 PM - Raiders at Dolphins
 Mon Nov 6 @ 5:30 PM - Lions at Packers
+
+Bye: Chicago, Cleveland, Los Angeles, Minnesota, New England, Pittsburgh
                 `;
                 break;
             case 10:
                 matchupString += `
-Thu Nov 9 @ 5:25 PM - Seahawks at Cardinals
+Thu Nov 9 @ 5:25 PM - **Seahawks** at Cardinals
 Sun Nov 12 @ 10:00 AM - Bengals at Titans
              10:00 AM - Browns at Lions
              10:00 AM - Packers at Bears
@@ -248,6 +258,8 @@ Sun Nov 12 @ 10:00 AM - Bengals at Titans
              1:25 PM - Giants at 49ers
              5:30 PM - Patriots at Broncos
 Mon Nov 13 @ 5:30 PM - Dolphins at Panthers
+
+Bye: Baltimore, Kansas City, Oakland, Philadelphia
                 `;
                 break;
             case 11:
@@ -262,9 +274,11 @@ Sun Nov 19 @ 10:00 AM - Cardinals at Texans
              10:00 AM - Redskins at Saints
              1:05 PM - Bills at Chargers
              1:25 PM - Bengals at Broncos
-             1:25 PM - Patriots at Raiders ¹
+             1:25 PM - Patriots at Raiders (Mexico City)
              5:30 PM - Eagles at Cowboys
-Mon Nov 20 @ 5:30 PM - Falcons at Seahawks
+Mon Nov 20 @ 5:30 PM - Falcons at **Seahawks**
+
+Bye: Carolina, Indianapolis, Miami, N.Y. Jets, San Francisco, Tampa Bay
                 `;
                 break;
             case 12:
@@ -280,7 +294,7 @@ Sun Nov 26 @ 10:00 AM - Bills at Chiefs
              10:00 AM - Buccaneers at Falcons
              10:00 AM - Titans at Colts
              1:05 PM - Saints at Rams
-             1:05 PM - Seahawks at 49ers
+             1:05 PM - **Seahawks** at 49ers
              1:25 PM - Broncos at Raiders
              1:25 PM - Jaguars at Cardinals
              5:30 PM - Packers at Steelers
@@ -303,7 +317,7 @@ Sun Dec 3 @ 10:00 AM - Panthers at Saints
             1:05 PM - Browns at Chargers
             1:25 PM - Rams at Cardinals
             1:25 PM - Giants at Raiders
-            5:30 PM - Eagles at Seahawks
+            5:30 PM - Eagles at **Seahawks**
 Mon Dec 4 @ 5:30 PM - Steelers at Bengals
                 `;
                 break;
@@ -317,7 +331,7 @@ Sun Dec 10 @ 10:00 AM - Bears at Bengals
              10:00 AM - Vikings at Panthers
              10:00 AM - Raiders at Chiefs
              10:00 AM - 49ers at Texans
-             10:00 AM - Seahawks at Jaguars
+             10:00 AM - **Seahawks** at Jaguars
              1:05 PM - Jets at Broncos
              1:05 PM - Titans at Cardinals
              1:05 PM - Redskins at Chargers
@@ -340,7 +354,7 @@ Sun Dec 17 @ 10:00 AM - Cardinals at Redskins
              10:00 AM - Dolphins at Bills
              10:00 AM - Jets at Saints
              10:00 AM - Eagles at Giants
-             1:05 PM - Rams at Seahawks
+             1:05 PM - Rams at **Seahawks**
              1:25 PM - Patriots at Steelers
              1:25 PM - Titans at 49ers
              5:30 PM - Cowboys at Raiders
@@ -362,7 +376,7 @@ Sun Dec 24 @ 10:00 AM - Falcons at Saints
              10:00 AM - Buccaneers at Panthers
              1:05 PM - Jaguars at 49ers
              1:25 PM - Giants at Cardinals
-             1:25 PM - Seahawks at Cowboys
+             1:25 PM - **Seahawks** at Cowboys
 Mon Dec 25 @ 1:30 PM - Steelers at Texans
              5:30 PM - Raiders at Eagles
                 `;
@@ -381,7 +395,7 @@ Sun Dec 31 @ 10:00 AM - Bills at Dolphins
              10:00 AM - Saints at Buccaneers
              10:00 AM - Jets at Patriots
              10:00 AM - Redskins at Giants
-             1:25 PM - Cardinals at Seahawks
+             1:25 PM - Cardinals at **Seahawks**
              1:25 PM - Chiefs at Broncos
              1:25 PM - Raiders at Chargers
              1:25 PM - 49ers at Rams
