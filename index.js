@@ -37,7 +37,7 @@ if (token) {
 
     // run the poll timer
     setInterval(function() {
-      var expiredPolls = cmd.poll.getExpiredPolls();
+      var expiredPolls = cmds.poll.getExpiredPolls();
 
       if (expiredPolls && expiredPolls.length > 0) {
         for (var poll in expiredPolls) {
