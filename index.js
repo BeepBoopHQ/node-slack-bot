@@ -100,6 +100,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   //commands[command](bot, message, commandMsg);
 
   bot.reply(message, commands[command](message, commandMsg));
+  return;
 });
 
 function createPollMapKey(userId) {
