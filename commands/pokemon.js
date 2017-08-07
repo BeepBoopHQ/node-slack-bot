@@ -37,37 +37,32 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
     var chosenPokemonImg = '';
     var reply = {};
 
-    console.log('args: ' + args);
-    console.log('pokemonList len: ' + pokemonList.length);
-
     for (i in pokemonList) {
-        console.log('pokemon: ' + pokemonList[i].name);
         if(pokemonList[i].name.toLowerCase() === args.toLowerCase()) {
             chosenPokemon = pokemonList[i].name;
             chosenPokemonImg = pokemonList[i].img;
         }
-        console.log(chosenPokemon);
-        console.log(chosenPokemonImg);
-        if (chosenPokemon != '' && chosenPokemonImg != '') {
-            reply = {
-                'username': 'Professor Oak',
-                'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
-                'attachments': [{
-                    'fallback' : `<@${message.user}> chooses ${chosenPokemon}!`,
-                    'text' : `<@${message.user}> chooses ${chosenPokemon}!`,
-                    'image_url': chosenPokemonImg
-                }]
-            }
+    }
 
-            return reply;
-        }
-
+    if (chosenPokemon != '' && chosenPokemonImg != '') {
         reply = {
             'username': 'Professor Oak',
-            'icon_url': "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
-            'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
-        };
+            'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
+            'attachments': [{
+                'fallback' : `<@${message.user}> chooses ${chosenPokemon}!`,
+                'text' : `<@${message.user}> chooses ${chosenPokemon}!`,
+                'image_url': chosenPokemonImg
+            }]
+        }
 
         return reply;
     }
+
+    reply = {
+        'username': 'Professor Oak',
+        'icon_url': "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
+        'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
+    };
+
+    return reply;
 }
