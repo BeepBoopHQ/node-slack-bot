@@ -97,7 +97,9 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     return;
   }
 
-  commands[command](bot, message, commandMsg);
+  //commands[command](bot, message, commandMsg);
+
+  bot.reply(message, commands[command](message, commandMsg));
 });
 
 function createPollMapKey(userId) {
