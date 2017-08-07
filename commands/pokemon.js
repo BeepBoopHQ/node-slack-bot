@@ -12,47 +12,56 @@ var pokemonList = [
   {name: 'gengar', img: 'http://cdn.bulbagarden.net/upload/2/21/Spr_5b_094.png'}
 ];
 
-module.exports = {
+var exports = module.exports = {};
 
-    commandIChooseYou: function commandIChooseYou(args) {
-        // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
-        var foundPokemon = false;
+exports.commandPokemon = function commandPokemon(args) {
+    // list the pkmn
+    var reply = {
+        'username': 'Professor Oak',
+        "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
+        'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```'
+    };
 
-        for (i in pokemonList) {
-            if(pokemonList[i].name.toLowerCase() === args.toLowerCase()) {
-                return {
-                    "username": "Professor Oak",
-                    "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
-                    "attachments": [
-                    {
-                        "fallback": "<@" + message.user + "> chooses " + pokemonList[i].name + "!",
-                        "text": "<@" + message.user + "> chooses " + pokemonList[i].name + "!",
-                        "image_url": pokemonList[i].img
-                    }]
-                };
+    for (i in pokemonList) {
+        reply.text += pokemonList[i].name + '\n';
+    }
+
+    reply.text += '```';
+
+    return reply;
+}
+
+exports.commandIChooseYou = function commandIChooseYou(message, args) {
+    // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
+    var chosenPokemon = '';
+    var chosenPokemonImg = '';
+    var reply = {};
+
+    for (i in pokemonList) {
+        if(pokemonList[i].name.toLowerCase() === args.toLowerCase()) {
+            chosenPokemon = pokemonList[i].name;
+            chosenPokemonImg = pokemonList[i].img;
+        }
+
+        if (chosenPokemon && chosenPokemonImg) {
+            reply = {
+                'username': 'Professor Oak',
+                'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
+                'attachments': [{
+                    'fallback' : `<@${message.user}> chooses ${chosenPokemon}!`,
+                    'text' : `<@${message.user}> chooses ${chosenPokemon}!`,
+                    'image_url': chosenPokemonImg
+                }]
             }
 
-            return {
-                'username': 'Professor Oak',
-                "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
-                'text': '<@' + message.user +'>, no such pokemon! use `!pokemon`'
-            };
+            return reply;
         }
-    },
 
-    commandPokemon: function commandPokemon(bot, message, commandMsg) {
-        // list the pkmn
-        var reply = {
+        reply = {
             'username': 'Professor Oak',
-            "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
-            'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```'
+            'icon_url': "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
+            'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
         };
-
-        for (i in pokemonList) {
-            reply.text += pokemonList[i].name + '\n';
-        }
-
-        reply.text += '```';
 
         return reply;
     }
