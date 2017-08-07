@@ -482,7 +482,7 @@ function buildCommandDictionary() {
   commands['russell'] = cmds.replies.commandRussell;
   commands['lit'] = cmds.replies.commandLit;
   commands['version'] = cmds.replies.commandVersion;
-  commands['exbert'] = cmds.replies.exbert;
+  commands['exbert'] = cmds.replies.commandExBert;
   commands['traphorns'] = cmds.replies.commandTrapHorns;
   commands['escalate'] = cmds.replies.commandEscalate;
   commands['blessup'] = cmds.replies.commandBlessUp;
