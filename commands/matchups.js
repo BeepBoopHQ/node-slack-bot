@@ -455,7 +455,7 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
     var away = commandMsg.split(' ')[3];
 
     // error checking
-    if (isNan(week) || !date || !home || !away) {
+    if (isNaN(week) || !date || !home || !away) {
         return [{
             method: 'reply',
             message: {
