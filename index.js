@@ -84,14 +84,18 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   // get an array of responses
   var responses = commands[command](message, commandMsg);
 
+  console.log(responses);
+
   for (var idx in responses) {
     
     // do the thing based on the bot reply method
     switch(responses[idx].method) {
       case 'reply':
+        console.log(responses[idx].message.text);
         bot.reply(message, responses[idx].message.text);
         break;
       case 'say':
+        console.log(responses[idx].message);
         bot.say(responses[idx].message);
         break;
       case 'convo':
