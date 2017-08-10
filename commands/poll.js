@@ -55,13 +55,23 @@ exports.commandPoll = function(message, args) {
 
     // args should have at least one ' or '
     if (args.indexOf(' or ') === -1 && pollOptions.length === 0) {
-        return 'use `!poll <this> or <that>`';
+        return [{
+            method: 'reply',
+            message: {
+                text: 'use `!poll <this> or <that>`'
+            }
+        }];
     }
 
     // one poll per user
     if (polls[message.user]) {
         // user has a poll
-        return `<@${message.user}>, you already have an active poll: ${polls[message.user].options.join(', ')}`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, you already have an active poll: ${polls[message.user].options.join(', ')}`
+            }
+        }];
     }
 
     // get formatted options
@@ -79,7 +89,12 @@ exports.commandPoll = function(message, args) {
     // get a key for this poll
     var pollMapKey = createPollMapKey(message.user) + 1;
 
-    return `<@${message.user}> has started a poll. \`!vote ${pollMapKey} <option>\` for ${polls[message.user].options.join(', ')}. this poll will be open for 10 minutes`;
+    return [{
+        method: 'reply',
+        message: {
+            text: `<@${message.user}> has started a poll. \`!vote ${pollMapKey} <option>\` for ${polls[message.user].options.join(', ')}. this poll will be open for 10 minutes`
+        }
+    }];
 }
 
 exports.commandVote = function(message, args) {
@@ -89,7 +104,12 @@ exports.commandVote = function(message, args) {
     var voteOption = parseInt(args.split(' ')[1]);
 
     if (isNaN(pollNumber) || isNaN(voteOption)) {
-        return 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`';
+        return [{
+            method: 'reply',
+            message: {
+                text: 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`'
+            }
+        }];
     }
 
     // get the poll from the poll map
@@ -98,12 +118,22 @@ exports.commandVote = function(message, args) {
 
     // check if the poll exists
     if (!currentPoll || pollNumber <= 0) {
-        return `${pollNumber} is not a valid poll`;
+        return [{
+            method: 'reply',
+            message : {
+                text: `${pollNumber} is not a valid poll`
+            }
+        }];
     }
 
     // check for valid vote
     if (voteOption <= 0 || voteOption > currentPoll.options.length) {
-        return `${voteOption} is not a valid poll option`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `${voteOption} is not a valid poll option`
+            }
+        }];
     }
 
     // try and do the vote
@@ -116,7 +146,12 @@ exports.commandVote = function(message, args) {
             
             // check and see if this is the same vote option
             if (existingVote === (voteOption - 1)) {
-                return `<@${message.user}>, you have already voted for this option`;
+                return [{
+                    method: 'reply',
+                    message: {
+                        text: `<@${message.user}>, you have already voted for this option`
+                    }
+                }];
             }
 
             // user wants to change their vote
@@ -124,7 +159,12 @@ exports.commandVote = function(message, args) {
             currentPoll.votes[voteOption - 1] += 1;
             currentPoll.votes[user].vote = voteOption - 1;
 
-            return `<@${message.user}> has changed their vote from ${currentPoll.options[existingVote]} to ${currentPoll.options[voteOption - 1]}`;
+            return [{
+                method: 'reply',
+                message: {
+                    text: `<@${message.user}> has changed their vote from ${currentPoll.options[existingVote]} to ${currentPoll.options[voteOption - 1]}`
+                }
+            }];
         }
     }
 
@@ -135,7 +175,12 @@ exports.commandVote = function(message, args) {
         vote: (voteOption - 1)
     });
 
-    return `<@${message.user}>, your vote has been cast for ${currentPoll.options[voteOption - 1]}`;
+    return [{
+        method: 'reply',
+        message: {
+            text: `<@${message.user}>, your vote has been cast for ${currentPoll.options[voteOption - 1]}`
+        }
+    }];
 }
 
 exports.commandEndPoll = function(message, args) {
@@ -144,11 +189,21 @@ exports.commandEndPoll = function(message, args) {
     var pollNumber = parseInt(args.split(' ')[0]);
 
     if (isNaN(pollNumber)) {
-        return `<@${message.user}>, this is an invalid poll`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, this is an invalid poll`
+            }
+        }];
     }
 
     if (!pollMap[pollNumber - 1]) {
-        return `<@${message.user}>, this poll does not exist`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, this poll does not exist`
+            }
+        }];
     }
 
     var pollUserId = pollMap[pollNumber - 1];
@@ -156,7 +211,12 @@ exports.commandEndPoll = function(message, args) {
 
     // check if this user owns this poll
     if (currentPoll.user !== message.user) {
-        return `<@${message.user}>, only <@${currentPoll.user}> can end this poll`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, only <@${currentPoll.user}> can end this poll`
+            }
+        }];
     }
 
     // generate poll results
@@ -167,8 +227,12 @@ exports.commandEndPoll = function(message, args) {
 
     polls[pollUserId] = null;
     deletePollMapKey(pollUserId);
-
-    return `<@${currentPoll.user}>'s poll is closed. results are: ${resultsArray.join(', ')}`;
+    return [{
+        method: 'reply',
+        message: {
+            text: `<@${currentPoll.user}>'s poll is closed. results are: ${resultsArray.join(', ')}`
+        }
+    }];
 };
 
 exports.commandPollResults = function(message, args) {
@@ -177,11 +241,21 @@ exports.commandPollResults = function(message, args) {
     var pollNumber = parseInt(args.split(' ')[0]);
 
     if (isNaN(pollNumber)) {
-        return `<@${message.user}>, this is an invalid poll`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, this is an invalid poll`
+            }
+        }];
     }
 
     if (!pollMap[pollNumber - 1]) {
-        return `<@${message.user}>, this poll does not exist`;
+                return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, this poll does not exist`
+            }
+        }];
     }
 
     var pollUserId = pollMap[pollNumber - 1];
@@ -189,7 +263,12 @@ exports.commandPollResults = function(message, args) {
 
     // check if there are no votes
     if (!currentPoll.options || currentPoll.options.length < 1) {
-        return `<@${message.user}>, there are no votes for this poll yet`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, there are no votes for this poll yet`
+            }
+        }];
     }
 
     var resultsArray = currentPoll.options.map(function(e, i) {
@@ -197,7 +276,12 @@ exports.commandPollResults = function(message, args) {
         return [formatted];
     });
 
-    return `<@${message.user}>, this poll's results are: ${resultsArray.join(', ')}`;
+    return [{
+        method: 'reply',
+        message: {
+            text: `<@${message.user}>, this poll's results are: ${resultsArray.join(', ')}`
+        }
+    }];
 }
 
 exports.commandResetPoll = function(message, args) {
@@ -206,11 +290,21 @@ exports.commandResetPoll = function(message, args) {
     var pollNumber = parseInt(args.split(' ')[0]);
 
     if (isNaN(pollNumber)) {
-        return `<@${message.user}>, this is an invalid poll`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, this is an invalid poll`
+            }
+        }];
     }
 
     if (!pollMap[pollNumber - 1]) {
-        return `<@${message.user}>, this poll does not exist`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, this poll does not exist`
+            }
+        }];
     }
 
     var pollUserId = pollMap[pollNumber - 1];
@@ -218,7 +312,12 @@ exports.commandResetPoll = function(message, args) {
 
     // check if this user owns this poll
     if (currentPoll.user !== message.user) {
-        return `<@${message.user}>, only <@${currentPoll.user}> can reset this poll`;
+        return [{
+            method: 'reply',
+            message: {
+                text: `<@${message.user}>, only <@${currentPoll.user}> can reset this poll`
+            }
+        }];
     }
 
     var resultsArray = currentPoll.options.map(function(e, i) {
@@ -228,8 +327,13 @@ exports.commandResetPoll = function(message, args) {
 
     polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length));
     polls[pollUserId].users = [];
-
-    return `<@${message.user}> has reset their poll. \`!vote\` again`;
+    
+    return [{
+        method: 'reply',
+        message: {
+            text: `<@${message.user}> has reset their poll. \`!vote\` again`
+        }
+    }];
 }
 
 exports.getExpiredPolls = function() {
@@ -257,5 +361,10 @@ exports.getExpiredPolls = function() {
         }
     }
 
-    return expiredPolls;
+    return [{
+        method: 'reply',
+        message: {
+            text: expiredPolls
+        }
+    }];
 }
