@@ -188,4 +188,16 @@ exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
 
     return replies;
   }
+
+  return [{
+    method: 'reply',
+    message: {
+      text: `<@${message.user}> flipped a coin!`
+    }
+  }, {
+    method: 'reply',
+    message: {
+      text: ((Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!')
+    }
+  }];
 }
