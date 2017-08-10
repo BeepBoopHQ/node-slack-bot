@@ -18,7 +18,7 @@ exports.commandPokemon = function commandPokemon(args) {
     // list the pkmn
     var reply = {
         'username': 'Professor Oak',
-        "icon_url": "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
+        'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
         'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```'
     };
 
@@ -28,7 +28,12 @@ exports.commandPokemon = function commandPokemon(args) {
 
     reply.text += '```';
 
-    return reply;
+    return [{
+        method: 'reply',
+        message: {
+            text: reply
+        }
+    }];
 }
 
 exports.commandIChooseYou = function commandIChooseYou(message, args) {
@@ -64,5 +69,10 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
         'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
     };
 
-    return reply;
+    return [{
+        method: 'reply',
+        message: {
+            text: reply
+        }
+    }];
 }

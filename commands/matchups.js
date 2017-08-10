@@ -57,9 +57,13 @@ function getMatchups(weekNum) {
                 weekNum = 17
             }
             else {
-                return "No games found";
+                return [{
+                    method: 'reply',
+                    message: {
+                        text: 'No games found'
+                    }
+                }];
             }
-
         }
 
         var matchupString = '```Matchups for week ' + weekNum + ':\n';
@@ -416,5 +420,10 @@ exports.commandMatchups = function commandMatchups(message, commandMsg) {
   // todo: save this shit in a db somewhere cause this is a nightmare
   var weeklyMatchupString = getMatchups(weekNum);
 
-  return weeklyMatchupString;
+  return [{
+      method: 'reply',
+      message: {
+          text: weeklyMatchupString
+      }
+  }];
 }

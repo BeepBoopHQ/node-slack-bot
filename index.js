@@ -31,7 +31,7 @@ if (token) {
     });
 
     bot.say({
-      text: 'running ' + cmds.replies.commandVersion(null, null),
+      text: 'running ' + cmds.replies.commandVersion(null, null).message.text,
       channel: 'C2ARE3TQU'
     });
 
