@@ -477,6 +477,7 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
     // insert something
     connection.query('INSERT INTO matchup SET ?', matchup, function(error, results, fields) {
         if (error) {
+            throw error;
             console.log(error);
             connection.end();
             return [{
