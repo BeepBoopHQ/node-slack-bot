@@ -113,54 +113,6 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   return;
 });
 
-function commandBug(bot, message, commandMsg) {
-  // log this to #russel_bot as well
-  bot.say({
-    text: '<@' + message.user +'> has reported a bug: ' + commandMsg,
-    channel: 'C2AVCAC6L'
-  });
-
-  bot.reply(message, 'thanks for your bug report. you can find it in #robo_russ');
-  return;
-}
-
-function commandFlipCoin(bot, message, commandMsg) {
-
-  if(commandMsg) {
-    var side = commandMsg.split(' ')[0];
-
-    if(side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
-      bot.reply(message, 'side must be `heads` or `tails`');
-      return;
-    }
-
-    var text = commandMsg.substr(commandMsg.indexOf(' ') + 1);
-
-    if(!text) {
-      bot.reply(message, 'cant leave the text blank!');
-      return;
-    }
-
-    bot.reply(message, '<@' + message.user +'> is flipping a coin! if ' + side + ' then <@' + message.user + '> ' + text);
-    
-    var flip = (Math.floor(Math.random() * (2 - 1 + 1)) + 1);
-
-    if(flip === 1) {
-      bot.reply(message, 'It\'s *heads*! <@' + message.user + '> said: ' + text);
-      return;
-    }
-
-    if(flip === 2) {
-      bot.reply(message, 'It\'s *tails*! <@' + message.user + '> said: ' + text);
-      return;
-    }
-  }
-
-  bot.reply(message, '<@' + message.user + '> flipped a coin!');
-  bot.reply(message, ((Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!'));
-  return;
-}
-
 function listCommands(message, commandMsg) {
   var commandList = 'commands available: \r\n ```';
 
@@ -180,65 +132,6 @@ function listCommands(message, commandMsg) {
   }];
 }
 
-function commandFeature(bot, message, commandMsg) {
-  // log this to #russel_bot as well
-  bot.say({
-    text: '<@' + message.user +'> has requested a feature: ' + commandMsg,
-    channel: 'C2BRPHPS4'
-  });
-
-  bot.reply(message, 'thanks for your feature request, <@' + message.user + '>');
-  return;
-}
-
-function commandCeleryMan(bot, message, commandMsg) {
-  // computer load up celery man
-  bot.startConversation(message, function(err, convo) {
-    convo.say('`Yes, Paul.`');
-    convo.say('http://i.imgur.com/zSr6jEB.gif');
-  });
-
-  return;
-}
-
-function commandFaded(bot, message, commandMsg) {
-
-  var responses = null;
-
-  controller.storage.teams.get('faded', function(err, res) {
-    if (err) {
-      bot.reply(':ok_hand::ok_hand: _im faded fam_ :ok_hand::ok_hand:');
-      return;
-    }
-
-    responses = res;
-
-    // get ct - 1 (for id)
-    var numResponses = Object.keys(responses).length - 1;
-
-    if(commandMsg) {
-      // save a message
-      responses[numResponses] = commandMsg;
-
-      saveFadedResponse(responses);
-
-      bot.reply(message, ':ok_hand::ok_hand: _' + commandMsg + '_ :ok_hand::ok_hand:');
-
-      return;
-    }
-
-    var num = Math.floor(Math.random() * (numResponses - 1 + 1)) + 1;
-
-    bot.reply(message, ':ok_hand::ok_hand: _' + responses[num - 1] + '_ :ok_hand::ok_hand:');
-    return;
-
-  });
-}
-
-function saveFadedResponse(responses) {
-  controller.storage.teams.save(responses);
-}
-
 function buildCommandDictionary() {
   // simple replies
   commands['berto'] = cmds.replies.commandBerto;
@@ -253,7 +146,7 @@ function buildCommandDictionary() {
 
   // games/random stuff
   commands['shot'] = cmds.shot.commandShot;
-  // commands['flipcoin'] = commandFlipCoin;
+  commands['flipcoin'] = cmds.replies.commandFlipCoin;
 
   // poll commands
   commands['poll'] = cmds.poll.commandPoll;
@@ -270,12 +163,11 @@ function buildCommandDictionary() {
   commands['matchup'] = cmds.matchups.commandMatchups;
 
   // cross-channel replies
-  // commands['feature'] = commandFeature;
-  // commands['bug'] = commandBug;
+  commands['feature'] = cmds.replies.commandFeature;
+  commands['bug'] = cmds.replies.commandBug;
 
   // todo
-  // commands['celeryman'] = commandCeleryMan;
-  // commands['faded'] = commandFaded;
+  commands['celeryman'] = cmds.replies.commandCeleryMan;
   
   // directory
   commands['commands'] = listCommands;

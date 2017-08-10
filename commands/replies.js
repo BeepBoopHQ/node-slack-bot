@@ -91,3 +91,101 @@ exports.commandVersion = function showVersion(message, commandMsg) {
     }
   }];
 }
+
+exports.commandBug = function commandBug(message, commandMsg) {
+  return [{
+    method: 'say',
+    message: {
+      text: `<@${message.user}> has reported a bug: ${commandMsg}`,
+      channel: 'C6LKZEHEE'
+    }
+  }, {
+    method: 'reply',
+    message: {
+      text: 'thanks for your bug report. you can find it in #bugreports'
+    }
+  }];
+}
+
+exports.commandFeature = function commandFeature(message, commandMsg) {
+  return [{
+    method: 'say',
+    message: {
+      text: `<@${message.user}> has requested a feature: ${commandMsg}`,
+      channel: 'C2BRPHPS4'
+    }
+  }, {
+    method: 'reply',
+    message: {
+      text: 'thanks for your feature request. you can find it in #featurerequests'
+    }
+  }];
+}
+
+exports.commandCeleryMan = function commandCeleryMan(message, commandMsg) {
+  // computer load up celery man
+  return [{
+    method: 'convo',
+    message: {
+      conversation: [
+        '`Yes, Paul.`',
+        'http://i.imgur.com/zSr6jEB.gif'
+      ]
+    }
+  }];
+}
+
+exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
+  var replies = [];
+
+  if (commandMsg) {
+    var side = commandMsg.split(' ')[0];
+
+    if(side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
+      return [{
+        method: 'reply',
+        message: {
+          text: 'side must be `heads` or `tails`'
+        }
+      }];
+    }
+
+    var text = commandMsg.substr(commandMsg.indexOf(' ') + 1);
+
+    if(!text) {
+      return [{
+        method: 'reply',
+        message: {
+          text: 'can\'t leave the text blank'
+        }
+      }];
+    }
+
+    replies.push({
+      method: 'reply',
+      message: {
+        text: `<@${message.user}> is flipping a coin! if ${side} then <@${message.user}> ${text}`
+      }
+    })
+
+    var flip = (Math.floor(Math.random() * (2 - 1 + 1)) + 1);
+
+    if(flip === 1) {
+      replies.push({
+        method: 'reply',
+        message: {
+          text: `It's *heads*! <@${message.user}> said: ${text}`
+        }
+      });
+    } else {
+      replies.push({
+        method: 'reply',
+        message: {
+          text: `It's *tails*! <@${message.user}> said: ${text}`
+        }
+      });
+    }
+
+    return replies;
+  }
+}
