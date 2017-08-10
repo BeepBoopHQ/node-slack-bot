@@ -1,3 +1,11 @@
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: process.env.MySQLConnection,
+    user: process.env.MySQLUsername,
+    password: process.env.MySQLPassword,
+    database: 'goons'
+});
+
 var exports = module.exports = {};
 
 function getMatchups(weekNum) {
@@ -426,4 +434,62 @@ exports.commandMatchups = function commandMatchups(message, commandMsg) {
           text: weeklyMatchupString
       }
   }];
+}
+
+exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg) {
+    // ok we're expecting: <week> <mm-dd:hh:MM> <home> <away>
+
+    if (commandMsg.indexOf(' ') === -1) {
+        return [{
+            method: 'reply',
+            message: {
+                text: 'invalid format'
+            }
+        }];
+    }
+
+    // get the vars
+    var week = parseInt(commandMsg.split(' ')[0]);
+    var date = commandMsg.split(' ')[1];
+    var home = commandMsg.split(' ')[2];
+    var away = commandMsg.split(' ')[3];
+
+    // error checking
+    if (isNan(week) || !date || !home || !away) {
+        return [{
+            method: 'reply',
+            message: {
+                text: 'invalid format'
+            }
+        }];
+    }
+
+    var matchup = {
+        week: week,
+        homeTeam: home,
+        awayTeam: away,
+        startDate: date
+    };
+
+    // do connect
+    connection.connect();
+
+    // insert something
+    connection.query('INSERT INTO matchup SET ?', matchup, function(error, results, fields) {
+        if (error) {
+            console.log(error);
+            connection.end();
+            return [{
+                method: 'reply',
+                message: {
+                    text: `there was an error: ${error}`
+                }
+            }];
+        }
+
+        console.log(`inserted ${matchup}`);
+        connection.end();
+        return null;
+    })
+
 }

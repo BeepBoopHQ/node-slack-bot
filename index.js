@@ -84,6 +84,8 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   // get an array of responses
   var responses = commands[command](message, commandMsg);
 
+  if (!responses) return;
+
   console.log(responses);
 
   for (var idx in responses) {
@@ -161,6 +163,7 @@ function buildCommandDictionary() {
 
   // football-related
   commands['matchup'] = cmds.matchups.commandMatchups;
+  commands['newmatchup'] = cmds.matchups.commandInsertMatchup;
 
   // cross-channel replies
   commands['feature'] = cmds.replies.commandFeature;
