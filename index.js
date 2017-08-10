@@ -87,7 +87,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
     // do the thing based on the bot reply method
     switch(responses[idx].method) {
       case 'reply':
-        bot.reply(responses[idx].message.text);
+        bot.reply(message, responses[idx].message.text);
         break;
       case 'say':
         bot.say(responses[idx].message);
