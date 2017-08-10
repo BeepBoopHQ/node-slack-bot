@@ -131,7 +131,7 @@ function commandFlipCoin(bot, message, commandMsg) {
   return;
 }
 
-function listCommands(bot, message, commandMsg) {
+function listCommands(message, commandMsg) {
   var commandList = 'commands available: \r\n ```';
 
   for(var key in commands) {
@@ -142,11 +142,7 @@ function listCommands(bot, message, commandMsg) {
 
   commandList += '```'
 
-  bot.say({
-    text: commandList,
-    channel: message.channel
-  });
-  return;
+  return commandList;
 }
 
 function commandFeature(bot, message, commandMsg) {
@@ -222,7 +218,7 @@ function buildCommandDictionary() {
 
   // games/random stuff
   commands['shot'] = cmds.shot.commandShot;
-  commands['flipcoin'] = commandFlipCoin;
+  // commands['flipcoin'] = commandFlipCoin;
 
   // poll commands
   commands['poll'] = cmds.poll.commandPoll;
@@ -239,12 +235,12 @@ function buildCommandDictionary() {
   commands['matchup'] = cmds.matchups.commandMatchups;
 
   // cross-channel replies
-  commands['feature'] = commandFeature;
-  commands['bug'] = commandBug;
+  // commands['feature'] = commandFeature;
+  // commands['bug'] = commandBug;
 
   // todo
-  commands['celeryman'] = commandCeleryMan;
-  commands['faded'] = commandFaded;
+  // commands['celeryman'] = commandCeleryMan;
+  // commands['faded'] = commandFaded;
   
   // directory
   commands['commands'] = listCommands;
