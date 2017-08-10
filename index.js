@@ -172,7 +172,12 @@ function listCommands(message, commandMsg) {
 
   commandList += '```'
 
-  return commandList;
+  return [{
+    method: 'reply',
+    message: {
+      text: commandList
+    }
+  }];
 }
 
 function commandFeature(bot, message, commandMsg) {

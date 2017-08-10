@@ -60,7 +60,12 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
             }]
         }
 
-        return reply;
+        return [{
+            method: 'reply',
+            message: {
+                text: reply
+            }
+        }];
     }
 
     reply = {
