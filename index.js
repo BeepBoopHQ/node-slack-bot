@@ -68,18 +68,42 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   var command = message.match[1].toLowerCase();
   var commandMsg = '';
 
+  // get the command and the arguments
   if (command.indexOf(' ') !== -1) {
     commandMsg = command.substr(command.indexOf(' ') + 1);
     command = command.substr(0, command.indexOf(' '));
   }
 
+  // invalid command, ignore it
   if(!(command in commands)) {
     return;
   }
 
-  //commands[command](bot, message, commandMsg);
+  // get an array of responses
+  var responses = commands[command](message, commandMsg);
 
-  bot.reply(message, commands[command](message, commandMsg));
+  for (var idx in responses) {
+    
+    // do the thing based on the bot reply method
+    switch(responses[idx].method) {
+      case 'reply':
+        bot.reply(responses[idx].message.text);
+        break;
+      case 'say':
+        bot.say(responses[idx].message);
+        break;
+      case 'convo':
+        bot.startConversation(message, function(err, convo) {
+          
+          // iterate thru the conversation messages
+          for (var msg in responses[idx].message.conversation) {
+            convo.say(responses[idx].message.conversation[msg]);
+          }
+        });
+        break;
+    }
+  }
+
   return;
 });
 
