@@ -13,6 +13,11 @@ config:
   info: Firebase Uri
   type: secret
   global: true
+- name: MySQLConnection
+  friendly_name: MySQL Connection
+  info: Connection
+  type: secret
+  global: true
 - name: MySQLUsername
   friendly_name: MySQL Username
   info: Username
