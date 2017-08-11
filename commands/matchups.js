@@ -524,8 +524,11 @@ function getMatchupsByWeek(weekNum, callback) {
         console.log(`results: ${results}`);
 
         for (var i = 0; i < results.length; i++) {
+            console.log(results[i]);
             returnStr += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
         }
+
+        returnStr += '```';
 
         callback(null, returnStr);
     });
