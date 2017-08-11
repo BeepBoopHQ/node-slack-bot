@@ -82,7 +82,11 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   }
 
   // get an array of responses
-  var responses = commands[command](message, commandMsg);
+  var responses = [];
+
+  commands[command](message, commandMsg, function (resArray) {
+    responses = resArray;
+  });
 
   if (!responses) return;
 

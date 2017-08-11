@@ -531,4 +531,112 @@ function getMatchupsByWeek(weekNum, callback) {
     });
 }
 
-exports.commandDbMatchups = getDbMatchups;
+exports.commandDbMatchups = function(message, args, cb) {
+
+    // validate the week
+    var weekNum = parseInt(args);
+
+    if (isNaN(weekNum)) {
+        cb([{
+            method: 'reply',
+            message: {
+                text: 'week is invalid'
+            }
+        }]);
+        return;
+    }
+
+    if (!weekNum || weekNum === 0) {
+        var now = Date.now();
+
+        if (now < Date.parse("9/4/2017")) {
+            weekNum = 1;
+        }
+        else if (now < Date.parse("9/11/2017")) {
+            weekNum = 2;
+        }
+        else if (now < Date.parse("9/18/2017")) {
+            weekNum = 3
+        }
+        else if (now < Date.parse("9/25/2017")) {
+            weekNum = 4
+        }
+        else if (now < Date.parse("10/3/2017")) {
+            weekNum = 5
+        }
+        else if (now < Date.parse("10/10/2017")) {
+            weekNum = 6
+        }
+        else if (now < Date.parse("10/17/2017")) {
+            weekNum = 7
+        }
+        else if (now < Date.parse("10/24/2017")) {
+            weekNum = 8
+        }
+        else if (now < Date.parse("10/31/2017")) {
+            weekNum = 9
+        }
+        else if (now < Date.parse("11/7/2017")) {
+            weekNum = 10
+        }
+        else if (now < Date.parse("11/14/2017")) {
+            weekNum = 11
+        }
+        else if (now < Date.parse("11/21/2017")) {
+            weekNum = 12
+        }
+        else if (now < Date.parse("11/28/2017")) {
+            weekNum = 13
+        }
+        else if (now < Date.parse("12/5/2017")) {
+            weekNum = 14
+        }
+        else if (now < Date.parse("12/12/2017")) {
+            weekNum = 15
+        }
+        else if (now < Date.parse("12/19/2017")) {
+            weekNum = 16
+        }
+        else if (now < Date.parse("12/26/2017")) {
+            weekNum = 17
+        }
+        else {
+            return [{
+                method: 'reply',
+                message: {
+                    text: 'No games found'
+                }
+            }];
+        }
+    }
+
+    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
+        if (error) {
+            cb([{
+                method: 'reply',
+                message: {
+                    text: 'there was an error getting matchups'
+                }
+            }]);
+            throw error;
+        }
+
+        var matchupString = '```' + `Week ${weekNum} matchups:\n`;
+
+        console.log(`results: ${results}`);
+
+        for (var i = 0; i < results.length; i++) {
+            matchupString += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
+        }
+
+        cb([{
+            method: 'reply',
+            message: {
+                text: matchupString
+            }
+        }]);
+        return;
+    });
+
+    
+}
