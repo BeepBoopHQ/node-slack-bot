@@ -34,7 +34,7 @@ if (token) {
 
     cmds.replies.commandVersion(null, null, function(res) {
       version = res[0].message.text;
-    })[0];
+    });
 
     bot.say({
       text: `running ${version}`,
