@@ -531,4 +531,4 @@ function getMatchupsByWeek(weekNum, callback) {
     });
 }
 
-exports.commandDbMatchup = getDbMatchups;
+exports.commandDbMatchups = getDbMatchups;
