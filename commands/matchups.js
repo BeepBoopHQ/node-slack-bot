@@ -637,7 +637,7 @@ exports.commandDbMatchups = function(message, args, cb) {
         console.log('-----');
 
         for (var i = 0; i < resultJson[0].length - 1; i++) {
-            var matchup = resultJson[0][i][0];
+            var matchup = resultJson[0][i];
             console.log(matchup);
             matchupString += `${matchup.startDate} - ${matchup.awayTeam} @ ${matchup.homeTeam}\n`;
         }
