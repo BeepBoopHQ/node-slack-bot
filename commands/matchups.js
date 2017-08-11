@@ -615,7 +615,7 @@ exports.commandDbMatchups = function(message, args, cb) {
         }
     }
 
-    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
+    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results, fields) {
         if (error) {
             cb([{
                 method: 'reply',
@@ -634,7 +634,7 @@ exports.commandDbMatchups = function(message, args, cb) {
             console.log(matchup);
             matchupString += `${matchup.startDate} - ${matchup.awayTeam} @ ${matchup.homeTeam}\n`;
         }
-        
+
         matchupString += '```';
 
         cb([{
