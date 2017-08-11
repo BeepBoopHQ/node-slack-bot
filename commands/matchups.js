@@ -496,6 +496,8 @@ exports.commandDbMatchups = function getDbMatchups(weekNum) {
         }
     }
 
+    var response = null;
+
     var params = {
         week: weekNum
     };
@@ -508,6 +510,7 @@ exports.commandDbMatchups = function getDbMatchups(weekNum) {
         }
 
         console.log(results);
+        response = results;
 
         for(var result in results) {
             console.log(results[result]);
@@ -517,7 +520,7 @@ exports.commandDbMatchups = function getDbMatchups(weekNum) {
     return [{
         method: 'reply',
         message: {
-            text: results
+            text: response
         }
     }];
 }
