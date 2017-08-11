@@ -2,7 +2,7 @@ var version = require('../version.js');
 
 var exports = module.exports = {};
 
-exports.commandBerto = function commandBerto(message, commandMsg) {
+exports.commandBerto = function commandBerto(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -11,7 +11,7 @@ exports.commandBerto = function commandBerto(message, commandMsg) {
   }]);
 }
 
-exports.commandGoHawks = function commandGoHawks(message, commandMsg) {
+exports.commandGoHawks = function commandGoHawks(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -20,7 +20,7 @@ exports.commandGoHawks = function commandGoHawks(message, commandMsg) {
   }]);
 }
 
-exports.commandRussell = function commandRussell(message, commandMsg) {
+exports.commandRussell = function commandRussell(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -29,7 +29,7 @@ exports.commandRussell = function commandRussell(message, commandMsg) {
   }]);
 }
 
-exports.commandLit = function commandLit(message, commandMsg) {
+exports.commandLit = function commandLit(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -38,7 +38,7 @@ exports.commandLit = function commandLit(message, commandMsg) {
   }]);
 }
 
-exports.commandExBert = function commandExbert(message, commandMsg) {
+exports.commandExBert = function commandExbert(message, commandMsg, cb) {
   // lol
   cb([{
     method: 'reply',
@@ -48,7 +48,7 @@ exports.commandExBert = function commandExbert(message, commandMsg) {
   }]);
 }
 
-exports.commandTrapHorns = function commandTrapHorns(message, commandMsg) {
+exports.commandTrapHorns = function commandTrapHorns(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -57,7 +57,7 @@ exports.commandTrapHorns = function commandTrapHorns(message, commandMsg) {
   }]);
 }
 
-exports.commandEscalate = function commandEscalate(message, commandMsg) {
+exports.commandEscalate = function commandEscalate(message, commandMsg, cb) {
   var response = {
     method: 'reply',
     message: {
@@ -74,7 +74,7 @@ exports.commandEscalate = function commandEscalate(message, commandMsg) {
   return [response];
 }
 
-exports.commandBlessUp = function commandBlessUp(message, commandMsg) {
+exports.commandBlessUp = function commandBlessUp(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -83,7 +83,7 @@ exports.commandBlessUp = function commandBlessUp(message, commandMsg) {
   }]);
 }
 
-exports.commandVersion = function showVersion(message, commandMsg) {
+exports.commandVersion = function showVersion(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
@@ -92,7 +92,7 @@ exports.commandVersion = function showVersion(message, commandMsg) {
   }]);
 }
 
-exports.commandBug = function commandBug(message, commandMsg) {
+exports.commandBug = function commandBug(message, commandMsg, cb) {
   cb([{
     method: 'say',
     message: {
@@ -107,7 +107,7 @@ exports.commandBug = function commandBug(message, commandMsg) {
   }]);
 }
 
-exports.commandFeature = function commandFeature(message, commandMsg) {
+exports.commandFeature = function commandFeature(message, commandMsg, cb) {
   cb([{
     method: 'say',
     message: {
@@ -122,7 +122,7 @@ exports.commandFeature = function commandFeature(message, commandMsg) {
   }]);
 }
 
-exports.commandCeleryMan = function commandCeleryMan(message, commandMsg) {
+exports.commandCeleryMan = function commandCeleryMan(message, commandMsg, cb) {
   // computer load up celery man
   cb([{
     method: 'convo',
@@ -135,7 +135,7 @@ exports.commandCeleryMan = function commandCeleryMan(message, commandMsg) {
   }]);
 }
 
-exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
+exports.commandFlipCoin = function commandFlipCoin(message, commandMsg, cb) {
   var replies = [];
 
   if (commandMsg) {

@@ -1,6 +1,6 @@
 var exports = module.exports = {};
 
-exports.commandShot = function commandShot(message, args) {
+exports.commandShot = function commandShot(message, args, cb) {
   // get the user and get the number
   var user = args.split(' ')[0];
   var number = parseInt(args.split(' ')[1]);

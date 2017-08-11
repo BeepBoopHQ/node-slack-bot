@@ -51,7 +51,7 @@ function deletePollMapKey(userId) {
 }
 
 // export obj
-exports.commandPoll = function(message, args) {
+exports.commandPoll = function(message, args, cb) {
 
     // args should have at least one ' or '
     if (args.indexOf(' or ') === -1 && pollOptions.length === 0) {
@@ -100,7 +100,7 @@ exports.commandPoll = function(message, args) {
     return;
 }
 
-exports.commandVote = function(message, args) {
+exports.commandVote = function(message, args, cb) {
     
     //we expect only 2 numbers in the args, one for the poll # and one for the vote option
     var pollNumber = parseInt(args.split(' ')[0]);
@@ -192,7 +192,7 @@ exports.commandVote = function(message, args) {
     return;
 }
 
-exports.commandEndPoll = function(message, args) {
+exports.commandEndPoll = function(message, args, cb) {
 
     // validate poll number
     var pollNumber = parseInt(args.split(' ')[0]);
@@ -248,7 +248,7 @@ exports.commandEndPoll = function(message, args) {
     return;
 };
 
-exports.commandPollResults = function(message, args) {
+exports.commandPollResults = function(message, args, cb) {
 
     // validate
     var pollNumber = parseInt(args.split(' ')[0]);
@@ -301,7 +301,7 @@ exports.commandPollResults = function(message, args) {
     return;
 }
 
-exports.commandResetPoll = function(message, args) {
+exports.commandResetPoll = function(message, args, cb) {
 
     // validate
     var pollNumber = parseInt(args.split(' ')[0]);

@@ -30,10 +30,14 @@ if (token) {
       channel: 'C2ARE3TQU'
     });
 
-    var version = cmds.replies.commandVersion(null, null)[0];
+    var version = ''
+
+    cmds.replies.commandVersion(null, null, function(res) {
+      version = res[0].message.text;
+    })[0];
 
     bot.say({
-      text: `running ${version.message.text}`,
+      text: `running ${version}`,
       channel: 'C2ARE3TQU'
     });
 
