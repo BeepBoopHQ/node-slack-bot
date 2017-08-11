@@ -430,7 +430,9 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
 
 }
 
-exports.commandDbMatchups = function getDbMatchups(weekNum) {
+exports.commandDbMatchups = function getDbMatchups(message, commandMsg) {
+
+    var weekNum = commandMsg;
 
     if (!weekNum || weekNum === 0) {
         var now = Date.now();
