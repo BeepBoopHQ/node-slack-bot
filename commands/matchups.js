@@ -615,7 +615,7 @@ exports.commandDbMatchups = function(message, args, cb) {
         }
     }
 
-    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results, fields) {
+    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, rows, fields) {
         if (error) {
             cb([{
                 method: 'reply',
@@ -629,12 +629,12 @@ exports.commandDbMatchups = function(message, args, cb) {
         var matchupString = '```' + `Week ${weekNum} matchups:\n`;
 
         console.log('results:');
-        console.log(results);
+        console.log(rows[0]);
         console.log('-------');
 
-        for (var i in results) {
-            console.log(results[i]);
-            matchupString += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
+        for (var i in rows) {
+            console.log(rows[i]);
+            matchupString += `${rows[i].startDate} - ${rows[i].awayTeam} @ ${rows[i].homeTeam}\n`;
         }
 
         matchupString += '```';
