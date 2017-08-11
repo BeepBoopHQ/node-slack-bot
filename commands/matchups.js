@@ -6,6 +6,8 @@ var connection = mysql.createConnection({
     database: 'goons'
 });
 
+connection.connect();
+
 var exports = module.exports = {};
 
 function getMatchups(weekNum) {
@@ -472,9 +474,6 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
         startDate: `${date} ${time}`
     };
 
-    // do connect
-    connection.connect();
-
     // insert something
     connection.query('INSERT INTO matchup SET ?', matchup, function(error, results, fields) {
         if (error) {
@@ -482,8 +481,6 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
             connection.end();
             throw error;
         }
-
-        connection.end();
     });
 
     return [{
