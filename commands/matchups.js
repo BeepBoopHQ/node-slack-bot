@@ -626,15 +626,14 @@ exports.commandDbMatchups = function(message, args, cb) {
             throw error;
         }
 
+        var jsonString = JSON.stringify(rows);
+        var resultJson = JSON.parse(jsonString);
+
         var matchupString = '```' + `Week ${weekNum} matchups:\n`;
 
-        console.log('results:');
-        console.log(rows[0]);
-        console.log('-------');
-
-        for (var i in rows) {
-            console.log(rows[i].startDate);
-            matchupString += `${rows[i].startDate} - ${rows[i].awayTeam} @ ${rows[i].homeTeam}\n`;
+        for (var i in resultJson) {
+            console.log(resultJson[i].startDate);
+            matchupString += `${resultJson[i].startDate} - ${resultJson[i].awayTeam} @ ${resultJson[i].homeTeam}\n`;
         }
 
         matchupString += '```';
