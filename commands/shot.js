@@ -6,21 +6,23 @@ exports.commandShot = function commandShot(message, args) {
   var number = parseInt(args.split(' ')[1]);
 
   if (!user || !number) {
-    return [{
+    cb([{
       method: 'reply',
       message: {
         text: 'use `!shot <person> <number>`'
       }
-    }];
+    }]);
+    return;
   }
 
   if (number < 0 || number > 20) {
-    return [{
+    cb([{
       method: 'reply',
       message: {
         text: 'use a number between 1 and 20'
       }
-    }];
+    }]);
+    return;
   }
 
   var roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
@@ -34,10 +36,11 @@ exports.commandShot = function commandShot(message, args) {
     reply = `you rolled a *${roll}*, too bad!`;
   }
 
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: reply
     }
-  }];
+  }]);
+  return;
 }

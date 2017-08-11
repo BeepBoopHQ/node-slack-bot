@@ -3,58 +3,58 @@ var version = require('../version.js');
 var exports = module.exports = {};
 
 exports.commandBerto = function commandBerto(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: '<@U2ASHP5FT> ayo berto :100:'
     }
-    }];
+  }]);
 }
 
 exports.commandGoHawks = function commandGoHawks(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: '#gohawks'
     }
-  }];
+  }]);
 }
 
 exports.commandRussell = function commandRussell(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: '`beep boop i am russell_bot'
     }
-  }];
+  }]);
 }
 
 exports.commandLit = function commandLit(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: ':100::100::100::fire::fire::fire::champagne::champagne::champagne:'
     }
-  }];
+  }]);
 }
 
 exports.commandExBert = function commandExbert(message, commandMsg) {
   // lol
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: `<@U2ASHP5FT>, <@${message.user}> needs an exbert: ${commandMsg}`
     }
-  }];
+  }]);
 }
 
 exports.commandTrapHorns = function commandTrapHorns(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: 'https://www.youtube.com/watch?v=Ip1SYl97kh4 :trumpet::trumpet::trumpet::trumpet:'
     }
-  }];
+  }]);
 }
 
 exports.commandEscalate = function commandEscalate(message, commandMsg) {
@@ -75,25 +75,25 @@ exports.commandEscalate = function commandEscalate(message, commandMsg) {
 }
 
 exports.commandBlessUp = function commandBlessUp(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: 'bless up :djkhaled::key:'
     }
-  }];
+  }]);
 }
 
 exports.commandVersion = function showVersion(message, commandMsg) {
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: `russell_bot version: \`${version.version}\``
     }
-  }];
+  }]);
 }
 
 exports.commandBug = function commandBug(message, commandMsg) {
-  return [{
+  cb([{
     method: 'say',
     message: {
       text: `<@${message.user}> has reported a bug: ${commandMsg}`,
@@ -104,11 +104,11 @@ exports.commandBug = function commandBug(message, commandMsg) {
     message: {
       text: 'thanks for your bug report. you can find it in #bugreports'
     }
-  }];
+  }]);
 }
 
 exports.commandFeature = function commandFeature(message, commandMsg) {
-  return [{
+  cb([{
     method: 'say',
     message: {
       text: `<@${message.user}> has requested a feature: ${commandMsg}`,
@@ -119,12 +119,12 @@ exports.commandFeature = function commandFeature(message, commandMsg) {
     message: {
       text: 'thanks for your feature request. you can find it in #featurerequests'
     }
-  }];
+  }]);
 }
 
 exports.commandCeleryMan = function commandCeleryMan(message, commandMsg) {
   // computer load up celery man
-  return [{
+  cb([{
     method: 'convo',
     message: {
       conversation: [
@@ -132,7 +132,7 @@ exports.commandCeleryMan = function commandCeleryMan(message, commandMsg) {
         'http://i.imgur.com/zSr6jEB.gif'
       ]
     }
-  }];
+  }]);
 }
 
 exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
@@ -142,23 +142,25 @@ exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
     var side = commandMsg.split(' ')[0];
 
     if(side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
-      return [{
+      cb([{
         method: 'reply',
         message: {
           text: 'side must be `heads` or `tails`'
         }
-      }];
+      }]);
+      return;
     }
 
     var text = commandMsg.substr(commandMsg.indexOf(' ') + 1);
 
     if(!text) {
-      return [{
+      cb([{
         method: 'reply',
         message: {
           text: 'can\'t leave the text blank'
         }
-      }];
+      }]);
+      return;
     }
 
     replies.push({
@@ -186,10 +188,11 @@ exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
       });
     }
 
-    return replies;
+    cb(replies);
+    return;
   }
 
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: `<@${message.user}> flipped a coin!`
@@ -199,5 +202,5 @@ exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
     message: {
       text: ((Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!')
     }
-  }];
+  }]);
 }

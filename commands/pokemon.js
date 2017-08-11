@@ -14,7 +14,7 @@ var pokemonList = [
 
 var exports = module.exports = {};
 
-exports.commandPokemon = function commandPokemon(args) {
+exports.commandPokemon = function commandPokemon(message, args, cb) {
     // list the pkmn
     var reply = {
         'username': 'Professor Oak',
@@ -28,15 +28,15 @@ exports.commandPokemon = function commandPokemon(args) {
 
     reply.text += '```';
 
-    return [{
+    cb([{
         method: 'reply',
         message: {
             text: reply
         }
-    }];
+    }]);
 }
 
-exports.commandIChooseYou = function commandIChooseYou(message, args) {
+exports.commandIChooseYou = function commandIChooseYou(message, args, cb) {
     // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
     var chosenPokemon = '';
     var chosenPokemonImg = '';
@@ -60,12 +60,12 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
             }]
         }
 
-        return [{
+        cb([{
             method: 'reply',
             message: {
                 text: reply
             }
-        }];
+        }]);
     }
 
     reply = {
@@ -74,10 +74,10 @@ exports.commandIChooseYou = function commandIChooseYou(message, args) {
         'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
     };
 
-    return [{
+    cb([{
         method: 'reply',
         message: {
             text: reply
         }
-    }];
+    }]);
 }
