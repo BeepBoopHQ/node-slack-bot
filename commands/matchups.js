@@ -631,7 +631,7 @@ exports.commandDbMatchups = function(message, args, cb) {
 
         var matchupString = '```' + `Week ${weekNum} matchups:\n`;
 
-        for (var i in resultJson) {
+        for (var i = 0; i < resultJson.length - 1; i++) {
             var matchup = resultJson[i][0];
             console.log(matchup);
             matchupString += `${matchup.startDate} - ${matchup.awayTeam} @ ${matchup.homeTeam}\n`;
