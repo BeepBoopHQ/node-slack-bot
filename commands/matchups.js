@@ -484,13 +484,13 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
         }
 
         connection.end();
+    });
 
-        return [{
-            method: 'reply',
-            message: {
-                text: `inserted \`${week} ${date} ${time} ${home} ${away}\``
-            }
-        }];
-    })
+    return [{
+        method: 'reply',
+        message: {
+            text: `inserted \`${week} ${date} ${time} ${home} ${away}\``
+        }
+    }];
 
 }
