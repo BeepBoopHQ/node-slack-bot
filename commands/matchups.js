@@ -478,20 +478,19 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
     // insert something
     connection.query('INSERT INTO matchup SET ?', matchup, function(error, results, fields) {
         if (error) {
-            throw error;
             console.log(error);
             connection.end();
-            return [{
-                method: 'reply',
-                message: {
-                    text: `there was an error: ${error}`
-                }
-            }];
+            throw error;
         }
 
-        console.log(`inserted ${matchup}`);
         connection.end();
-        return null;
+
+        return [{
+            method: 'reply',
+            message: {
+                text: `inserted \`${week} ${date} ${time} ${home} ${away}\``
+            }
+        }];
     })
 
 }
