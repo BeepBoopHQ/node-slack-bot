@@ -522,6 +522,7 @@ function getMatchupsByWeek(weekNum, callback) {
         var returnStr = '```' + `Week ${weekNum} matchups:\n`;
 
         console.log(`results: ${results}`);
+        console.log(`results len: ${results.length}`);
 
         for (var i = 0; i < results.length; i++) {
             console.log(results[i]);
