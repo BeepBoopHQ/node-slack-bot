@@ -121,7 +121,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   });
 });
 
-function listCommands(message, commandMsg) {
+function listCommands(message, commandMsg, cb) {
   var commandList = 'commands available: \r\n ```';
 
   for(var key in commands) {
@@ -132,12 +132,12 @@ function listCommands(message, commandMsg) {
 
   commandList += '```'
 
-  return [{
+  cb([{
     method: 'reply',
     message: {
       text: commandList
     }
-  }];
+  }]);
 }
 
 function buildCommandDictionary() {
@@ -168,8 +168,7 @@ function buildCommandDictionary() {
   commands['pokemon'] = cmds.pokemon.commandPokemon;
 
   // football-related
-  commands['dbmatchup'] = cmds.matchups.commandDbMatchups;
-  commands['matchup'] = cmds.matchups.commandMatchups;
+  commands['matchup'] = cmds.matchups.commandDbMatchups;
   commands['newmatchup'] = cmds.matchups.commandInsertMatchup;
 
   // cross-channel replies
