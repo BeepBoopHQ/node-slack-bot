@@ -496,29 +496,17 @@ exports.commandDbMatchups = function getDbMatchups(weekNum) {
         }
     }
 
-    var response = null;
-
-    var params = {
-        week: weekNum
-    };
-
-    return connection.query('CALL getMatchupsByWeek(?)', params, function(error, results, fields) {
+connection.query('CALL getMatchupsByWeek(?)', [week], function(error, results) {
         if (error) {
             console.log(error);
             connection.end();
             throw error;
         }
 
-        console.log(results);
-        console.log(fields);
-        response = results;
+        console.log(`results: ${results}`);
 
         for(var result in results) {
             console.log(results[result]);
-        }
-
-        for(var field in fields) {
-            console.log(fields[field]);
         }
 
         return [{
