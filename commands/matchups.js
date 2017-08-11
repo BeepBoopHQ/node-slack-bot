@@ -430,7 +430,7 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
 
 }
 
-exports.commandDbMatchups = function getDbMatchups(message, commandMsg) {
+function getDbMatchups(message, commandMsg) {
 
     var weekNum = commandMsg;
 
@@ -498,20 +498,24 @@ exports.commandDbMatchups = function getDbMatchups(message, commandMsg) {
         }
     }
 
-    return [{
-        method: 'reply',
-        message: {
-            text: getMatchupsByWeek(weekNum)
+    getMatchupsByWeek(weekNum, function(err, result) {
+        if (!err) {
+            return [{
+                method: 'reply',
+                message: {
+                    text: result
+                }
+            }];
+        } else {
+            console.log(err);
         }
-    }];
-    
+    });
 }
 
-function getMatchupsByWeek(weekNum) {
-    return connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
+function getMatchupsByWeek(weekNum, callback) {
+    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
         if (error) {
-            console.log(error);
-            connection.end();
+            callback(true, err);
             throw error;
         }
 
@@ -523,6 +527,8 @@ function getMatchupsByWeek(weekNum) {
             returnStr += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
         }
 
-        return returnStr;
+        callback(null, returnStr);
     });
 }
+
+exports.commandDbMatchup = getDbMatchups;
