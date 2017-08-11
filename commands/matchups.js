@@ -640,7 +640,7 @@ exports.commandDbMatchups = function(message, args, cb) {
         cb([{
             method: 'reply',
             message: {
-                text: results[0];
+                text: results[0]
             }
         }]);
         return;
