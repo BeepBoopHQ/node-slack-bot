@@ -151,7 +151,7 @@ exports.commandVote = function(message, args, cb) {
         if (userId === message.user) {
             
             // check and see if this is the same vote option
-            if (existingVote === (voteOption - 1)) {
+            if (existingVote === (voteOption)) {
                 cb([{
                     method: 'reply',
                     message: {

@@ -24,7 +24,7 @@ exports.commandRussell = function commandRussell(message, commandMsg, cb) {
   cb([{
     method: 'reply',
     message: {
-      text: '`beep boop i am russell_bot'
+      text: '`beep boop i am russell_bot`'
     }
   }]);
 }
