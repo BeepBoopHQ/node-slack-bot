@@ -167,7 +167,7 @@ exports.commandVote = function(message, args, cb) {
             // user wants to change their vote
             currentPoll.votes[existingVote] -= 1;
             currentPoll.votes[voteOption - 1] += 1;
-            currentPoll.votes[user].vote = voteOption - 1;
+            currentPoll.users[user].vote = voteOption - 1;
 
             cb([{
                 method: 'reply',
