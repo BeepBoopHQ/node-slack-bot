@@ -86,37 +86,35 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
 
   commands[command](message, commandMsg, function (resArray) {
     responses = resArray;
-  });
+  
+    if (!responses) return;
 
-  if (!responses) return;
+    console.log(responses);
 
-  console.log(responses);
-
-  for (var idx in responses) {
-    
-    // do the thing based on the bot reply method
-    switch(responses[idx].method) {
-      case 'reply':
-        console.log(responses[idx].message.text);
-        bot.reply(message, responses[idx].message.text);
-        break;
-      case 'say':
-        console.log(responses[idx].message);
-        bot.say(responses[idx].message);
-        break;
-      case 'convo':
-        bot.startConversation(message, function(err, convo) {
-          
-          // iterate thru the conversation messages
-          for (var msg in responses[idx].message.conversation) {
-            convo.say(responses[idx].message.conversation[msg]);
-          }
-        });
-        break;
+    for (var idx in responses) {
+      
+      // do the thing based on the bot reply method
+      switch(responses[idx].method) {
+        case 'reply':
+          console.log(responses[idx].message.text);
+          bot.reply(message, responses[idx].message.text);
+          break;
+        case 'say':
+          console.log(responses[idx].message);
+          bot.say(responses[idx].message);
+          break;
+        case 'convo':
+          bot.startConversation(message, function(err, convo) {
+            
+            // iterate thru the conversation messages
+            for (var msg in responses[idx].message.conversation) {
+              convo.say(responses[idx].message.conversation[msg]);
+            }
+          });
+          break;
+      }
     }
-  }
-
-  return;
+  });
 });
 
 function listCommands(message, commandMsg) {
