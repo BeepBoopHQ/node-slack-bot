@@ -498,26 +498,31 @@ exports.commandDbMatchups = function getDbMatchups(message, commandMsg) {
         }
     }
 
-    var matchupString = '```' + `Week ${weekNum} matchups:\n`;
+    return [{
+        method: 'reply',
+        message: {
+            text: getMatchupsByWeek(weekNum)
+        }
+    }];
+    
+}
 
-    connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
+function getMatchupsByWeek(weekNum) {
+    return connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
         if (error) {
             console.log(error);
             connection.end();
             throw error;
         }
 
+        var returnStr = '```' + `Week ${weekNum} matchups:\n`;
+
         console.log(`results: ${results}`);
 
         for (var i = 0; i < results.length; i++) {
-            matchupString += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
+            returnStr += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
         }
 
-        return [{
-            method: 'reply',
-            message: {
-                text: matchupString + '```'
-            }
-        }];
+        return returnStr;
     });
 }
