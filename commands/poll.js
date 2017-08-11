@@ -382,11 +382,10 @@ exports.getExpiredPolls = function() {
         }
     }
 
-    cb([{
+    return [{
         method: 'reply',
         message: {
             text: expiredPolls
         }
-    }]);
-    return;
+    }];
 }
