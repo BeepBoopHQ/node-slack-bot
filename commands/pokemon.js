@@ -66,6 +66,7 @@ exports.commandIChooseYou = function commandIChooseYou(message, args, cb) {
                 text: reply
             }
         }]);
+        return;
     }
 
     reply = {
