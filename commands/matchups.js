@@ -496,7 +496,7 @@ exports.commandDbMatchups = function getDbMatchups(weekNum) {
         }
     }
 
-connection.query('CALL getMatchupsByWeek(?)', [week], function(error, results) {
+connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
         if (error) {
             console.log(error);
             connection.end();
