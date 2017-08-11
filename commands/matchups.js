@@ -629,6 +629,10 @@ exports.commandDbMatchups = function(message, args, cb) {
         var jsonString = JSON.stringify(rows);
         var resultJson = JSON.parse(jsonString);
 
+        console.log(jsonString);
+        console.log('--------');
+        console.log(resultJson);
+
         var matchupString = '```' + `Week ${weekNum} matchups:\n`;
 
         for (var i in resultJson) {
