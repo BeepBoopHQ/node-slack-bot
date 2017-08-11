@@ -451,11 +451,12 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
     // get the vars
     var week = parseInt(commandMsg.split(' ')[0]);
     var date = commandMsg.split(' ')[1];
-    var home = commandMsg.split(' ')[2];
-    var away = commandMsg.split(' ')[3];
+    var time = commandMsg.split(' ')[2]
+    var home = commandMsg.split(' ')[3];
+    var away = commandMsg.split(' ')[4];
 
     // error checking
-    if (isNaN(week) || !date || !home || !away) {
+    if (isNaN(week) || !date || !time || !home || !away) {
         return [{
             method: 'reply',
             message: {
@@ -468,7 +469,7 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
         week: week,
         homeTeam: home,
         awayTeam: away,
-        startDate: date
+        startDate: `${date} ${time}`
     };
 
     // do connect
