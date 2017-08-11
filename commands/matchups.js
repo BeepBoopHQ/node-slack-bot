@@ -12,69 +12,7 @@ var exports = module.exports = {};
 
 function getMatchups(weekNum) {
 
-        if (!weekNum || weekNum === 0) {
-            var now = Date.now();
 
-            if (now < Date.parse("9/4/2017")) {
-                weekNum = 1;
-            }
-            else if (now < Date.parse("9/11/2017")) {
-                weekNum = 2;
-            }
-            else if (now < Date.parse("9/18/2017")) {
-                weekNum = 3
-            }
-            else if (now < Date.parse("9/25/2017")) {
-                weekNum = 4
-            }
-            else if (now < Date.parse("10/3/2017")) {
-                weekNum = 5
-            }
-            else if (now < Date.parse("10/10/2017")) {
-                weekNum = 6
-            }
-            else if (now < Date.parse("10/17/2017")) {
-                weekNum = 7
-            }
-            else if (now < Date.parse("10/24/2017")) {
-                weekNum = 8
-            }
-            else if (now < Date.parse("10/31/2017")) {
-                weekNum = 9
-            }
-            else if (now < Date.parse("11/7/2017")) {
-                weekNum = 10
-            }
-            else if (now < Date.parse("11/14/2017")) {
-                weekNum = 11
-            }
-            else if (now < Date.parse("11/21/2017")) {
-                weekNum = 12
-            }
-            else if (now < Date.parse("11/28/2017")) {
-                weekNum = 13
-            }
-            else if (now < Date.parse("12/5/2017")) {
-                weekNum = 14
-            }
-            else if (now < Date.parse("12/12/2017")) {
-                weekNum = 15
-            }
-            else if (now < Date.parse("12/19/2017")) {
-                weekNum = 16
-            }
-            else if (now < Date.parse("12/26/2017")) {
-                weekNum = 17
-            }
-            else {
-                return [{
-                    method: 'reply',
-                    message: {
-                        text: 'No games found'
-                    }
-                }];
-            }
-        }
 
         var matchupString = '```Matchups for week ' + weekNum + ':\n';
         switch(weekNum) {
@@ -490,4 +428,96 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
         }
     }];
 
+}
+
+exports.commandDbMatchups = function getDbMatchups(weekNum) {
+
+    if (!weekNum || weekNum === 0) {
+        var now = Date.now();
+
+        if (now < Date.parse("9/4/2017")) {
+            weekNum = 1;
+        }
+        else if (now < Date.parse("9/11/2017")) {
+            weekNum = 2;
+        }
+        else if (now < Date.parse("9/18/2017")) {
+            weekNum = 3
+        }
+        else if (now < Date.parse("9/25/2017")) {
+            weekNum = 4
+        }
+        else if (now < Date.parse("10/3/2017")) {
+            weekNum = 5
+        }
+        else if (now < Date.parse("10/10/2017")) {
+            weekNum = 6
+        }
+        else if (now < Date.parse("10/17/2017")) {
+            weekNum = 7
+        }
+        else if (now < Date.parse("10/24/2017")) {
+            weekNum = 8
+        }
+        else if (now < Date.parse("10/31/2017")) {
+            weekNum = 9
+        }
+        else if (now < Date.parse("11/7/2017")) {
+            weekNum = 10
+        }
+        else if (now < Date.parse("11/14/2017")) {
+            weekNum = 11
+        }
+        else if (now < Date.parse("11/21/2017")) {
+            weekNum = 12
+        }
+        else if (now < Date.parse("11/28/2017")) {
+            weekNum = 13
+        }
+        else if (now < Date.parse("12/5/2017")) {
+            weekNum = 14
+        }
+        else if (now < Date.parse("12/12/2017")) {
+            weekNum = 15
+        }
+        else if (now < Date.parse("12/19/2017")) {
+            weekNum = 16
+        }
+        else if (now < Date.parse("12/26/2017")) {
+            weekNum = 17
+        }
+        else {
+            return [{
+                method: 'reply',
+                message: {
+                    text: 'No games found'
+                }
+            }];
+        }
+    }
+
+    var params = {
+        week: weekNum
+    };
+
+    connection.query('CALL getMatchupsByWeek(?)', params, function(error, results, fields) {
+        if (error) {
+            console.log(error);
+            connection.end();
+            throw error;
+        }
+
+        console.log(results);
+
+        for(var result in results) {
+            console.log(results[result]);
+        }
+    });
+
+    return [{
+        method: 'reply',
+        message: {
+            text: results
+        }
+    }];
 }

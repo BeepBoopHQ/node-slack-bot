@@ -162,6 +162,7 @@ function buildCommandDictionary() {
   commands['pokemon'] = cmds.pokemon.commandPokemon;
 
   // football-related
+  commands['dbmatchup'] = cmds.matchups.commandDbMatchups;
   commands['matchup'] = cmds.matchups.commandMatchups;
   commands['newmatchup'] = cmds.matchups.commandInsertMatchup;
 
