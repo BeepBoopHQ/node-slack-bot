@@ -150,11 +150,11 @@ exports.commandVote = function(message, args, cb) {
         // check for an existing vote
         if (userId === message.user) {
             console.log(existingVote);
-            console.log(voteOption);
+            console.log(voteOption - 1);
 
 
             // check and see if this is the same vote option
-            if (existingVote === (voteOption)) {
+            if (existingVote === (voteOption - 1)) {
                 cb([{
                     method: 'reply',
                     message: {
