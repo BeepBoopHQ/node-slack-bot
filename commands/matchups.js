@@ -513,6 +513,7 @@ function getDbMatchups(message, commandMsg) {
 }
 
 function getMatchupsByWeek(weekNum, callback) {
+    console.log('inside getMatchupsByWeek');
     connection.query('CALL getMatchupsByWeek(?)', [weekNum], function(error, results) {
         if (error) {
             callback(true, err);
