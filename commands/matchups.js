@@ -510,17 +510,22 @@ exports.commandDbMatchups = function getDbMatchups(weekNum) {
         }
 
         console.log(results);
+        console.log(fields);
         response = results;
 
         for(var result in results) {
             console.log(results[result]);
+        }
+
+        for(var field in fields) {
+            console.log(fields[field]);
         }
     });
 
     return [{
         method: 'reply',
         message: {
-            text: response
+            text: fields
         }
     }];
 }
