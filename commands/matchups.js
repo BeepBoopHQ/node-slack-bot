@@ -628,11 +628,11 @@ exports.commandDbMatchups = function(message, args, cb) {
 
         var matchupString = '```' + `Week ${weekNum} matchups:\n`;
 
-        console.log(`results: ${fields}`);
+        console.log(`results: ${results}`);
 
-        for (var i in fields) {
-            console.log(fields[i]);
-            matchupString += `${fields[i].startDate} - ${fields[i].awayTeam} @ ${fields[i].homeTeam}\n`;
+        for (var i in results) {
+            console.log(results[i]);
+            matchupString += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
         }
 
         matchupString += '```';
@@ -640,7 +640,7 @@ exports.commandDbMatchups = function(message, args, cb) {
         cb([{
             method: 'reply',
             message: {
-                text: matchupString
+                text: results[0];
             }
         }]);
         return;
