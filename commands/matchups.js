@@ -631,7 +631,7 @@ exports.commandDbMatchups = function(message, args, cb) {
         console.log(`results: ${results}`);
 
         for (var i in results) {
-            console.log(results[i].RowDataPacket);
+            console.log(results[i][0].awayTeam);
             matchupString += `${results[i].startDate} - ${results[i].awayTeam} @ ${results[i].homeTeam}\n`;
         }
 
