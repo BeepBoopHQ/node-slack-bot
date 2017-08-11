@@ -631,13 +631,13 @@ exports.commandDbMatchups = function(message, args, cb) {
 
         var matchupString = '```' + `Week ${weekNum} matchups:\n`;
     
-        console.log(resultJson);
+        console.log(resultJson[0]);
         console.log('-----');
-        console.log(resultJson.length);
+        console.log(resultJson[0].length);
         console.log('-----');
 
-        for (var i = 0; i < resultJson.length - 1; i++) {
-            var matchup = resultJson[i][0];
+        for (var i = 0; i < resultJson[0].length - 1; i++) {
+            var matchup = resultJson[0][i][0];
             console.log(matchup);
             matchupString += `${matchup.startDate} - ${matchup.awayTeam} @ ${matchup.homeTeam}\n`;
         }
