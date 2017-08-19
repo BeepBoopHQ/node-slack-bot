@@ -116,6 +116,10 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
             }
           });
           break;
+        case 'custom':
+          console.log(responses[idx].message);
+          bot.reply(message, responses[idx].message);
+          break;
       }
     }
   });
@@ -162,6 +166,7 @@ function buildCommandDictionary() {
   commands['pollresults'] = cmds.poll.commandPollResults;
   commands['endpoll'] = cmds.poll.commandEndPoll;
   commands['resetpoll'] = cmds.poll.commandResetPoll;
+  commands['testpoll'] = cmds.poll.doTestPoll;
 
   // pokemans
   commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;
