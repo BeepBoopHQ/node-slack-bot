@@ -394,7 +394,7 @@ exports.getExpiredPolls = function() {
 }
 
 exports.doTestPoll = function(message, args, cb) {
-    return[{
+    cb([{
         method: 'custom',
         message: {
             text: 'This is a test poll',
@@ -428,6 +428,6 @@ exports.doTestPoll = function(message, args, cb) {
                 }
             ]
         }
-    }];
+    }]);
 }
 
