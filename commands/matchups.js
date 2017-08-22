@@ -6,7 +6,10 @@ var connection = mysql.createConnection({
     database: 'goons'
 });
 
-connection.connect();
+connection.connect(function(err) {
+    console.log(err.code);
+    console.log(err.fatal);
+});
 
 var exports = module.exports = {};
 
