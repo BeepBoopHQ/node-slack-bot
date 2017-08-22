@@ -55,8 +55,7 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
     connection.query('INSERT INTO matchup SET ?', matchup, function(error, results, fields) {
         if (error) {
             console.log(error);
-            connection.end();
-            throw error;
+            return;
         }
     });
 
@@ -156,7 +155,8 @@ exports.commandDbMatchups = function(message, args, cb) {
                     text: 'there was an error getting matchups'
                 }
             }]);
-            throw error;
+            console.log(error);
+            return;
         }
 
         var jsonString = JSON.stringify(rows);
