@@ -25,36 +25,36 @@ if (token) {
       throw new Error(err)
     }
 
-    bot.say({
-      text: 'russell_bot has connected',
-      channel: 'C2ARE3TQU'
-    });
+    // bot.say({
+    //   text: 'russell_bot has connected',
+    //   channel: 'C2ARE3TQU'
+    // });
 
-    var version = ''
+    // var version = ''
 
-    cmds.replies.commandVersion(null, null, function(res) {
-      version = res[0].message.text;
-    });
+    // cmds.replies.commandVersion(null, null, function(res) {
+    //   version = res[0].message.text;
+    // });
 
-    bot.say({
-      text: `running ${version}`,
-      channel: 'C2ARE3TQU'
-    });
+    // bot.say({
+    //   text: `running ${version}`,
+    //   channel: 'C2ARE3TQU'
+    // });
 
-    // run the poll timer
-    setInterval(function() {
-      var expiredPolls = cmds.poll.getExpiredPolls();
+    // // run the poll timer
+    // setInterval(function() {
+    //   var expiredPolls = cmds.poll.getExpiredPolls();
 
-      if (expiredPolls && expiredPolls.length > 0) {
-        for (var poll in expiredPolls) {
-          bot.say({
-            text: `<@${expiredPolls[poll].user}>'s poll has ended. results are: ${expiredPolls[poll].results}`,
-            channel: expiredPolls[poll].channel
-          });
-        }
-      }
+    //   if (expiredPolls && expiredPolls.length > 0) {
+    //     for (var poll in expiredPolls) {
+    //       bot.say({
+    //         text: `<@${expiredPolls[poll].user}>'s poll has ended. results are: ${expiredPolls[poll].results}`,
+    //         channel: expiredPolls[poll].channel
+    //       });
+    //     }
+    //   }
 
-    }, 10000);
+    // }, 10000);
   });
 
 // Otherwise assume multi-team mode - setup beep boop resourcer connection
@@ -63,67 +63,67 @@ if (token) {
 }
 
 // build the command dictionary
-buildCommandDictionary();
+// buildCommandDictionary();
 
-controller.on('bot_channel_join', function (bot, message) {
-  bot.reply(message, '#gohawks');
-});
+// controller.on('bot_channel_join', function (bot, message) {
+//   bot.reply(message, '#gohawks');
+// });
 
-controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
+// controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
 
-  var command = message.match[1].toLowerCase();
-  var commandMsg = '';
+//   var command = message.match[1].toLowerCase();
+//   var commandMsg = '';
 
-  // get the command and the arguments
-  if (command.indexOf(' ') !== -1) {
-    commandMsg = command.substr(command.indexOf(' ') + 1);
-    command = command.substr(0, command.indexOf(' '));
-  }
+//   // get the command and the arguments
+//   if (command.indexOf(' ') !== -1) {
+//     commandMsg = command.substr(command.indexOf(' ') + 1);
+//     command = command.substr(0, command.indexOf(' '));
+//   }
 
-  // invalid command, ignore it
-  if(!(command in commands)) {
-    return;
-  }
+//   // invalid command, ignore it
+//   if(!(command in commands)) {
+//     return;
+//   }
 
-  // get an array of responses
-  var responses = [];
+//   // get an array of responses
+//   var responses = [];
 
-  commands[command](message, commandMsg, function (resArray) {
-    responses = resArray;
+//   commands[command](message, commandMsg, function (resArray) {
+//     responses = resArray;
   
-    if (!responses) return;
+//     if (!responses) return;
 
-    console.log('about to respond');
+//     console.log('about to respond');
 
-    for (var idx in responses) {
+//     for (var idx in responses) {
       
-      // do the thing based on the bot reply method
-      switch(responses[idx].method) {
-        case 'reply':
-          console.log(responses[idx].message.text);
-          bot.reply(message, responses[idx].message.text);
-          break;
-        case 'say':
-          console.log(responses[idx].message);
-          bot.say(responses[idx].message);
-          break;
-        case 'convo':
-          bot.startConversation(message, function(err, convo) {
+//       // do the thing based on the bot reply method
+//       switch(responses[idx].method) {
+//         case 'reply':
+//           console.log(responses[idx].message.text);
+//           bot.reply(message, responses[idx].message.text);
+//           break;
+//         case 'say':
+//           console.log(responses[idx].message);
+//           bot.say(responses[idx].message);
+//           break;
+//         case 'convo':
+//           bot.startConversation(message, function(err, convo) {
             
-            // iterate thru the conversation messages
-            for (var msg in responses[idx].message.conversation) {
-              convo.say(responses[idx].message.conversation[msg]);
-            }
-          });
-          break;
-        case 'custom':
-          console.log(responses[idx].message);
-          bot.reply(message, responses[idx].message);
-          break;
-      }
-    }
-  });
-});
+//             // iterate thru the conversation messages
+//             for (var msg in responses[idx].message.conversation) {
+//               convo.say(responses[idx].message.conversation[msg]);
+//             }
+//           });
+//           break;
+//         case 'custom':
+//           console.log(responses[idx].message);
+//           bot.reply(message, responses[idx].message);
+//           break;
+//       }
+//     }
+//   });
+// });
 
 function listCommands(message, commandMsg, cb) {
   var commandList = 'commands available: \r\n ```';
