@@ -385,12 +385,7 @@ exports.getExpiredPolls = function() {
         }
     }
 
-    return [{
-        method: 'reply',
-        message: {
-            text: expiredPolls
-        }
-    }];
+    return expiredPolls;
 }
 
 exports.doTestPoll = function(message, args, cb) {
