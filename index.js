@@ -12,7 +12,7 @@ var commands = {};
 var controller = Botkit.slackbot({
   // reconnect to Slack RTM when connection goes bad
   retry: Infinity,
-  debug: false,
+  debug: true,
   storage: firebaseStorage
 });
 
