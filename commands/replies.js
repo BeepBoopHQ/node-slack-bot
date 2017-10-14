@@ -237,7 +237,6 @@ exports.commandFlipCoin = function commandFlipCoin(message, commandMsg, cb) {
     }
 
     cb(replies);
-    return;
   }
 
   cb([{

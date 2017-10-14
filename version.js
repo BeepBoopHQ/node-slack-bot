@@ -1,3 +1,3 @@
 module.exports = {
-    version: 'v3.0 salty sealion'
+    version: 'v3.1 slutty scout'
 }
