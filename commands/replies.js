@@ -272,7 +272,7 @@ exports.commandChallengeAccepted = function commandChallengeAccepted(message, co
   }]);
 }
 
-exports.comandLGRW = function commandLGRW(message, commandMsg, cb) {
+exports.commandLGRW = function commandLGRW(message, commandMsg, cb) {
   var reply = {
     'username': 'Al the Octopus',
     'icon_url': 'https://i.pinimg.com/originals/75/74/15/75741576dd2224c66ed8a66489bdf487.jpg',
