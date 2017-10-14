@@ -39,6 +39,18 @@ exports.commandLit = function commandLit(message, commandMsg, cb) {
 }
 
 exports.commandExBert = function commandExbert(message, commandMsg, cb) {
+
+  if (!commandMsg) {
+    cb([{
+      method: 'reply',
+      message: {
+        text: 'use `!exbert <text>`'
+      }
+    }]);
+
+    return;
+  }
+
   // lol
   cb([{
     method: 'reply',
@@ -71,7 +83,7 @@ exports.commandEscalate = function commandEscalate(message, commandMsg, cb) {
     response.message.text `<@U2ASHP5FT> :fire::fire: [HIGH PRIORITY] :fire::fire: ${commandMsg} :fire::fire: [HIGH PRIORITY] :fire::fire:`;
   }
 
-  return [response];
+  cb([response]);
 }
 
 exports.commandBlessUp = function commandBlessUp(message, commandMsg, cb) {
@@ -93,6 +105,18 @@ exports.commandVersion = function showVersion(message, commandMsg, cb) {
 }
 
 exports.commandBug = function commandBug(message, commandMsg, cb) {
+
+  if (!commandMsg) {
+    cb([{
+      method: 'reply',
+      message: {
+        text: 'use `!bug <text>`'
+      }
+    }]);
+
+    return;
+  }
+
   cb([{
     method: 'say',
     message: {
@@ -108,6 +132,18 @@ exports.commandBug = function commandBug(message, commandMsg, cb) {
 }
 
 exports.commandFeature = function commandFeature(message, commandMsg, cb) {
+
+  if (!commandMsg) {
+    cb([{
+      method: 'reply',
+      message: {
+        text: 'use `!feature <text>`'
+      }
+    }]);
+
+    return;
+  }
+
   cb([{
     method: 'say',
     message: {
