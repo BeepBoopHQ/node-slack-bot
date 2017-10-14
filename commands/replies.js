@@ -216,11 +216,11 @@ exports.commandChallengeAccepted = function commandChallengeAccepted(message, co
     }]
   };
 
-  cb({
-    method: 'reply',
-    message: {
-      text: reply
-    }
-  });
+  cb([{
+      method: 'reply',
+      message: {
+          text: reply
+      }
+  }]);
   return;
 }
