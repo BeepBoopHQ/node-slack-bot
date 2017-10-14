@@ -155,6 +155,7 @@ function buildCommandDictionary() {
   commands['traphorns'] = cmds.replies.commandTrapHorns;
   commands['escalate'] = cmds.replies.commandEscalate;
   commands['blessup'] = cmds.replies.commandBlessUp;
+  commands['challengeaccepted'] = cmds.replies.commandChallengeAccepted;
 
   // games/random stuff
   commands['shot'] = cmds.shot.commandShot;

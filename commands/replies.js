@@ -204,3 +204,23 @@ exports.commandFlipCoin = function commandFlipCoin(message, commandMsg, cb) {
     }
   }]);
 }
+
+exports.commandChallengeAccepted = function commandChallengeAccepted(message, commandMsg, cb) {
+  var reply = {
+    'username': 'Barney Stinson',
+    'icon_url': 'https://pbs.twimg.com/profile_images/2925485686/23b6d30cdb4e3b6dca5ead7b351f06d1_400x400.jpeg',
+    'attachments': [{
+      'fallback': 'Challenge accepted.',
+      'text': 'Challenge accepted.',
+      'image_url' : 'https://i.pinimg.com/736x/5a/c8/80/5ac880fa35b1e9648fcbd4623d25905c--himym-challenge-accepted.jpg'
+    }]
+  };
+
+  cb({
+    method: 'reply',
+    message: {
+      text: reply
+    }
+  });
+  return;
+}
