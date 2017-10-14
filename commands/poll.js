@@ -97,7 +97,6 @@ exports.commandPoll = function(message, args, cb) {
             text: `<@${message.user}> has started a poll. \`!vote ${pollMapKey} <option>\` for ${polls[message.user].options.join(', ')}. this poll will be open for 10 minutes`
         }
     }]);
-    return;
 }
 
 exports.commandVote = function(message, args, cb) {
@@ -192,7 +191,6 @@ exports.commandVote = function(message, args, cb) {
             text: `<@${message.user}>, your vote has been cast for ${currentPoll.options[voteOption - 1]}`
         }
     }]);
-    return;
 }
 
 exports.commandEndPoll = function(message, args, cb) {
@@ -248,7 +246,6 @@ exports.commandEndPoll = function(message, args, cb) {
             text: `<@${currentPoll.user}>'s poll is closed. results are: ${resultsArray.join(', ')}`
         }
     }]);
-    return;
 };
 
 exports.commandPollResults = function(message, args, cb) {
@@ -301,7 +298,6 @@ exports.commandPollResults = function(message, args, cb) {
             text: `<@${message.user}>, this poll's results are: ${resultsArray.join(', ')}`
         }
     }]);
-    return;
 }
 
 exports.commandResetPoll = function(message, args, cb) {
@@ -357,7 +353,6 @@ exports.commandResetPoll = function(message, args, cb) {
             text: `<@${message.user}> has reset their poll. \`!vote\` again`
         }
     }]);
-    return;
 }
 
 exports.getExpiredPolls = function() {

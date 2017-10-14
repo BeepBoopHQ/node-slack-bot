@@ -64,7 +64,6 @@ exports.commandInsertMatchup = function commandInsertMatchup(message, commandMsg
                 text: `inserted \`${week} ${date} ${time} ${home} ${away}\``
             }
         }]);
-        return;
     });
 }
 
@@ -177,8 +176,5 @@ exports.commandDbMatchups = function(message, args, cb) {
                 text: matchupString
             }
         }]);
-        return;
     });
-
-    
 }

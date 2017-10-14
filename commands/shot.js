@@ -42,5 +42,4 @@ exports.commandShot = function commandShot(message, args, cb) {
       text: reply
     }
   }]);
-  return;
 }
