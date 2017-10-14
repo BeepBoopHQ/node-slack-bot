@@ -93,7 +93,7 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   
     if (!responses) return;
 
-    console.log('about to respond');
+    console.log('about to respond, method ' + responses[0].method);
 
     for (var idx in responses) {
       
