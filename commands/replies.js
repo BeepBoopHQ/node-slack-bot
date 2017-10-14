@@ -70,6 +70,18 @@ exports.commandTrapHorns = function commandTrapHorns(message, commandMsg, cb) {
 }
 
 exports.commandEscalate = function commandEscalate(message, commandMsg, cb) {
+
+  if (!commandMsg) {
+    cb([{
+      method: 'reply',
+      message: {
+        text: 'use `!escalate <text>`'
+      }
+    }]);
+
+    return;
+  }
+
   var response = {
     method: 'reply',
     message: {
@@ -80,7 +92,7 @@ exports.commandEscalate = function commandEscalate(message, commandMsg, cb) {
   if (message.user !== "U2ARFPF62") {
     response.message.text = 'Thanks for your ticket, an associate will be with you shortly.';
   } else {
-    response.message.text `<@U2ASHP5FT> :fire::fire: [HIGH PRIORITY] :fire::fire: ${commandMsg} :fire::fire: [HIGH PRIORITY] :fire::fire:`;
+    response.message.text = `<@U2ASHP5FT> :fire::fire: [HIGH PRIORITY] :fire::fire: ${commandMsg} :fire::fire: [HIGH PRIORITY] :fire::fire:`;
   }
 
   cb([response]);
