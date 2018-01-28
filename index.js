@@ -132,7 +132,7 @@ rtm.on(RTM_EVENTS.AUTHENTICATED, (connectData) => {
 
 rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
   rtm.sendMessage('russell_bot has connected', 'C2ARE3TQU');
-  rtm.sendMessage(`running ${version.version}`, 'C2ARE3TQU');
+  rtm.sendMessage(`running \`${version.version}\``, 'C2ARE3TQU');
 
   // start the poll timer
   setInterval(pollTimer, 10000);
