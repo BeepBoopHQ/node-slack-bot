@@ -12,7 +12,7 @@ const pokemonList = [
   {name: 'gengar', img: 'http://cdn.bulbagarden.net/upload/2/21/Spr_5b_094.png'}
 ];
 
-module.exports.commandPokemon = function commandPokemon(message, args) {
+module.exports.commandPokemon = (message, args) => {
     // list the pkmn
     let reply = {
         'username': 'Professor Oak',
@@ -33,7 +33,7 @@ module.exports.commandPokemon = function commandPokemon(message, args) {
     }];
 }
 
-module.exports.commandIChooseYou = function commandIChooseYou(message, args) {
+module.exports.commandIChooseYou = (message, args) => {
     // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
     let chosenPokemon = '';
     let chosenPokemonImg = '';

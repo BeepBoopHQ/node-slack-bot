@@ -1,6 +1,6 @@
 let version = require('../version.js');
 
-module.exports.commandBerto = function commandBerto(message, commandMsg) {
+module.exports.commandBerto =  (message, commandMsg) => {
   return [{
     message: {
       text: '<@U2ASHP5FT> ayo berto :100:'
@@ -8,7 +8,7 @@ module.exports.commandBerto = function commandBerto(message, commandMsg) {
   }];
 }
 
-module.exports.commandGoHawks = function commandGoHawks(message, commandMsg) {
+module.exports.commandGoHawks =  (message, commandMsg) => {
   return [{
     message: {
       text: '#gohawks'
@@ -16,7 +16,7 @@ module.exports.commandGoHawks = function commandGoHawks(message, commandMsg) {
   }];
 }
 
-module.exports.commandRussell = function commandRussell(message, commandMsg) {
+module.exports.commandRussell =  (message, commandMsg) => {
   return [{
     message: {
       text: '`beep boop i am russell_bot`'
@@ -24,7 +24,7 @@ module.exports.commandRussell = function commandRussell(message, commandMsg) {
   }];
 }
 
-module.exports.commandLit = function commandLit(message, commandMsg) {
+module.exports.commandLit =  (message, commandMsg) => {
   return [{
     message: {
       text: ':100::100::100::fire::fire::fire::champagne::champagne::champagne:'
@@ -32,7 +32,7 @@ module.exports.commandLit = function commandLit(message, commandMsg) {
   }];
 }
 
-module.exports.commandExBert = function commandExbert(message, commandMsg) {
+module.exports.commandExBert =  (message, commandMsg) => {
 
   if (!commandMsg) {
     return [{
@@ -52,7 +52,7 @@ module.exports.commandExBert = function commandExbert(message, commandMsg) {
   }];
 }
 
-module.exports.commandTrapHorns = function commandTrapHorns(message, commandMsg) {
+module.exports.commandTrapHorns =  (message, commandMsg) => {
   return [{
     message: {
       text: 'https://www.youtube.com/watch?v=Ip1SYl97kh4 :trumpet::trumpet::trumpet::trumpet:'
@@ -60,7 +60,7 @@ module.exports.commandTrapHorns = function commandTrapHorns(message, commandMsg)
   }];
 }
 
-module.exports.commandEscalate = function commandEscalate(message, commandMsg) {
+module.exports.commandEscalate =  (message, commandMsg) => {
 
   if (!commandMsg) {
     return [{
@@ -87,7 +87,7 @@ module.exports.commandEscalate = function commandEscalate(message, commandMsg) {
   return [response];
 }
 
-module.exports.commandBlessUp = function commandBlessUp(message, commandMsg) {
+module.exports.commandBlessUp =  (message, commandMsg) => {
   return [{
     message: {
       text: 'bless up :djkhaled::key:'
@@ -95,7 +95,7 @@ module.exports.commandBlessUp = function commandBlessUp(message, commandMsg) {
   }];
 }
 
-module.exports.commandVersion = function showVersion(message, commandMsg) {
+module.exports.commandVersion =  (message, commandMsg) => {
   return [{
     message: {
       text: `russell_bot version: \`${version.version}\``
@@ -103,7 +103,7 @@ module.exports.commandVersion = function showVersion(message, commandMsg) {
   }];
 }
 
-module.exports.commandBug = function commandBug(message, commandMsg) {
+module.exports.commandBug =  (message, commandMsg) => {
 
   if (!commandMsg) {
     return [{
@@ -125,7 +125,7 @@ module.exports.commandBug = function commandBug(message, commandMsg) {
   }];
 }
 
-module.exports.commandFeature = function commandFeature(message, commandMsg) {
+module.exports.commandFeature =  (message, commandMsg) => {
 
   if (!commandMsg) {
     return [{
@@ -138,16 +138,16 @@ module.exports.commandFeature = function commandFeature(message, commandMsg) {
   return [{
     message: {
       text: `<@${message.user}> has requested a feature: ${commandMsg}`,
-      channel: 'C2BRPHPS4'
+      channel: 'C2ARE3TQU'
     }
   }, {
     message: {
-      text: 'thanks for your feature request. you can find it in #featurerequests'
+      text: 'thanks for your feature request. you can find it in #fantasybot'
     }
   }];
 }
 
-module.exports.commandCeleryMan = function commandCeleryMan(message, commandMsg) {
+module.exports.commandCeleryMan =  (message, commandMsg) => {
   // computer load up celery man
   return [{
     message: {
@@ -160,7 +160,7 @@ module.exports.commandCeleryMan = function commandCeleryMan(message, commandMsg)
   }];
 }
 
-module.exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
+module.exports.commandFlipCoin =  (message, commandMsg) => {
   let replies = [];
 
   if (commandMsg) {
@@ -220,7 +220,7 @@ module.exports.commandFlipCoin = function commandFlipCoin(message, commandMsg) {
   }];
 }
 
-module.exports.commandChallengeAccepted = function commandChallengeAccepted(message, commandMsg) {
+module.exports.commandChallengeAccepted =  (message, commandMsg) => {
   const reply = {
     'username': 'Barney Stinson',
     'icon_url': 'https://pbs.twimg.com/profile_images/2925485686/23b6d30cdb4e3b6dca5ead7b351f06d1_400x400.jpeg',
@@ -238,7 +238,7 @@ module.exports.commandChallengeAccepted = function commandChallengeAccepted(mess
   }];
 }
 
-module.exports.commandLGRW = function commandLGRW(message, commandMsg) {
+module.exports.commandLGRW =  (message, commandMsg) => {
   const reply = {
     'username': 'Al the Octopus',
     'icon_url': 'https://i.pinimg.com/originals/75/74/15/75741576dd2224c66ed8a66489bdf487.jpg',

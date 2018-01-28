@@ -1,4 +1,4 @@
-module.exports.commandShot = function commandShot(message, args) {
+module.exports.commandShot = (message, args) => {
   // get the user and get the number
   const user = args.split(' ')[0];
   const number = parseInt(args.split(' ')[1]);

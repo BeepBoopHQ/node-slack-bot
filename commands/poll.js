@@ -4,7 +4,7 @@ let pollOptions = [];
 let pollMap = {};
 
 // functions
-function formatPollOptions(message) {
+formatPollOptions = (message) => {
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
     let formattedOptions = pollOptions.map(function(e, i) {
@@ -21,7 +21,7 @@ function formatPollOptions(message) {
   }
 }
 
-function createPollMapKey(userId) {
+createPollMapKey = (userId) => {
   for(key in pollMap) {
     if(pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === null || pollMap[key] === undefined) {
@@ -38,7 +38,7 @@ function createPollMapKey(userId) {
   return newKey;
 }
 
-function deletePollMapKey(userId) {
+deletePollMapKey = (userId) => {
   for(key in pollMap) {
     if(pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === userId) {
@@ -49,7 +49,7 @@ function deletePollMapKey(userId) {
 }
 
 // export obj
-module.exports.commandPoll = function(message, args) {
+module.exports.commandPoll = (message, args) => {
 
     // args should have at least one ' or '
     if (args.indexOf(' or ') === -1 && pollOptions.length === 0) {
@@ -93,7 +93,7 @@ module.exports.commandPoll = function(message, args) {
     }];
 }
 
-module.exports.commandVote = function(message, args) {
+module.exports.commandVote = (message, args) => {
     
     //we expect only 2 numbers in the args, one for the poll # and one for the vote option
     let pollNumber = parseInt(args.split(' ')[0]);
@@ -182,7 +182,7 @@ module.exports.commandVote = function(message, args) {
     }];
 }
 
-module.exports.commandEndPoll = function(message, args) {
+module.exports.commandEndPoll = (message, args) => {
 
     // validate poll number
     let pollNumber = parseInt(args.split(' ')[0]);
@@ -234,7 +234,7 @@ module.exports.commandEndPoll = function(message, args) {
     }];
 };
 
-module.exports.commandPollResults = function(message, args, cb) {
+module.exports.commandPollResults = (message, args) => {
 
     // validate
     let pollNumber = parseInt(args.split(' ')[0]);
@@ -283,7 +283,7 @@ module.exports.commandPollResults = function(message, args, cb) {
     }];
 }
 
-module.exports.commandResetPoll = function(message, args, cb) {
+module.exports.commandResetPoll = (message, args) => {
 
     // validate
     let pollNumber = parseInt(args.split(' ')[0]);
@@ -335,7 +335,7 @@ module.exports.commandResetPoll = function(message, args, cb) {
     }];
 }
 
-module.exports.getExpiredPolls = function() {
+module.exports.getExpiredPolls = () => {
     let expiredPolls = [];
     for(key in polls) {
         if(polls.hasOwnProperty(key) && polls[key] !== null) {
@@ -363,7 +363,7 @@ module.exports.getExpiredPolls = function() {
     return expiredPolls;
 }
 
-module.exports.doTestPoll = function(message, args, cb) {
+module.exports.doTestPoll = (message, args) => {
     return [{
         method: 'custom',
         message: {
