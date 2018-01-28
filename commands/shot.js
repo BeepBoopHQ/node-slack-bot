@@ -1,32 +1,28 @@
-var exports = module.exports = {};
-
-exports.commandShot = function commandShot(message, args, cb) {
+module.exports.commandShot = function commandShot(message, args) {
   // get the user and get the number
-  var user = args.split(' ')[0];
-  var number = parseInt(args.split(' ')[1]);
+  const user = args.split(' ')[0];
+  const number = parseInt(args.split(' ')[1]);
 
   if (!user || !number) {
-    cb([{
+    return [{
       method: 'reply',
       message: {
         text: 'use `!shot <person> <number>`'
       }
-    }]);
-    return;
+    }];
   }
 
   if (number < 0 || number > 20) {
-    cb([{
+    return [{
       method: 'reply',
       message: {
         text: 'use a number between 1 and 20'
       }
-    }]);
-    return;
+    }];
   }
 
-  var roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
-  var reply = '';
+  const roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
+  let reply = '';
 
   if(roll === 1) {
     reply = `you rolled a *${roll}*, <@${message.user}>, you have to take a shot!`;
@@ -36,10 +32,10 @@ exports.commandShot = function commandShot(message, args, cb) {
     reply = `you rolled a *${roll}*, too bad!`;
   }
 
-  cb([{
+  return [{
     method: 'reply',
     message: {
       text: reply
     }
-  }]);
+  }];
 }

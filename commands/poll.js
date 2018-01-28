@@ -1,23 +1,21 @@
-var exports = module.exports = {};
-
 // poll objs
-var polls = {};
-var pollOptions = [];
-var pollMap = {};
+let polls = {};
+let pollOptions = [];
+let pollMap = {};
 
 // functions
 function formatPollOptions(message) {
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
-    var formattedOptions = pollOptions.map(function(e, i) {
-      var formatted = '`' + e + '`';
+    let formattedOptions = pollOptions.map(function(e, i) {
+      let formatted = '`' + e + '`';
       return [formatted];
     });
     pollOptions = [];
 
     return formattedOptions;
   } else {
-    var option = message.substr(0, message.indexOf(' or '));
+    let option = message.substr(0, message.indexOf(' or '));
     pollOptions.push(option);
     return formatPollOptions(message.substr(message.indexOf(' or ') + 4));
   }
@@ -34,7 +32,7 @@ function createPollMapKey(userId) {
   }
 
   // add a new entry
-  var newKey = Object.keys(pollMap).length;
+  let newKey = Object.keys(pollMap).length;
 
   pollMap[newKey] = userId;
   return newKey;
@@ -51,33 +49,29 @@ function deletePollMapKey(userId) {
 }
 
 // export obj
-exports.commandPoll = function(message, args, cb) {
+module.exports.commandPoll = function(message, args) {
 
     // args should have at least one ' or '
     if (args.indexOf(' or ') === -1 && pollOptions.length === 0) {
-        cb([{
-            method: 'reply',
+        return [{
             message: {
                 text: 'use `!poll <this> or <that>`'
             }
-        }]);
-        return;
+        }];
     }
 
     // one poll per user
     if (polls[message.user]) {
         // user has a poll
-        cb([{
-            method: 'reply',
+        return [{
             message: {
                 text: `<@${message.user}>, you already have an active poll: ${polls[message.user].options.join(', ')}`
             }
-        }]);
-        return;
+        }];
     }
 
     // get formatted options
-    var formattedPollChoices = formatPollOptions(args);
+    let formattedPollChoices = formatPollOptions(args);
 
     // set new poll for this user
     polls[message.user] = {
@@ -89,62 +83,59 @@ exports.commandPoll = function(message, args, cb) {
     };
 
     // get a key for this poll
-    var pollMapKey = createPollMapKey(message.user) + 1;
+    let pollMapKey = createPollMapKey(message.user) + 1;
 
-    cb([{
+    return[{
         method: 'reply',
         message: {
             text: `<@${message.user}> has started a poll. \`!vote ${pollMapKey} <option>\` for ${polls[message.user].options.join(', ')}. this poll will be open for 10 minutes`
         }
-    }]);
+    }];
 }
 
-exports.commandVote = function(message, args, cb) {
+module.exports.commandVote = function(message, args) {
     
     //we expect only 2 numbers in the args, one for the poll # and one for the vote option
-    var pollNumber = parseInt(args.split(' ')[0]);
-    var voteOption = parseInt(args.split(' ')[1]);
+    let pollNumber = parseInt(args.split(' ')[0]);
+    let voteOption = parseInt(args.split(' ')[1]);
 
     if (isNaN(pollNumber) || isNaN(voteOption)) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`'
             }
-        }]);
-        return;
+        }];
     }
 
     // get the poll from the poll map
-    var pollUserId = pollMap[pollNumber - 1];
-    var currentPoll = polls[pollUserId];
+    let pollUserId = pollMap[pollNumber - 1];
+    let currentPoll = polls[pollUserId];
 
     // check if the poll exists
     if (!currentPoll || pollNumber <= 0) {
-        cb([{
+        return [{
             method: 'reply',
             message : {
                 text: `${pollNumber} is not a valid poll`
             }
-        }]);
-        return;
+        }];
     }
 
     // check for valid vote
     if (voteOption <= 0 || voteOption > currentPoll.options.length) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `${voteOption} is not a valid poll option`
             }
-        }]);
-        return;
+        }];
     }
 
     // try and do the vote
     for (user in currentPoll.users) {
-        var userId = currentPoll.users[user].userId;
-        var existingVote = currentPoll.users[user].vote;
+        let userId = currentPoll.users[user].userId;
+        let existingVote = currentPoll.users[user].vote;
 
         // check for an existing vote
         if (userId === message.user) {
@@ -154,13 +145,12 @@ exports.commandVote = function(message, args, cb) {
 
             // check and see if this is the same vote option
             if (existingVote === (voteOption - 1)) {
-                cb([{
+                return [{
                     method: 'reply',
                     message: {
                         text: `<@${message.user}>, you have already voted for this option`
                     }
-                }]);
-                return;
+                }];
             }
 
             // user wants to change their vote
@@ -168,13 +158,12 @@ exports.commandVote = function(message, args, cb) {
             currentPoll.votes[voteOption - 1] += 1;
             currentPoll.users[user].vote = voteOption - 1;
 
-            cb([{
+            return [{
                 method: 'reply',
                 message: {
                     text: `<@${message.user}> has changed their vote from ${currentPoll.options[existingVote]} to ${currentPoll.options[voteOption - 1]}`
                 }
-            }]);
-            return;
+            }];
         }
     }
 
@@ -185,186 +174,177 @@ exports.commandVote = function(message, args, cb) {
         vote: (voteOption - 1)
     });
 
-    cb([{
+    return [{
         method: 'reply',
         message: {
             text: `<@${message.user}>, your vote has been cast for ${currentPoll.options[voteOption - 1]}`
         }
-    }]);
+    }];
 }
 
-exports.commandEndPoll = function(message, args, cb) {
+module.exports.commandEndPoll = function(message, args) {
 
     // validate poll number
-    var pollNumber = parseInt(args.split(' ')[0]);
+    let pollNumber = parseInt(args.split(' ')[0]);
 
     if (isNaN(pollNumber)) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, this is an invalid poll`
             }
-        }]);
-        return;
+        }];
     }
 
     if (!pollMap[pollNumber - 1]) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, this poll does not exist`
             }
-        }]);
-        return;
+        }];
     }
 
-    var pollUserId = pollMap[pollNumber - 1];
-    var currentPoll = polls[pollUserId];
+    let pollUserId = pollMap[pollNumber - 1];
+    let currentPoll = polls[pollUserId];
 
     // check if this user owns this poll
     if (currentPoll.user !== message.user) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, only <@${currentPoll.user}> can end this poll`
             }
-        }]);
-        return;
+        }];
     }
 
     // generate poll results
-    var resultsArray = currentPoll.options.map(function(e, i) {
-        var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
+    let resultsArray = currentPoll.options.map(function(e, i) {
+        let formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
         return [formatted];
     });
 
     polls[pollUserId] = null;
     deletePollMapKey(pollUserId);
-    cb([{
+    return [{
         method: 'reply',
         message: {
             text: `<@${currentPoll.user}>'s poll is closed. results are: ${resultsArray.join(', ')}`
         }
-    }]);
+    }];
 };
 
-exports.commandPollResults = function(message, args, cb) {
+module.exports.commandPollResults = function(message, args, cb) {
 
     // validate
-    var pollNumber = parseInt(args.split(' ')[0]);
+    let pollNumber = parseInt(args.split(' ')[0]);
 
     if (isNaN(pollNumber)) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, this is an invalid poll`
             }
-        }]);
-        return;
+        }];
     }
 
     if (!pollMap[pollNumber - 1]) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, this poll does not exist`
             }
-        }]);
-        return;
+        }];
     }
 
-    var pollUserId = pollMap[pollNumber - 1];
-    var currentPoll = polls[pollUserId];
+    let pollUserId = pollMap[pollNumber - 1];
+    let currentPoll = polls[pollUserId];
 
     // check if there are no votes
     if (!currentPoll.options || currentPoll.options.length < 1) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, there are no votes for this poll yet`
             }
-        }]);
-        return;
+        }];
     }
 
-    var resultsArray = currentPoll.options.map(function(e, i) {
-        var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
+    let resultsArray = currentPoll.options.map(function(e, i) {
+        let formatted =  '`' + e[0].replace(/`/g, '') + ': ' + currentPoll.votes[i] + '`';
         return [formatted];
     });
 
-    cb([{
+    return [{
         method: 'reply',
         message: {
             text: `<@${message.user}>, this poll's results are: ${resultsArray.join(', ')}`
         }
-    }]);
+    }];
 }
 
-exports.commandResetPoll = function(message, args, cb) {
+module.exports.commandResetPoll = function(message, args, cb) {
 
     // validate
-    var pollNumber = parseInt(args.split(' ')[0]);
+    let pollNumber = parseInt(args.split(' ')[0]);
 
     if (isNaN(pollNumber)) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, this is an invalid poll`
             }
-        }]);
-        return;
+        }];
     }
 
     if (!pollMap[pollNumber - 1]) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, this poll does not exist`
             }
-        }]);
-        return;
+        }];
     }
 
-    var pollUserId = pollMap[pollNumber - 1];
-    var currentPoll = polls[pollUserId];
+    let pollUserId = pollMap[pollNumber - 1];
+    let currentPoll = polls[pollUserId];
 
     // check if this user owns this poll
     if (currentPoll.user !== message.user) {
-        cb([{
+        return [{
             method: 'reply',
             message: {
                 text: `<@${message.user}>, only <@${currentPoll.user}> can reset this poll`
             }
-        }]);
-        return;
+        }];
     }
 
-    var resultsArray = currentPoll.options.map(function(e, i) {
-        var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
+    let resultsArray = currentPoll.options.map(function(e, i) {
+        let formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
         return [formatted];
     });
 
     polls[pollUserId].votes = Array.apply(null, Array(polls[pollUserId].options.length));
     polls[pollUserId].users = [];
     
-    cb([{
+    return [{
         method: 'reply',
         message: {
             text: `<@${message.user}> has reset their poll. \`!vote\` again`
         }
-    }]);
+    }];
 }
 
-exports.getExpiredPolls = function() {
-    var expiredPolls = [];
+module.exports.getExpiredPolls = function() {
+    let expiredPolls = [];
     for(key in polls) {
         if(polls.hasOwnProperty(key) && polls[key] !== null) {
 
-            var currentTimeSeconds = new Date().getTime() / 1000;
+            let currentTimeSeconds = new Date().getTime() / 1000;
 
             if (currentTimeSeconds - polls[key].startTime > (60 * 10)) { // if 10 minutes have passed
-                var resultsArray = polls[key].options.map(function(e, i) {
-                    var formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
+                let resultsArray = polls[key].options.map(function(e, i) {
+                    let formatted =  '`' + e[0].replace(/`/g, '') + ': ' + polls[key].votes[i] + '`';
                     return [formatted];
                 });
 
@@ -383,8 +363,8 @@ exports.getExpiredPolls = function() {
     return expiredPolls;
 }
 
-exports.doTestPoll = function(message, args, cb) {
-    cb([{
+module.exports.doTestPoll = function(message, args, cb) {
+    return [{
         method: 'custom',
         message: {
             text: 'This is a test poll',
@@ -418,6 +398,6 @@ exports.doTestPoll = function(message, args, cb) {
                 }
             ]
         }
-    }]);
+    }];
 }
 

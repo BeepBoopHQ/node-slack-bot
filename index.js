@@ -1,78 +1,29 @@
-var Botkit = require('botkit');
-var firebaseStorage = require('botkit-storage-firebase')({firebase_uri: process.env.FirebaseUri});
+const { RtmClient, RTM_EVENTS, CLIENT_EVENTS } = require('@slack/client');
+const cmds = require('./commands/commands');
+const version = require('./version');
 
-// import commands
-var cmds = require('./commands/commands');
+// auto import .env file
+require('dotenv').load();
 
-var token = process.env.SLACK_TOKEN;
+// data cache
+const appData = {};
 
-// command list
-var commands = {};
+// commands
+let commands = {};
 
-var controller = Botkit.slackbot({
-  // reconnect to Slack RTM when connection goes bad
-  retry: Infinity,
-  debug: false,
-  storage: firebaseStorage
-});
 
-// Assume single team mode if we have a SLACK_TOKEN
-if (token) {
-  controller.spawn({
-    token: token
-  }).startRTM(function (err, bot, payload) {
-    if (err) {
-      throw new Error(err)
-    }
+let token = process.env.SLACK_TOKEN || '';
+let rtm = new RtmClient(token, { loglevel: 'debug' });
 
-    bot.say({
-      text: 'russell_bot has connected',
-      channel: 'C2ARE3TQU'
-    });
+parseAndProcessCommand = (message) => {
 
-    var version = ''
+    // not a ! command
+  let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);
 
-    cmds.replies.commandVersion(null, null, function(res) {
-      version = res[0].message.text;
-    });
+  if (!parsedMessage || parsedMessage.length < 2) return;
 
-    bot.say({
-      text: `running ${version}`,
-      channel: 'C2ARE3TQU'
-    });
-
-    // run the poll timer
-    setInterval(function() {
-      var expiredPolls = cmds.poll.getExpiredPolls();
-
-      if (expiredPolls && expiredPolls.length > 0) {
-        for (var poll in expiredPolls) {
-          bot.say({
-            text: `<@${expiredPolls[poll].user}>'s poll has ended. results are: ${expiredPolls[poll].results}`,
-            channel: expiredPolls[poll].channel
-          });
-        }
-      }
-
-    }, 10000);
-  });
-
-// Otherwise assume multi-team mode - setup beep boop resourcer connection
-} else {
-  require('beepboop-botkit').start(controller, { debug: true })
-}
-
-// build the command dictionary
-buildCommandDictionary();
-
-controller.on('bot_channel_join', function (bot, message) {
-  bot.reply(message, '#gohawks');
-});
-
-controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direct_mention'], function (bot, message) {
-
-  var command = message.match[1].toLowerCase();
-  var commandMsg = '';
+  let command = parsedMessage[1].toLowerCase();
+  let commandMsg = '';
 
   // get the command and the arguments
   if (command.indexOf(' ') !== -1) {
@@ -86,49 +37,39 @@ controller.hears('^!(.*)\s?(.*)?$', ['ambient','mention','direct_message','direc
   }
 
   // get an array of responses
-  var responses = [];
+  let responses = commands[command](message, commandMsg);
 
-  commands[command](message, commandMsg, function (resArray) {
-    responses = resArray;
-  
-    if (!responses) return;
+  for (let idx in responses) {
+    rtm.sendMessage(responses[idx].message.text, message.channel);
+  }
+}
 
-    console.log('about to respond, method ' + responses[0].method);
+shouldReadMessage = (message) => {
 
-    for (var idx in responses) {
-      
-      // do the thing based on the bot reply method
-      switch(responses[idx].method) {
-        case 'reply':
-          console.log(responses[idx].message.text);
-          bot.reply(message, responses[idx].message.text);
-          break;
-        case 'say':
-          console.log(responses[idx].message);
-          bot.say(responses[idx].message);
-          break;
-        case 'convo':
-          bot.startConversation(message, function(err, convo) {
-            
-            // iterate thru the conversation messages
-            for (var msg in responses[idx].message.conversation) {
-              convo.say(responses[idx].message.conversation[msg]);
-            }
-          });
-          break;
-        case 'custom':
-          console.log(responses[idx].message);
-          bot.reply(message, responses[idx].message);
-          break;
-      }
+  // bot message or from myself
+  if (isBotMessage(message) || message.user === appData.selfId) return false;
+
+  return true;
+}
+
+isBotMessage = (message) => {
+  return message.subtype && message.subtype === 'bot_message';
+}
+
+pollTimer = () => {
+  let expiredPolls = cmds.poll.getExpiredPolls();
+
+  if (expiredPolls && expiredPolls.length > 0) {
+    for (let poll in expiredPolls) {
+      rtm.sendMessage(`<@${expiredPolls[poll].user}>'s poll has ended. results are: ${expiredPolls[poll].results}`, expiredPolls[poll].channel);
     }
-  });
-});
+  }
+}
 
-function listCommands(message, commandMsg, cb) {
-  var commandList = 'commands available: \r\n ```';
+listCommands = (message, commandMsg) => {
+  let commandList = 'commands available: \r\n ```';
 
-  for(var key in commands) {
+  for(let key in commands) {
     if (commands.hasOwnProperty(key)) {
       commandList += '!' + key + '\r\n';
     }
@@ -136,15 +77,15 @@ function listCommands(message, commandMsg, cb) {
 
   commandList += '```'
 
-  cb([{
+  return [{
     method: 'reply',
     message: {
       text: commandList
     }
-  }]);
+  }];
 }
 
-function buildCommandDictionary() {
+buildCommandDictionary = () => {
   // simple replies
   commands['berto'] = cmds.replies.commandBerto;
   commands['gohawks'] = cmds.replies.commandGoHawks;
@@ -174,10 +115,6 @@ function buildCommandDictionary() {
   commands['ichooseyou'] = cmds.pokemon.commandIChooseYou;
   commands['pokemon'] = cmds.pokemon.commandPokemon;
 
-  // football-related
-  commands['matchup'] = cmds.matchups.commandDbMatchups;
-  commands['newmatchup'] = cmds.matchups.commandInsertMatchup;
-
   // cross-channel replies
   commands['feature'] = cmds.replies.commandFeature;
   commands['bug'] = cmds.replies.commandBug;
@@ -189,4 +126,30 @@ function buildCommandDictionary() {
   commands['commands'] = listCommands;
 }
 
+rtm.on(RTM_EVENTS.AUTHENTICATED, (connectData) => {
+  appData.selfId = connectData.self.id;
+});
 
+rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
+  rtm.sendMessage('russell_bot has connected', 'C2ARE3TQU');
+  rtm.sendMessage(`running ${version.version}`, 'C2ARE3TQU');
+
+  // start the poll timer
+  setInterval(pollTimer, 10000);
+
+  // build the commands
+  buildCommandDictionary();
+});
+
+rtm.on(RTM_EVENTS.CHANNEL_JOINED, (message) => {
+  rtm.sendMessage('#gohawks', message.channel);
+});
+
+rtm.on(RTM_EVENTS.MESSAGE, (message) => {
+
+  if (!shouldReadMessage(message)) return;
+
+  parseAndProcessCommand(message)
+});
+
+rtm.start();

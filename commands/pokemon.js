@@ -1,4 +1,4 @@
-var pokemonList = [
+const pokemonList = [
   {name: 'pidgeot', img: 'http://media-cerulean.cursecdn.com/avatars/274/719/018_00.png' },
   {name: 'mewtwo', img: 'http://pkmn.net/sprites/blackwhite/front/150.png' },
   {name: 'arcanine', img: 'https://i.dstatic.com/images/pokemon/front/normal/arcanine.png' },
@@ -12,11 +12,9 @@ var pokemonList = [
   {name: 'gengar', img: 'http://cdn.bulbagarden.net/upload/2/21/Spr_5b_094.png'}
 ];
 
-var exports = module.exports = {};
-
-exports.commandPokemon = function commandPokemon(message, args, cb) {
+module.exports.commandPokemon = function commandPokemon(message, args) {
     // list the pkmn
-    var reply = {
+    let reply = {
         'username': 'Professor Oak',
         'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
         'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```'
@@ -28,19 +26,18 @@ exports.commandPokemon = function commandPokemon(message, args, cb) {
 
     reply.text += '```';
 
-    cb([{
-        method: 'reply',
+    return [{
         message: {
             text: reply
         }
-    }]);
+    }];
 }
 
-exports.commandIChooseYou = function commandIChooseYou(message, args, cb) {
+module.exports.commandIChooseYou = function commandIChooseYou(message, args) {
     // ok so you say a pokeman and if it matches it shows a badass pic of the pokemon
-    var chosenPokemon = '';
-    var chosenPokemonImg = '';
-    var reply = {};
+    let chosenPokemon = '';
+    let chosenPokemonImg = '';
+    let reply = {};
 
     for (i in pokemonList) {
         if(pokemonList[i].name.toLowerCase() === args.toLowerCase()) {
@@ -60,13 +57,11 @@ exports.commandIChooseYou = function commandIChooseYou(message, args, cb) {
             }]
         }
 
-        cb([{
-            method: 'reply',
+        return [{
             message: {
                 text: reply
             }
-        }]);
-        return;
+        }];
     }
 
     reply = {
@@ -75,10 +70,9 @@ exports.commandIChooseYou = function commandIChooseYou(message, args, cb) {
         'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
     };
 
-    cb([{
-        method: 'reply',
+    return [{
         message: {
             text: reply
         }
-    }]);
+    }];
 }
