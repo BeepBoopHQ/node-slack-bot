@@ -1,4 +1,4 @@
-const { RtmClient, RTM_EVENTS, CLIENT_EVENTS } = require('@slack/client');
+const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/client');
 const cmds = require('./commands/commands');
 const version = require('./version');
 
@@ -11,9 +11,10 @@ const appData = {};
 // commands
 let commands = {};
 
-
 let token = process.env.SLACK_TOKEN || '';
 let rtm = new RtmClient(token, { loglevel: 'debug' });
+
+let web = new WebClient(token);
 
 parseAndProcessCommand = (message) => {
 
@@ -40,6 +41,20 @@ parseAndProcessCommand = (message) => {
   let responses = commands[command](message, commandMsg);
 
   for (let idx in responses) {
+    if (responses[idx].type === 'custom') {
+
+      let opts = responses[idx].message;
+
+      opts.bot_id = appData.selfId;
+      opts.type = 'message';
+      opts.subtype = 'bot_message';
+      opts.as_user = false;
+
+      web.chat.postMessage(responses[idx].message.channel, responses[idx].message.text, opts);
+
+      break;
+    }
+
     rtm.sendMessage(responses[idx].message.text, message.channel);
   }
 }
