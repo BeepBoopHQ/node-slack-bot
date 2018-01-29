@@ -116,11 +116,11 @@ module.exports.commandBug =  (message, commandMsg) => {
   return [{
     message: {
       text: `<@${message.user}> has reported a bug: ${commandMsg}`,
-      channel: 'C6LKZEHEE'
+      channel: 'C2ARE3TQU'
     }
   }, {
     message: {
-      text: 'thanks for your bug report. you can find it in #bugreports'
+      text: 'thanks for your bug report. you can find it in #fantasybot'
     }
   }];
 }
