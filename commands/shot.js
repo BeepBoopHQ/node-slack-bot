@@ -7,7 +7,8 @@ module.exports.commandShot = (message, args) => {
     return [{
       method: 'reply',
       message: {
-        text: 'use `!shot <person> <number>`'
+        text: 'use `!shot <person> <number>`',
+        channel: message.channel
       }
     }];
   }
@@ -16,7 +17,8 @@ module.exports.commandShot = (message, args) => {
     return [{
       method: 'reply',
       message: {
-        text: 'use a number between 1 and 20'
+        text: 'use a number between 1 and 20',
+        channel: message.channel
       }
     }];
   }
@@ -35,7 +37,8 @@ module.exports.commandShot = (message, args) => {
   return [{
     method: 'reply',
     message: {
-      text: reply
+      text: reply,
+      channel: message.channel
     }
   }];
 }

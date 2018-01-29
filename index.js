@@ -41,8 +41,10 @@ parseAndProcessCommand = (message) => {
   let responses = commands[command](message, commandMsg);
 
   for (let idx in responses) {
-    if (responses[idx].type === 'custom') {
 
+    let channel = responses[idx].message.channel ? responses[idx].message.channel : message.channel;
+
+    if (responses[idx].type === 'custom') {
       let opts = responses[idx].message;
 
       opts.bot_id = appData.selfId;
@@ -50,12 +52,12 @@ parseAndProcessCommand = (message) => {
       opts.subtype = 'bot_message';
       opts.as_user = false;
 
-      web.chat.postMessage(responses[idx].message.channel, responses[idx].message.text, opts);
+      web.chat.postMessage(channel, responses[idx].message.text, opts);
 
       break;
     }
 
-    rtm.sendMessage(responses[idx].message.text, message.channel);
+    rtm.sendMessage(responses[idx].message.text, channel);
   }
 }
 

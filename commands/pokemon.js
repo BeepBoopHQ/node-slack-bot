@@ -17,8 +17,7 @@ module.exports.commandPokemon = (message, args) => {
     let reply = {
         'username': 'Professor Oak',
         'icon_url': 'http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png',
-        'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```',
-        'channel': message.channel
+        'text': 'here are the pokemon at your disposal! use `!ichooseyou <pokemon>`!\n```'
     };
 
     for (i in pokemonList) {
@@ -54,8 +53,7 @@ module.exports.commandIChooseYou = (message, args) => {
                 'fallback' : `<@${message.user}> chooses ${chosenPokemon}!`,
                 'text' : `<@${message.user}> chooses ${chosenPokemon}!`,
                 'image_url': chosenPokemonImg
-            }],
-            'channel': message.channel
+            }]
         }
 
         return [{
@@ -67,8 +65,7 @@ module.exports.commandIChooseYou = (message, args) => {
     reply = {
         'username': 'Professor Oak',
         'icon_url': "http://66.media.tumblr.com/avatar_560e9f72e0bf_128.png",
-        'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``,
-        'channel': message.channel
+        'text': `<@${message.user}>, no such pokemon! use \`!pokemon\``
     };
 
     return [{

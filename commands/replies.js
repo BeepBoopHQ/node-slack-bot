@@ -228,8 +228,7 @@ module.exports.commandChallengeAccepted =  (message, commandMsg) => {
       'fallback': 'Challenge accepted.',
       'text': 'Challenge accepted.',
       'image_url' : 'https://i.pinimg.com/736x/5a/c8/80/5ac880fa35b1e9648fcbd4623d25905c--himym-challenge-accepted.jpg'
-    }],
-    'channel': message.channel
+    }]
   };
 
   return [{
@@ -242,8 +241,7 @@ module.exports.commandLGRW =  (message, commandMsg) => {
   const reply = {
     'username': 'Al the Octopus',
     'icon_url': 'https://i.pinimg.com/originals/75/74/15/75741576dd2224c66ed8a66489bdf487.jpg',
-    'text': '#LGRW',
-    'channel': message.channel
+    'text': '#LGRW'
   };
 
   return [{
