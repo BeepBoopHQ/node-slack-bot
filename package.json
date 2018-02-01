@@ -24,6 +24,7 @@
   "dependencies": {
     "@slack/client": "^3.15.0",
     "dotenv": "^4.0.0",
+    "express": "^4.16.2",
     "mysql": "^2.14.1",
     "superagent": "^2.3.0"
   }

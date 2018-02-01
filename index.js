@@ -1,3 +1,6 @@
+// express for heroku i guess
+const express = require('express');
+
 const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/client');
 const cmds = require('./commands/commands');
 const version = require('./version');
@@ -170,3 +173,14 @@ rtm.on(RTM_EVENTS.MESSAGE, (message) => {
 });
 
 rtm.start();
+
+// express
+let app = express();
+
+app.get('/', (req, res) => {
+  res.send('I''m a bot');
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log('listening on port ', (process.env.PORT || 3000));
+});
