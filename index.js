@@ -178,7 +178,7 @@ rtm.start();
 let app = express();
 
 app.get('/', (req, res) => {
-  res.send('I''m a bot');
+  res.send('Hi I am a bot');
 });
 
 app.listen(process.env.PORT || 3000, () => {
