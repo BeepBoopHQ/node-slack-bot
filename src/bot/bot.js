@@ -141,6 +141,9 @@ buildCommandDictionary = () => {
   
   // directory
   commands['commands'] = listCommands;
+
+  // sql test
+  commands['testdb'] = cmds.replies.commandTestDb;
 }
 
 module.exports.startBot = () => {

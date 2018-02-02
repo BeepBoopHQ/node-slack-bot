@@ -1,4 +1,5 @@
-let version = require('../../version.js');
+let version = require('../../version');
+let dbUtils = require('../util/db/dbUtils');
 
 module.exports.commandBerto =  (message, commandMsg) => {
   return [{

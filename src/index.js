@@ -3,6 +3,8 @@ const express = require('express');
 
 const Bot = require('../src/bot/bot');
 
+require('dotenv').load();
+
 module.exports.init = () => {
   // start russ
   Bot.startBot();
