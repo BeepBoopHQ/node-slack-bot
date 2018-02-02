@@ -1,14 +1,14 @@
 {
-  "name": "node-slack-bot",
+  "name": "league-of-goons-bot",
   "version": "1.0.0",
-  "description": "A sample Beep Boop Node.js Slackbot",
+  "description": "League of Goons Slack bot",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beepboophq/node-slack-bot.git"
+    "url": "git+https://github.com/canadaj/league-of-goons-bot.git"
   },
   "keywords": [
     "slackbot",
@@ -18,9 +18,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/beepboophq/node-slack-bot/issues"
+    "url": "https://github.com/canadaj/league-of-goons-bot/issues"
   },
-  "homepage": "https://github.com/beepboophq/node-slack-bot#readme",
+  "homepage": "https://github.com/canadaj/league-of-goons-bot",
   "dependencies": {
     "@slack/client": "^3.15.0",
     "dotenv": "^4.0.0",
