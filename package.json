@@ -25,7 +25,6 @@
     "@slack/client": "^3.15.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
-    "style-loader": "^0.20.1",
-    "superagent": "^2.3.0",
+    "superagent": "^2.3.0"
   }
 }

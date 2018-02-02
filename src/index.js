@@ -1,7 +1,7 @@
 // express for heroku i guess
 const express = require('express');
 
-const Bot = require('../../../src/bot/bot');
+const Bot = require('../src/bot/bot');
 
 module.exports.init = () => {
   // start russ
