@@ -250,3 +250,63 @@ module.exports.commandLGRW =  (message, commandMsg) => {
     message: reply
   }];
 }
+
+module.exports.commandTestDbPoll = (message, commandMsg) => {
+  dbUtils.startPoll('foo', 'channel', () => {
+    console.log('in callback');
+  });
+
+  return [{
+    message: {
+      text: 'doing db stuff beep boop'
+    }
+  }];
+}
+
+module.exports.commandTestAddPollOption = (message, commandMsg) => {
+  dbUtils.addPollOption(1, 'option', 'foo', () => {
+    console.log('in callback');
+  });
+
+  return [{
+    message: {
+      text: 'doing db stuff beep boop'
+    }
+  }];
+}
+
+module.exports.commandTestAddPollVote = (message, commandMsg) => {
+  dbUtils.addPollVote(1, 'user', '0', () => {
+    console.log('in callback');
+  });
+
+  return [{
+    message: {
+      text: 'doing db stuff beep boop'
+    }
+  }];
+}
+
+module.exports.commandTestPollResults = (message, commandMsg) => {
+  dbUtils.getPollResults(1, () => {
+    console.log('in callback');
+  });
+
+  return [{
+    message: {
+      text: 'doing db stuff beep boop'
+    }
+  }];
+}
+
+module.exports.commandEndPoll = (message, commandMsg) => {
+  dbUtils.endPoll(1, 'foo', () => {
+    console.log('in callback');
+  });
+
+  return [{
+    message: {
+      text: 'doing db stuff beep boop'
+    }
+  }];
+}

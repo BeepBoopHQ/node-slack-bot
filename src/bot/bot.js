@@ -143,7 +143,12 @@ buildCommandDictionary = () => {
   commands['commands'] = listCommands;
 
   // sql test
-  commands['testdb'] = cmds.replies.commandTestDb;
+  // commands['testdb'] = cmds.replies.commandTestDb;
+  // commands['testdbpoll'] = cmds.replies.commandTestDbPoll;
+  // commands['testaddpolloption'] = cmds.replies.commandTestAddPollOption;
+  // commands['testaddpollvote'] = cmds.replies.commandTestAddPollVote;
+  // commands['testgetpollresults'] = cmds.replies.commandTestPollResults;
+  // commands['testendpoll'] = cmds.replies.commandEndPoll;
 }
 
 module.exports.startBot = () => {
