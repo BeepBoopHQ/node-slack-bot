@@ -1,6 +1,7 @@
 const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/client');
 const cmds = require('./commands/commands');
 const version = require('../version');
+const Message = require('./util/message/messageUtils');
 
 // auto import .env file
 require('dotenv').load();
@@ -10,6 +11,9 @@ const appData = {};
 
 // commands
 let commands = {};
+
+// message obj
+let messageHandler;
 
 let token = process.env.SLACK_TOKEN || '';
 let rtm = new RtmClient(token, { loglevel: 'debug' });
@@ -22,6 +26,9 @@ parseAndProcessCommand = (message) => {
   let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);
 
   if (!parsedMessage || parsedMessage.length < 2) return;
+
+  // send a typing thing
+  messageHandler.typing(message.channel);
 
   let command = parsedMessage[1].toLowerCase();
   let commandMsg = '';
@@ -40,25 +47,7 @@ parseAndProcessCommand = (message) => {
   // get an array of responses
   let responses = commands[command](message, commandMsg);
 
-  for (let idx in responses) {
-
-    let channel = responses[idx].message.channel ? responses[idx].message.channel : message.channel;
-
-    if (responses[idx].type === 'custom') {
-      let opts = responses[idx].message;
-
-      opts.bot_id = appData.selfId;
-      opts.type = 'message';
-      opts.subtype = 'bot_message';
-      opts.as_user = false;
-
-      web.chat.postMessage(channel, responses[idx].message.text, opts);
-
-      break;
-    }
-
-    rtm.sendMessage(responses[idx].message.text, channel);
-  }
+  messageHandler.send(message, responses);
 }
 
 shouldReadMessage = (message) => {
@@ -152,13 +141,26 @@ buildCommandDictionary = () => {
 }
 
 module.exports.startBot = () => {
-  rtm.on(RTM_EVENTS.AUTHENTICATED, (connectData) => {
+  rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (connectData) => {
     appData.selfId = connectData.self.id;
   });
 
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
-    rtm.sendMessage('russell_bot has connected', 'C2ARE3TQU');
-    rtm.sendMessage(`running \`${version.version}\``, 'C2ARE3TQU');
+    messageHandler = new Message(rtm, web, appData.selfId);
+
+    let responses = [{
+      message: {
+        channel: 'C2ARE3TQU',
+        text: 'russell_bot has connected'
+      }
+    }, {
+      message: {
+        channel: 'C2ARE3TQU',
+        text: `running \`${version.version}\``
+      }
+    }];
+
+    messageHandler.send(null, responses, appData.selfId);
 
     // start the poll timer
     setInterval(pollTimer, 10000);
