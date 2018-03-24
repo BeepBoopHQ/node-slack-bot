@@ -1,6 +1,7 @@
-function Message(rtm, web, selfId) {
+function Message(rtm, web, webAdmin, selfId) {
   this.rtm = rtm;
   this.web = web;
+  this.webAdmin = webAdmin;
   this.selfId = selfId;
 
   this.send = (message, responses) => {
@@ -27,6 +28,10 @@ function Message(rtm, web, selfId) {
 
   this.typing = (channel) => {
     this.rtm.sendTyping(channel);
+  }
+
+  this.delete = (ts, channel) => {
+    this.webAdmin.chat.delete(ts, channel);
   }
 }
 

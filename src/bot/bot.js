@@ -19,8 +19,17 @@ let token = process.env.SLACK_TOKEN || '';
 let rtm = new RtmClient(token, { loglevel: 'debug' });
 
 let web = new WebClient(token);
+let webAdmin = new WebClient(process.env.SLACK_ADMIN_TOKEN);
 
 parseAndProcessCommand = (message) => {
+
+  if (!message || !message.text) return;
+
+  // check if the user is banned first
+  if (cmds.admin.isUserBanned(message.user)) {
+    // delete message
+    messageHandler.delete(message.ts, message.channel);
+  }
 
     // not a ! command
   let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);
@@ -70,6 +79,10 @@ pollTimer = () => {
       rtm.sendMessage(`<@${expiredPolls[poll].user}>'s poll has ended. results are: ${expiredPolls[poll].results}`, expiredPolls[poll].channel);
     }
   }
+}
+
+banTimer = () => {
+  cmds.admin.checkBans();
 }
 
 listCommands = (message, commandMsg) => {
@@ -131,6 +144,9 @@ buildCommandDictionary = () => {
   // directory
   commands['commands'] = listCommands;
 
+  // admin
+  commands['ban'] = cmds.admin.commandBan;
+
   // sql test
   // commands['testdb'] = cmds.replies.commandTestDb;
   // commands['testdbpoll'] = cmds.replies.commandTestDbPoll;
@@ -146,7 +162,7 @@ module.exports.startBot = () => {
   });
 
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
-    messageHandler = new Message(rtm, web, appData.selfId);
+    messageHandler = new Message(rtm, web, webAdmin, appData.selfId);
 
     let responses = [{
       message: {
@@ -164,6 +180,9 @@ module.exports.startBot = () => {
 
     // start the poll timer
     setInterval(pollTimer, 10000);
+
+    // set ban timer
+    setInterval(banTimer, 10000);
 
     // build the commands
     buildCommandDictionary();
