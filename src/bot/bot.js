@@ -29,6 +29,7 @@ parseAndProcessCommand = (message) => {
   if (cmds.admin.isUserBanned(message.user)) {
     // delete message
     messageHandler.delete(message.ts, message.channel);
+    return;
   }
 
     // not a ! command
