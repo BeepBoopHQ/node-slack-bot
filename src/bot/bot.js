@@ -146,6 +146,7 @@ buildCommandDictionary = () => {
 
   // admin
   commands['ban'] = cmds.admin.commandBan;
+  commands['unban'] = cmds.admin.commandUnban;
 
   // sql test
   // commands['testdb'] = cmds.replies.commandTestDb;
