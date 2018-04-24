@@ -251,6 +251,14 @@ module.exports.commandLGRW =  (message, commandMsg) => {
   }];
 }
 
+module.exports.commandHypeBeast = (message, commandMsg) => {
+  return [{
+    message: {
+      text: ':supreme-s::supreme-u::supreme-p::supreme-r::supreme-e1::supreme-m::supreme-e2:'
+    }
+  }];
+};
+
 module.exports.commandTestDbPoll = (message, commandMsg) => {
   dbUtils.startPoll('foo', 'channel', () => {
     console.log('in callback');
