@@ -138,8 +138,6 @@ module.exports.commandVote = (message, args) => {
 
     // check for an existing vote
     if (userId === message.user) {
-      console.log(existingVote);
-      console.log(voteOption - 1);
 
       // check and see if this is the same vote option
       if (existingVote === (voteOption - 1)) {
