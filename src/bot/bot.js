@@ -36,9 +36,6 @@ function parseAndProcessCommand(message) {
 
   if (!parsedMessage || parsedMessage.length < 2) return;
 
-  // send a typing thing
-  messageHandler.typing(message.channel);
-
   let command = parsedMessage[1].toLowerCase();
   let commandMsg = '';
 
@@ -52,6 +49,9 @@ function parseAndProcessCommand(message) {
   if (!(command in commands)) {
     return;
   }
+
+  // send a typing thing
+  messageHandler.typing(message.channel);
 
   // get an array of responses
   let responses = commands[command](message, commandMsg);
