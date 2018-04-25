@@ -1,76 +1,70 @@
 let version = require('../../version');
 let dbUtils = require('../util/db/dbUtils');
 
-module.exports.commandBerto =  (message, commandMsg) => {
+module.exports.commandBerto = (message, commandMsg) => {
   return [{
     message: {
       text: '<@U2ASHP5FT> ayo berto :100:'
     }
   }];
-}
+};
 
-module.exports.commandGoHawks =  (message, commandMsg) => {
+module.exports.commandGoHawks = (message, commandMsg) => {
   return [{
     message: {
       text: '#gohawks'
     }
   }];
-}
+};
 
-module.exports.commandRussell =  (message, commandMsg) => {
+module.exports.commandRussell = (message, commandMsg) => {
   return [{
     message: {
       text: '`beep boop i am russell_bot`'
     }
   }];
-}
+};
 
-module.exports.commandLit =  (message, commandMsg) => {
+module.exports.commandLit = (message, commandMsg) => {
   return [{
     message: {
       text: ':100::100::100::fire::fire::fire::champagne::champagne::champagne:'
     }
   }];
-}
+};
 
-module.exports.commandExBert =  (message, commandMsg) => {
-
+module.exports.commandExBert = (message, commandMsg) => {
   if (!commandMsg) {
     return [{
       message: {
         text: 'use `!exbert <text>`'
       }
     }];
-
-    return;
   }
 
   // lol
-  return[{
+  return [{
     message: {
       text: `<@U2ASHP5FT>, <@${message.user}> needs an exbert: ${commandMsg}`
     }
   }];
-}
+};
 
-module.exports.commandTrapHorns =  (message, commandMsg) => {
+module.exports.commandTrapHorns = (message, commandMsg) => {
   return [{
     message: {
       text: 'https://www.youtube.com/watch?v=Ip1SYl97kh4 :trumpet::trumpet::trumpet::trumpet:'
     }
   }];
-}
+};
 
-module.exports.commandEscalate =  (message, commandMsg) => {
-
+module.exports.commandEscalate = (message, commandMsg) => {
   if (!commandMsg) {
     return [{
       message: {
         text: 'use `!escalate <text>`'
       }
     }];
-
-    return;
   }
 
   let response = {
@@ -79,33 +73,32 @@ module.exports.commandEscalate =  (message, commandMsg) => {
     }
   };
 
-  if (message.user !== "U2ARFPF62") {
+  if (message.user !== 'U2ARFPF62') {
     response.message.text = 'Thanks for your ticket, an associate will be with you shortly.';
   } else {
     response.message.text = `<@U2ASHP5FT> :fire::fire: [HIGH PRIORITY] :fire::fire: ${commandMsg} :fire::fire: [HIGH PRIORITY] :fire::fire:`;
   }
 
   return [response];
-}
+};
 
-module.exports.commandBlessUp =  (message, commandMsg) => {
+module.exports.commandBlessUp = (message, commandMsg) => {
   return [{
     message: {
       text: 'bless up :djkhaled::key:'
     }
   }];
-}
+};
 
-module.exports.commandVersion =  (message, commandMsg) => {
+module.exports.commandVersion = (message, commandMsg) => {
   return [{
     message: {
       text: `russell_bot version: \`${version.version}\``
     }
   }];
-}
+};
 
-module.exports.commandBug =  (message, commandMsg) => {
-
+module.exports.commandBug = (message, commandMsg) => {
   if (!commandMsg) {
     return [{
       message: {
@@ -124,10 +117,9 @@ module.exports.commandBug =  (message, commandMsg) => {
       text: 'thanks for your bug report. you can find it in #fantasybot'
     }
   }];
-}
+};
 
-module.exports.commandFeature =  (message, commandMsg) => {
-
+module.exports.commandFeature = (message, commandMsg) => {
   if (!commandMsg) {
     return [{
       message: {
@@ -146,9 +138,9 @@ module.exports.commandFeature =  (message, commandMsg) => {
       text: 'thanks for your feature request. you can find it in #fantasybot'
     }
   }];
-}
+};
 
-module.exports.commandCeleryMan =  (message, commandMsg) => {
+module.exports.commandCeleryMan = (message, commandMsg) => {
   // computer load up celery man
   return [{
     message: {
@@ -159,15 +151,15 @@ module.exports.commandCeleryMan =  (message, commandMsg) => {
       text: 'http://i.imgur.com/zSr6jEB.gif'
     }
   }];
-}
+};
 
-module.exports.commandFlipCoin =  (message, commandMsg) => {
+module.exports.commandFlipCoin = (message, commandMsg) => {
   let replies = [];
 
   if (commandMsg) {
     const side = commandMsg.split(' ')[0];
 
-    if(side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
+    if (side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
       return [{
         message: {
           text: 'side must be `heads` or `tails`'
@@ -177,7 +169,7 @@ module.exports.commandFlipCoin =  (message, commandMsg) => {
 
     const text = commandMsg.substr(commandMsg.indexOf(' ') + 1);
 
-    if(!text) {
+    if (!text) {
       return [{
         message: {
           text: 'can\'t leave the text blank'
@@ -189,11 +181,11 @@ module.exports.commandFlipCoin =  (message, commandMsg) => {
       message: {
         text: `<@${message.user}> is flipping a coin! if ${side} then <@${message.user}> ${text}`
       }
-    })
+    });
 
     const flip = (Math.floor(Math.random() * (2 - 1 + 1)) + 1);
 
-    if(flip === 1) {
+    if (flip === 1) {
       replies.push({
         message: {
           text: `It's *heads*! <@${message.user}> said: ${text}`
@@ -219,16 +211,16 @@ module.exports.commandFlipCoin =  (message, commandMsg) => {
       text: ((Math.floor(Math.random() * (2 - 1 + 1)) + 1) === 1 ? 'It\'s Heads!' : 'It\'s Tails!')
     }
   }];
-}
+};
 
-module.exports.commandChallengeAccepted =  (message, commandMsg) => {
+module.exports.commandChallengeAccepted = (message, commandMsg) => {
   const reply = {
     'username': 'Barney Stinson',
     'icon_url': 'https://pbs.twimg.com/profile_images/2925485686/23b6d30cdb4e3b6dca5ead7b351f06d1_400x400.jpeg',
     'attachments': [{
       'fallback': 'Challenge accepted.',
       'text': 'Challenge accepted.',
-      'image_url' : 'https://i.pinimg.com/736x/5a/c8/80/5ac880fa35b1e9648fcbd4623d25905c--himym-challenge-accepted.jpg'
+      'image_url': 'https://i.pinimg.com/736x/5a/c8/80/5ac880fa35b1e9648fcbd4623d25905c--himym-challenge-accepted.jpg'
     }]
   };
 
@@ -236,9 +228,9 @@ module.exports.commandChallengeAccepted =  (message, commandMsg) => {
     type: 'custom',
     message: reply
   }];
-}
+};
 
-module.exports.commandLGRW =  (message, commandMsg) => {
+module.exports.commandLGRW = (message, commandMsg) => {
   const reply = {
     'username': 'Al the Octopus',
     'icon_url': 'https://i.pinimg.com/originals/75/74/15/75741576dd2224c66ed8a66489bdf487.jpg',
@@ -249,7 +241,7 @@ module.exports.commandLGRW =  (message, commandMsg) => {
     type: 'custom',
     message: reply
   }];
-}
+};
 
 module.exports.commandHypeBeast = (message, commandMsg) => {
   return [{
@@ -269,7 +261,7 @@ module.exports.commandTestDbPoll = (message, commandMsg) => {
       text: 'doing db stuff beep boop'
     }
   }];
-}
+};
 
 module.exports.commandTestAddPollOption = (message, commandMsg) => {
   dbUtils.addPollOption(1, 'option', 'foo', () => {
@@ -281,7 +273,7 @@ module.exports.commandTestAddPollOption = (message, commandMsg) => {
       text: 'doing db stuff beep boop'
     }
   }];
-}
+};
 
 module.exports.commandTestAddPollVote = (message, commandMsg) => {
   dbUtils.addPollVote(1, 'user', '0', () => {
@@ -293,7 +285,7 @@ module.exports.commandTestAddPollVote = (message, commandMsg) => {
       text: 'doing db stuff beep boop'
     }
   }];
-}
+};
 
 module.exports.commandTestPollResults = (message, commandMsg) => {
   dbUtils.getPollResults(1, () => {
@@ -305,7 +297,7 @@ module.exports.commandTestPollResults = (message, commandMsg) => {
       text: 'doing db stuff beep boop'
     }
   }];
-}
+};
 
 module.exports.commandEndPoll = (message, commandMsg) => {
   dbUtils.endPoll(1, 'foo', () => {
@@ -318,3 +310,4 @@ module.exports.commandEndPoll = (message, commandMsg) => {
     }
   }];
 }
+;

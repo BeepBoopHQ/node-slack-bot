@@ -1,8 +1,7 @@
 const banList = [];
 
 module.exports.commandUnban = (message, args) => {
-
-  if (message.user !== "U2ARFPF62") {
+  if (message.user !== 'U2ARFPF62') {
     return [{
       method: 'reply',
       message: {
@@ -24,11 +23,10 @@ module.exports.commandUnban = (message, args) => {
       banList[ban].banStart = 0;
     }
   }
-}
+};
 
 module.exports.commandBan = (message, args) => {
-
-  if (message.user !== "U2ARFPF62") {
+  if (message.user !== 'U2ARFPF62') {
     return [{
       method: 'reply',
       message: {
@@ -72,7 +70,7 @@ module.exports.commandBan = (message, args) => {
     banDuration: time,
     isBanned: true
   });
-}
+};
 
 function isUserBanned(user) {
   if (!user) return false;
@@ -103,4 +101,4 @@ module.exports.checkBans = () => {
       banList[ban].banStart = 0;
     }
   }
-}
+};

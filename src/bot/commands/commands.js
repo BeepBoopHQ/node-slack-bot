@@ -1,7 +1,7 @@
 module.exports = {
-    pokemon: require('./pokemon'),
-    shot: require('./shot'),
-    replies: require('./replies'),
-    poll: require('./poll'),
-    admin: require('./admin')
-}
+  pokemon: require('./pokemon'),
+  shot: require('./shot'),
+  replies: require('./replies'),
+  poll: require('./poll'),
+  admin: require('./admin')
+};

@@ -26,7 +26,7 @@ module.exports.commandShot = (message, args) => {
   const roll = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
   let reply = '';
 
-  if(roll === 1) {
+  if (roll === 1) {
     reply = `you rolled a *${roll}*, <@${message.user}>, you have to take a shot!`;
   } else if (roll === number || roll === 20) {
     reply = `you rolled a *${roll}*, success! ${user} has to take a shot!`;
@@ -41,4 +41,4 @@ module.exports.commandShot = (message, args) => {
       channel: message.channel
     }
   }];
-}
+};

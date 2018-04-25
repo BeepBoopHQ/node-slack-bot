@@ -21,8 +21,7 @@ let rtm = new RtmClient(token, { loglevel: 'debug' });
 let web = new WebClient(token);
 let webAdmin = new WebClient(process.env.SLACK_ADMIN_TOKEN);
 
-parseAndProcessCommand = (message) => {
-
+function parseAndProcessCommand(message) {
   if (!message || !message.text) return;
 
   // check if the user is banned first
@@ -32,7 +31,7 @@ parseAndProcessCommand = (message) => {
     return;
   }
 
-    // not a ! command
+  // not a ! command
   let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);
 
   if (!parsedMessage || parsedMessage.length < 2) return;
@@ -50,7 +49,7 @@ parseAndProcessCommand = (message) => {
   }
 
   // invalid command, ignore it
-  if(!(command in commands)) {
+  if (!(command in commands)) {
     return;
   }
 
@@ -60,19 +59,18 @@ parseAndProcessCommand = (message) => {
   messageHandler.send(message, responses);
 }
 
-shouldReadMessage = (message) => {
-
+function shouldReadMessage(message) {
   // bot message or from myself
   if (isBotMessage(message) || message.user === appData.selfId) return false;
 
   return true;
 }
 
-isBotMessage = (message) => {
+function isBotMessage(message) {
   return message.subtype && message.subtype === 'bot_message';
 }
 
-pollTimer = () => {
+function pollTimer() {
   let expiredPolls = cmds.poll.getExpiredPolls();
 
   if (expiredPolls && expiredPolls.length > 0) {
@@ -82,20 +80,20 @@ pollTimer = () => {
   }
 }
 
-banTimer = () => {
+function banTimer() {
   cmds.admin.checkBans();
 }
 
-listCommands = (message, commandMsg) => {
+function listCommands(message, commandMsg) {
   let commandList = 'commands available: \r\n ```';
 
-  for(let key in commands) {
+  for (let key in commands) {
     if (commands.hasOwnProperty(key)) {
       commandList += '!' + key + '\r\n';
     }
   }
 
-  commandList += '```'
+  commandList += '```';
 
   return [{
     method: 'reply',
@@ -105,7 +103,7 @@ listCommands = (message, commandMsg) => {
   }];
 }
 
-buildCommandDictionary = () => {
+function buildCommandDictionary() {
   // simple replies
   commands['berto'] = cmds.replies.commandBerto;
   commands['gohawks'] = cmds.replies.commandGoHawks;
@@ -142,7 +140,7 @@ buildCommandDictionary = () => {
 
   // todo
   commands['celeryman'] = cmds.replies.commandCeleryMan;
-  
+
   // directory
   commands['commands'] = listCommands;
 
@@ -196,11 +194,10 @@ module.exports.startBot = () => {
   });
 
   rtm.on(RTM_EVENTS.MESSAGE, (message) => {
-
     if (!shouldReadMessage(message)) return;
 
-    parseAndProcessCommand(message)
+    parseAndProcessCommand(message);
   });
 
   rtm.start();
-}
+};
