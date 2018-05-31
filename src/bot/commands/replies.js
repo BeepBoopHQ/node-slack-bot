@@ -251,6 +251,23 @@ module.exports.commandHypeBeast = (message, commandMsg) => {
   }];
 };
 
+module.exports.commandGoMs = (message, commandMsg) => {
+  const reply = {
+    'username': 'Mariner Moose',
+    'icon_url': 'https://thumbs.dreamstime.com/b/mariners-moose-mascot-15502634.jpg',
+    'attachments': [{
+      'fallback': '#GOMS',
+      'text': '#GOMS',
+      'image_url': 'https://thumbs.gfycat.com/ObviousViciousGopher-max-1mb.gif'
+    }]
+  };
+
+  return [{
+    type: 'custom',
+    message: reply
+  }];
+};
+
 module.exports.commandTestDbPoll = (message, commandMsg) => {
   dbUtils.startPoll('foo', 'channel', () => {
     console.log('in callback');
@@ -309,5 +326,4 @@ module.exports.commandEndPoll = (message, commandMsg) => {
       text: 'doing db stuff beep boop'
     }
   }];
-}
-;
+};

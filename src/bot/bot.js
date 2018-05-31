@@ -117,6 +117,7 @@ function buildCommandDictionary() {
   commands['challengeaccepted'] = cmds.replies.commandChallengeAccepted;
   commands['lgrw'] = cmds.replies.commandLGRW;
   commands['hypebeast'] = cmds.replies.commandHypeBeast;
+  commands['goms'] = cmds.replies.commandGoMs;
 
   // games/random stuff
   commands['shot'] = cmds.shot.commandShot;
