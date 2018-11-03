@@ -16,6 +16,10 @@ module.exports.init = () => {
     res.send('Hi I am a bot');
   });
 
+  app.get('/engage-russ-bot.png', (req, res) => {
+    res.sendFile('img/engage-russ-bot.png', { root: __dirname });
+  })
+
   app.listen(process.env.PORT || 3000, () => {
     console.log('listening on port ', (process.env.PORT || 3000));
   });
