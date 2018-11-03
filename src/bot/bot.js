@@ -149,6 +149,9 @@ function buildCommandDictionary() {
   commands['ban'] = cmds.admin.commandBan;
   commands['unban'] = cmds.admin.commandUnban;
 
+  // reactions
+  commands['supreme'] = cmds.reactions.commandSupreme;
+
   // sql test
   // commands['testdb'] = cmds.replies.commandTestDb;
   // commands['testdbpoll'] = cmds.replies.commandTestDbPoll;

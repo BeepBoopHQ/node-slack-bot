@@ -3,5 +3,6 @@ module.exports = {
   shot: require('./shot'),
   replies: require('./replies'),
   poll: require('./poll'),
-  admin: require('./admin')
+  admin: require('./admin'),
+  reactions: require('./reactions')
 };

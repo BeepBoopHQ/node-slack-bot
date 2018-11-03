@@ -8,6 +8,8 @@ function Message(rtm, web, webAdmin, selfId) {
     if (!responses || responses.length <= 0) return;
 
     for (let idx in responses) {
+      if (responses[idx].type === 'reaction') return doReactionCommand(this.web, message, responses);
+
       let channel = responses[idx].message.channel ? responses[idx].message.channel : message.channel;
 
       if (responses[idx].type === 'custom') {
@@ -19,7 +21,7 @@ function Message(rtm, web, webAdmin, selfId) {
         opts.as_user = false;
 
         this.web.chat.postMessage(channel, responses[idx].message.text, opts);
-        break;
+        continue;
       }
 
       this.rtm.sendMessage(responses[idx].message.text, channel);
@@ -33,6 +35,38 @@ function Message(rtm, web, webAdmin, selfId) {
   this.delete = (ts, channel) => {
     this.webAdmin.chat.delete(ts, channel);
   }
+}
+
+function doReactionCommand(web, message, responses) {
+  
+  if (!responses || !responses.length) return;
+
+  // get a list of reactions first
+  web.reactions.get({
+    channel: message.channel,
+    timestamp: responses[0].timestamp
+  }).then((res) => {
+    doAddReaction(res.message.reactions, web, message, responses);
+  });
+}
+
+function doAddReaction(reactions, web, message, responses) {
+  console.log(reactions);
+
+  if (!responses || responses.length === 0) return;
+
+  var reactionToAdd = responses[0].reaction;
+
+  console.log(reactionToAdd);
+
+  if (reactions && reactions.find(r => r.name === reactionToAdd)) return;
+
+  web.reactions.add(responses[0].reaction, {
+    channel: message.channel,
+    timestamp: responses[0].timestamp
+  }).then((res) => {
+    doAddReaction(reactions, web, message, responses.slice(1));
+  });
 }
 
 module.exports = Message;
