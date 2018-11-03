@@ -51,13 +51,9 @@ function doReactionCommand(web, message, responses) {
 }
 
 function doAddReaction(reactions, web, message, responses) {
-  console.log(reactions);
-
   if (!responses || responses.length === 0) return;
 
   var reactionToAdd = responses[0].reaction;
-
-  console.log(reactionToAdd);
 
   if (reactions && reactions.find(r => r.name === reactionToAdd)) return;
 
