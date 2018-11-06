@@ -167,22 +167,6 @@ module.exports.startBot = () => {
   });
 
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
-    messageHandler = new Message(rtm, web, webAdmin, appData.selfId);
-
-    let responses = [{
-      message: {
-        channel: 'C2ARE3TQU',
-        text: 'russell_bot has connected'
-      }
-    }, {
-      message: {
-        channel: 'C2ARE3TQU',
-        text: `running \`${version.version}\``
-      }
-    }];
-
-    messageHandler.send(null, responses, appData.selfId);
-
     // start the poll timer
     setInterval(pollTimer, 10000);
 
