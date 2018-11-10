@@ -167,6 +167,8 @@ module.exports.startBot = () => {
   });
 
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
+    messageHandler = new Message(rtm, web, webAdmin, appData.selfId);
+
     // start the poll timer
     setInterval(pollTimer, 10000);
 
