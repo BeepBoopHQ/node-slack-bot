@@ -331,8 +331,6 @@ module.exports.commandEndPoll = (message, commandMsg) => {
 module.exports.updateGiphyScore = (message, args, messageHandler) => {
   let wasCorrect = args.split(' ')[0];
 
-  console.log(wasCorrect);
-
   if (wasCorrect !== '1' && wasCorrect !== '0' && wasCorrect !== ':+1:' && wasCorrect !== ':-1:') {
     return [{
       method: 'reply',
@@ -347,8 +345,6 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
   if (wasCorrect === ':-1:') wasCorrect = 0;
 
   dbUtils.updateGiphyScore(parseInt(wasCorrect), (results) => {
-    console.log('giphy updated');
-
     const correct = results[0][0].correct;
     const incorrect = results[0][0].incorrect;
 
@@ -366,7 +362,6 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
 
 module.exports.getGiphyScore = (message, args, messageHandler) => {
   dbUtils.getGiphyScore((results) => {
-    console.log(results);
     const correct = results[0].correct;
     const incorrect = results[0].incorrect;
 
