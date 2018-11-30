@@ -335,7 +335,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     return [{
       method: 'reply',
       message: {
-        text: 'use `!giphy <1/0/:+1:/:-1:>`',
+        text: 'use `!giphy <1/0/:+1:/:-1:/+1/-1>`',
         channel: message.channel
       }
     }];
