@@ -365,7 +365,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
 };
 
 module.exports.getGiphyScore = (message, args, messageHandler) => {
-  dbUtils.updateGiphyScore((results) => {
+  dbUtils.getGiphyScore((results) => {
     console.log(results);
     const correct = results[0].correct;
     const incorrect = results[0].incorrect;
