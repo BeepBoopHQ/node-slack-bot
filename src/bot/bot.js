@@ -123,6 +123,7 @@ function buildCommandDictionary() {
   commands['shot'] = cmds.shot.commandShot;
   commands['flipcoin'] = cmds.replies.commandFlipCoin;
   commands['giphy'] = cmds.replies.updateGiphyScore;
+  commands['giphyscore'] = cmds.replies.getGiphyScore;
 
   // poll commands
   commands['poll'] = cmds.poll.commandPoll;

@@ -172,3 +172,14 @@ module.exports.updateGiphyScore = (wasCorrect, cb) => {
     cb(results);
   });
 }
+
+module.exports.updateGiphyScore = (cb) => {
+  connection.query('SELECT correct, incorrect FROM giphy_score', (error, results) => {
+    if (error) {
+      console.log('error:', error);
+      return;
+    }
+
+    cb(results);
+  });
+}

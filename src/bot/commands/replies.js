@@ -337,7 +337,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     return [{
       method: 'reply',
       message: {
-        text: 'use `!updategiphyscore <1/0/:+1:/:-1:>`',
+        text: 'use `!giphy <1/0/:+1:/:-1:>`',
         channel: message.channel
       }
     }];
@@ -355,7 +355,25 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     var responses = [{
       method: 'reply',
       message: {
-        text: `giphy score is now to \`${correct} - ${incorrect}\``,
+        text: `giphy score is now \`${correct} - ${incorrect}\``,
+        channel: message.channel
+      }
+    }];
+
+    messageHandler.send(message, responses);
+  });
+};
+
+module.exports.getGiphyScore = (message, args, messageHandler) => {
+  dbUtils.updateGiphyScore((results) => {
+    console.log(results);
+    const correct = results[0].correct;
+    const incorrect = results[0].incorrect;
+
+    var responses = [{
+      method: 'reply',
+      message: {
+        text: `giphy score is \`${correct} - ${incorrect}\``,
         channel: message.channel
       }
     }];
