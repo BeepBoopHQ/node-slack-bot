@@ -327,3 +327,39 @@ module.exports.commandEndPoll = (message, commandMsg) => {
     }
   }];
 };
+
+module.exports.updateGiphyScore = (message, args, messageHandler) => {
+  let wasCorrect = args.split(' ')[0];
+
+  console.log(wasCorrect);
+
+  if (wasCorrect !== '1' && wasCorrect !== '0' && wasCorrect !== ':+1:' && wasCorrect !== ':-1:') {
+    return [{
+      method: 'reply',
+      message: {
+        text: 'use `!updategiphyscore <1/0/:+1:/:-1:>`',
+        channel: message.channel
+      }
+    }];
+  }
+
+  if (wasCorrect === ':+1:') wasCorrect = 1;
+  if (wasCorrect === ':-1:') wasCorrect = 0;
+
+  dbUtils.updateGiphyScore(parseInt(wasCorrect), (results) => {
+    console.log('giphy updated');
+
+    const correct = results[0][0].correct;
+    const incorrect = results[0][0].incorrect;
+
+    var responses = [{
+      method: 'reply',
+      message: {
+        text: `giphy score is now to \`${correct} - ${incorrect}\``,
+        channel: message.channel
+      }
+    }];
+
+    messageHandler.send(message, responses);
+  });
+};

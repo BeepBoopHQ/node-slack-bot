@@ -20,6 +20,12 @@ function Message(rtm, web, webAdmin, selfId) {
         opts.subtype = 'bot_message';
         opts.as_user = false;
 
+        console.log(responses[idx].message);
+
+        if (responses[idx].message.thread_ts) {
+          opts.thread_ts = responses[idx].message.thread_ts;
+        }
+
         this.web.chat.postMessage(channel, responses[idx].message.text, opts);
         continue;
       }

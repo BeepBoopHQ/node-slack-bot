@@ -54,7 +54,7 @@ function parseAndProcessCommand(message) {
   messageHandler.typing(message.channel);
 
   // get an array of responses
-  let responses = commands[command](message, commandMsg);
+  let responses = commands[command](message, commandMsg, messageHandler);
 
   messageHandler.send(message, responses);
 }
@@ -122,6 +122,7 @@ function buildCommandDictionary() {
   // games/random stuff
   commands['shot'] = cmds.shot.commandShot;
   commands['flipcoin'] = cmds.replies.commandFlipCoin;
+  commands['giphy'] = cmds.replies.updateGiphyScore;
 
   // poll commands
   commands['poll'] = cmds.poll.commandPoll;
@@ -148,6 +149,7 @@ function buildCommandDictionary() {
   // admin
   commands['ban'] = cmds.admin.commandBan;
   commands['unban'] = cmds.admin.commandUnban;
+  commands['resetgiphy'] = cmds.admin.resetGiphyScore;
 
   // reactions
   commands['supreme'] = cmds.reactions.commandSupreme;

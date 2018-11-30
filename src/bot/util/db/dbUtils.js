@@ -150,3 +150,25 @@ module.exports.endPoll = (idpoll, user, cb) => {
     });
   });
 }
+
+module.exports.resetGiphyScore = (numCorrect, numIncorrect, cb) => {
+  connection.query('CALL giphy_reset_score(?, ?)', [numCorrect, numIncorrect], (error, results) => {
+    if (error) {
+      console.log('error:', error);
+      return;
+    }
+
+    cb();
+  });
+}
+
+module.exports.updateGiphyScore = (wasCorrect, cb) => {
+  connection.query('CALL giphy_update_score(?)', [wasCorrect], (error, results) => {
+    if (error) {
+      console.log('error:', error);
+      return;
+    }
+
+    cb(results);
+  });
+}
