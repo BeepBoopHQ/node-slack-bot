@@ -363,8 +363,8 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
 isValidGiphyVote = (vote) => {
   return vote !== '1'
     && vote !== '0'
-    && vote !== ':+1:'
-    && vote !== ':-1:'
+    && !vote.includes(':+1:')
+    && !vote.includes(':-1:')
     && vote !== '+1'
     && vote !== '-1';
 }
