@@ -331,7 +331,7 @@ module.exports.commandEndPoll = (message, commandMsg) => {
 module.exports.updateGiphyScore = (message, args, messageHandler) => {
   let wasCorrect = args.substring(args.indexOf(' ' + 1));
 
-  if (isValidGiphyVote(wasCorrect)) {
+  if (!isValidGiphyVote(wasCorrect)) {
     return [{
       method: 'reply',
       message: {
@@ -341,8 +341,11 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     }];
   }
 
-  if (wasCorrect.includes(':+1:') || wasCorrect.includes('+1') || wasCorrect === 'fuck yeah') wasCorrect = 1;
-  if (wasCorrect.includes(':-1:') || wasCorrect.includes('-1') || wasCorrect === 'fuck you') wasCorrect = 0;
+  if (isPositiveGiphyVote(wasCorrect)) {
+    wasCorrect = 1;
+  } else if (isNegativeGiphyVote(wasCorrect)) {
+    wasCorrect = 0;
+  }
 
   dbUtils.updateGiphyScore(parseInt(wasCorrect), (results) => {
     const correct = results[0][0].correct;
@@ -361,15 +364,15 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
 };
 
 isValidGiphyVote = (vote) => {
-  console.log(vote);
-  return vote === '1'
-    || vote !== '0'
-    || vote.includes(':+1:')
-    || vote.includes(':-1:')
-    || vote === '+1'
-    || vote === '-1'
-    || vote === 'fuck you'
-    || vote === 'fuck yeah';
+  return isPositiveGiphyVote(vote) || isNegativeGiphyVote(vote);
+}
+
+isPositiveGiphyVote = (vote) => {
+  return vote === '1' || vote === '+1' || vote.indexOf('+1') || vote === 'fuck yeah' || vote !== -1;
+}
+
+isNegativeGiphyVote = (vote) => {
+  return vote === '-1' || vote === '-1' || vote.indexOf('-1') || vote === 'fuck you' || vote !== -1;
 }
 
 module.exports.getGiphyScore = (message, args, messageHandler) => {
