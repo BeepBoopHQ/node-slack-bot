@@ -341,8 +341,8 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     }];
   }
 
-  if (wasCorrect === ':+1:' || wasCorrect === '+1') wasCorrect = 1;
-  if (wasCorrect === ':-1:' || wasCorrect === '-1') wasCorrect = 0;
+  if (wasCorrect.includes(':+1:') || wasCorrect.includes('+1') || wasCorrect === 'fuck yeah') wasCorrect = 1;
+  if (wasCorrect.includes(':-1:') || wasCorrect.includes('-1') || wasCorrect === 'fuck you') wasCorrect = 0;
 
   dbUtils.updateGiphyScore(parseInt(wasCorrect), (results) => {
     const correct = results[0][0].correct;
@@ -366,7 +366,9 @@ isValidGiphyVote = (vote) => {
     && !vote.includes(':+1:')
     && !vote.includes(':-1:')
     && vote !== '+1'
-    && vote !== '-1';
+    && vote !== '-1'
+    && vote !== 'fuck you'
+    && vote !== 'fuck yeah';
 }
 
 module.exports.getGiphyScore = (message, args, messageHandler) => {
