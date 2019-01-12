@@ -329,7 +329,7 @@ module.exports.commandEndPoll = (message, commandMsg) => {
 };
 
 module.exports.updateGiphyScore = (message, args, messageHandler) => {
-  let wasCorrect = args.split(' ')[0];
+  let wasCorrect = args.substring(args.indexOf(' ' + 1));
 
   if (isValidGiphyVote(wasCorrect)) {
     return [{
@@ -361,6 +361,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
 };
 
 isValidGiphyVote = (vote) => {
+  console.log(vote);
   return vote === '1'
     || vote !== '0'
     || vote.includes(':+1:')
