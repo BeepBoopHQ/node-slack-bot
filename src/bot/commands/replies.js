@@ -354,7 +354,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     var responses = [{
       method: 'reply',
       message: {
-        text: `giphy score is now \`${correct} - ${incorrect}\``,
+        text: `giphy was ${wasCorrect ? 'correct' : 'incorrect'}! giphy score is now \`${correct} - ${incorrect}\``,
         channel: message.channel
       }
     }];
@@ -368,11 +368,11 @@ isValidGiphyVote = (vote) => {
 }
 
 isPositiveGiphyVote = (vote) => {
-  return vote === '1' || vote === '+1' || vote.indexOf('+1') || vote === 'fuck yeah';
+  return vote === '1' || vote === '+1' || vote.indexOf('+1') !== -1 || vote === 'fuck yeah';
 }
 
 isNegativeGiphyVote = (vote) => {
-  return vote === '0' || vote === '-1' || vote.indexOf('-1') || vote === 'fuck you';
+  return vote === '0' || vote === '-1' || vote.indexOf('-1') !== -1 || vote === 'fuck you';
 }
 
 module.exports.getGiphyScore = (message, args, messageHandler) => {
