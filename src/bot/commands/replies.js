@@ -368,11 +368,11 @@ isValidGiphyVote = (vote) => {
 }
 
 isPositiveGiphyVote = (vote) => {
-  return vote === '1' || vote === '+1' || vote.indexOf('+1') || vote === 'fuck yeah' || vote !== -1;
+  return vote === '1' || vote === '+1' || vote.indexOf('+1') || vote === 'fuck yeah';
 }
 
 isNegativeGiphyVote = (vote) => {
-  return vote === '-1' || vote === '-1' || vote.indexOf('-1') || vote === 'fuck you' || vote !== -1;
+  return vote === '0' || vote === '-1' || vote.indexOf('-1') || vote === 'fuck you';
 }
 
 module.exports.getGiphyScore = (message, args, messageHandler) => {
