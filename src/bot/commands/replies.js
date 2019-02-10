@@ -328,6 +328,16 @@ module.exports.commandEndPoll = (message, commandMsg) => {
   }];
 };
 
+module.exports.honkForceEngage = (message, commandMsg) => {
+  return [{
+    method: 'reply',
+    message : {
+      text: `<@U2ASHP5FT> <@U2B42D486> <@U2ARFPF62> Honk Force One Is Requesting Takeoff`,
+      channel: message.channel
+    }
+  }];
+}
+
 module.exports.updateGiphyScore = (message, args, messageHandler) => {
   let wasCorrect = args.substring(args.indexOf(' ' + 1));
 
