@@ -338,6 +338,16 @@ module.exports.honkForceEngage = (message, commandMsg) => {
   }];
 }
 
+module.exports.constructAdditionalPylons = (message, commandMsg) => {
+  return [{
+    method: 'reply',
+    message : {
+      text: `<@U2ARW2Y3X> <@U2B5ZB8A1> <@U2B8ZPPPW> WE MUST CONSTRUCT ADDITIONAL PYLONS`,
+      channel: message.channel
+    }
+  }];
+}
+
 module.exports.updateGiphyScore = (message, args, messageHandler) => {
   let wasCorrect = args.substring(args.indexOf(' ' + 1));
 

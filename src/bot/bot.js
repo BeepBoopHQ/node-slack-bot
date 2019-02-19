@@ -119,6 +119,7 @@ function buildCommandDictionary() {
   commands['hypebeast'] = cmds.replies.commandHypeBeast;
   commands['goms'] = cmds.replies.commandGoMs;
   commands['honk'] = cmds.replies.honkForceEngage;
+  commands['sc'] = cmds.replies.constructAdditionalPylons;
 
   // games/random stuff
   commands['shot'] = cmds.shot.commandShot;
