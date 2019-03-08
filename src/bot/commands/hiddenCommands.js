@@ -1,6 +1,8 @@
 messageHasHiddenCommand = (message) => {
 
-    if (message.includes('screwdriver') || message.includes('screw driver')) {
+    if (!message) return null;
+
+    if (message.toLowerCase().includes('screwdriver') || message.toLowerCase().includes('screw driver')) {
         return 'denzel';
     }
 
