@@ -1,5 +1,6 @@
 const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/client');
 const cmds = require('./commands/commands');
+const hiddenCmds = require('./commands/hiddenCommands');
 const version = require('../version');
 const Message = require('./util/message/messageUtils');
 
@@ -11,6 +12,7 @@ const appData = {};
 
 // commands
 let commands = {};
+let hiddenCommands = {};
 
 // message obj
 let messageHandler;
@@ -31,32 +33,52 @@ function parseAndProcessCommand(message) {
     return;
   }
 
+  // does this message contain a hidden command
+  var hiddenCommand = hiddenCmds.messageHasHiddenCommand(message.text);
+
   // not a ! command
   let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);
 
-  if (!parsedMessage || parsedMessage.length < 2) return;
+  if ((!parsedMessage || parsedMessage.length < 20) && !hiddenCommand) return;
 
-  let command = parsedMessage[1].toLowerCase();
-  let commandMsg = '';
+  if (!hiddenCommand) {
 
-  // get the command and the arguments
-  if (command.indexOf(' ') !== -1) {
-    commandMsg = command.substr(command.indexOf(' ') + 1);
-    command = command.substr(0, command.indexOf(' '));
+    let command = parsedMessage[1].toLowerCase();
+    let commandMsg = '';
+    
+    // get the command and the arguments
+    if (command.indexOf(' ') !== -1) {
+      commandMsg = command.substr(command.indexOf(' ') + 1);
+      command = command.substr(0, command.indexOf(' '));
+    }
+
+    // invalid command, ignore it
+    if (!(command in commands)) {
+      return;
+    }
+
+    // send a typing thing
+    messageHandler.typing(message.channel);
+
+    // get an array of responses
+    let responses = commands[command](message, commandMsg, messageHandler);
+
+    messageHandler.send(message, responses);
+  } else {
+
+    // check if there is a hidden command here
+    if (!(hiddenCommand in hiddenCommands)) {
+      return;
+    }
+
+    // send a typing thing
+    messageHandler.typing(message.channel);
+
+    // get an array of responses
+    let responses = hiddenCommands[hiddenCommand](message);
+
+    messageHandler.send(message, responses);
   }
-
-  // invalid command, ignore it
-  if (!(command in commands)) {
-    return;
-  }
-
-  // send a typing thing
-  messageHandler.typing(message.channel);
-
-  // get an array of responses
-  let responses = commands[command](message, commandMsg, messageHandler);
-
-  messageHandler.send(message, responses);
 }
 
 function shouldReadMessage(message) {
@@ -164,6 +186,9 @@ function buildCommandDictionary() {
   // commands['testaddpollvote'] = cmds.replies.commandTestAddPollVote;
   // commands['testgetpollresults'] = cmds.replies.commandTestPollResults;
   // commands['testendpoll'] = cmds.replies.commandEndPoll;
+
+  // hidden commands
+  hiddenCommands['denzel'] = hiddenCmds.hiddenReplies.hiddenCommandMyBoyDenzel;
 }
 
 module.exports.startBot = () => {
