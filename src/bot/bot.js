@@ -39,7 +39,7 @@ function parseAndProcessCommand(message) {
   // not a ! command
   let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);
 
-  if ((!parsedMessage || parsedMessage.length < 20) && !hiddenCommand) return;
+  if ((!parsedMessage || parsedMessage.length < 2) && !hiddenCommand) return;
 
   if (!hiddenCommand) {
 
