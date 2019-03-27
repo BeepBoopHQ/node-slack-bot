@@ -1,4 +1,8 @@
+require('dotenv').load();
+var client = require('redis').createClient(process.env.REDIS_URL);
 const dbUtils = require('../util/db/dbUtils.js');
+
+
 
 module.exports.resetGiphyScore = (message, args, messageHandler) => {
   if (message.user !== 'U2ARFPF62') {
