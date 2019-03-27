@@ -1,7 +1,6 @@
 const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/client');
 const cmds = require('./commands/commands');
 const hiddenCmds = require('./commands/hiddenCommands');
-const version = require('../version');
 const Message = require('./util/message/messageUtils');
 
 // auto import .env file
@@ -25,13 +24,6 @@ let webAdmin = new WebClient(process.env.SLACK_ADMIN_TOKEN);
 
 function parseAndProcessCommand(message) {
   if (!message || !message.text) return;
-
-  // check if the user is banned first
-  if (cmds.admin.isUserBanned(message.user)) {
-    // delete message
-    messageHandler.delete(message.ts, message.channel);
-    return;
-  }
 
   // does this message contain a hidden command
   var hiddenCommand = hiddenCmds.messageHasHiddenCommand(message.text);
@@ -102,10 +94,6 @@ function pollTimer() {
   }
 }
 
-function banTimer() {
-  cmds.admin.checkBans();
-}
-
 function listCommands(message, commandMsg) {
   let commandList = 'commands available: \r\n ```';
 
@@ -172,8 +160,6 @@ function buildCommandDictionary() {
   commands['commands'] = listCommands;
 
   // admin
-  commands['ban'] = cmds.admin.commandBan;
-  commands['unban'] = cmds.admin.commandUnban;
   commands['resetgiphy'] = cmds.admin.resetGiphyScore;
 
   // reactions
@@ -201,9 +187,6 @@ module.exports.startBot = () => {
 
     // start the poll timer
     setInterval(pollTimer, 10000);
-
-    // set ban timer
-    setInterval(banTimer, 10000);
 
     // build the commands
     buildCommandDictionary();
