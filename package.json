@@ -26,7 +26,6 @@
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "mysql": "^2.15.0",
-    "redis": "^2.8.0",
     "superagent": "^2.3.0"
   },
   "devDependencies": {
