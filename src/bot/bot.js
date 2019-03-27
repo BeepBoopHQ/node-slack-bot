@@ -2,6 +2,7 @@ const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/clie
 const cmds = require('./commands/commands');
 const hiddenCmds = require('./commands/hiddenCommands');
 const Message = require('./util/message/messageUtils');
+const dbUtils = require('./util/db/dbUtils.js');
 
 // auto import .env file
 require('dotenv').load();
@@ -56,6 +57,10 @@ function parseAndProcessCommand(message) {
     let responses = commands[command](message, commandMsg, messageHandler);
 
     messageHandler.send(message, responses);
+
+    // log use of this command
+    dbUtils.logCommandUse(command, message.user);
+
   } else {
 
     // check if there is a hidden command here

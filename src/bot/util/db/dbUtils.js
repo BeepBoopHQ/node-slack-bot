@@ -183,3 +183,14 @@ module.exports.getGiphyScore = (cb) => {
     cb(results);
   });
 }
+
+module.exports.logCommandUse = (command, usedBy, cb) => {
+  connection.query('CALL stats_updatecommandstats(?, ?)', [command, usedBy], (error, results) => {
+    if (error) {
+      console.log('error:', error);
+      return;
+    }
+
+    if (cb) cb(results);
+  });
+}
