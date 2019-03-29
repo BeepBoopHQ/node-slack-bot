@@ -1,6 +1,6 @@
 {
   "name": "league-of-goons-bot",
-  "version": "1.0.0",
+  "version": "6.0.0",
   "description": "League of Goons Slack bot",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "bot",
     "slack"
   ],
-  "author": "",
+  "author": "Justin C",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/canadaj/league-of-goons-bot/issues"
@@ -27,13 +27,5 @@
     "express": "^4.16.4",
     "mysql": "^2.16.0",
     "superagent": "^2.3.0"
-  },
-  "devDependencies": {
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.1.0"
   }
 }
