@@ -58,8 +58,10 @@ function parseAndProcessCommand(message) {
 
     messageHandler.send(message, responses);
 
-    // log use of this command
-    dbUtils.logCommandUse(command, message.user);
+    // log use of this command if we need to
+    if (responses && !responses[0].doNotLog) {
+      dbUtils.logCommandUse(command, message.user);
+    }
 
   } else {
 
@@ -111,6 +113,7 @@ function listCommands(message, commandMsg) {
   commandList += '```';
 
   return [{
+    doNotLog: 1,
     method: 'reply',
     message: {
       text: commandList
@@ -170,13 +173,8 @@ function buildCommandDictionary() {
   // reactions
   commands['supreme'] = cmds.reactions.commandSupreme;
 
-  // sql test
-  // commands['testdb'] = cmds.replies.commandTestDb;
-  // commands['testdbpoll'] = cmds.replies.commandTestDbPoll;
-  // commands['testaddpolloption'] = cmds.replies.commandTestAddPollOption;
-  // commands['testaddpollvote'] = cmds.replies.commandTestAddPollVote;
-  // commands['testgetpollresults'] = cmds.replies.commandTestPollResults;
-  // commands['testendpoll'] = cmds.replies.commandEndPoll;
+  // stats
+  commands['stats'] = cmds.stats.getCommandStats;
 
   // hidden commands
   hiddenCommands['denzel'] = hiddenCmds.hiddenReplies.hiddenCommandMyBoyDenzel;

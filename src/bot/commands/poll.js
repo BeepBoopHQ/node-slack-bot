@@ -54,6 +54,7 @@ module.exports.commandPoll = (message, args) => {
   if (args.indexOf(' or ') === -1 && pollOptions.length === 0) {
     return [{
       message: {
+        doNotLog: 1,
         text: 'use `!poll <this> or <that>`'
       }
     }];
@@ -64,6 +65,7 @@ module.exports.commandPoll = (message, args) => {
     // user has a poll
     return [{
       message: {
+        doNotLog: 1,
         text: `<@${message.user}>, you already have an active poll: ${polls[message.user].options.join(', ')}`
       }
     }];
@@ -100,6 +102,7 @@ module.exports.commandVote = (message, args) => {
 
   if (isNaN(pollNumber) || isNaN(voteOption)) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: 'your vote is invalid, use the number options to cast your vote: `!vote <poll number> <option number>`'
@@ -114,6 +117,7 @@ module.exports.commandVote = (message, args) => {
   // check if the poll exists
   if (!currentPoll || pollNumber <= 0) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `${pollNumber} is not a valid poll`
@@ -124,6 +128,7 @@ module.exports.commandVote = (message, args) => {
   // check for valid vote
   if (voteOption <= 0 || voteOption > currentPoll.options.length) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `${voteOption} is not a valid poll option`
@@ -142,6 +147,7 @@ module.exports.commandVote = (message, args) => {
       // check and see if this is the same vote option
       if (existingVote === (voteOption - 1)) {
         return [{
+          doNotLog: 1,
           method: 'reply',
           message: {
             text: `<@${message.user}>, you have already voted for this option`
@@ -184,6 +190,7 @@ module.exports.commandEndPoll = (message, args) => {
 
   if (isNaN(pollNumber)) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, this is an invalid poll`
@@ -193,6 +200,7 @@ module.exports.commandEndPoll = (message, args) => {
 
   if (!pollMap[pollNumber - 1]) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, this poll does not exist`
@@ -206,6 +214,7 @@ module.exports.commandEndPoll = (message, args) => {
   // check if this user owns this poll
   if (currentPoll.user !== message.user) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, only <@${currentPoll.user}> can end this poll`
@@ -235,6 +244,7 @@ module.exports.commandPollResults = (message, args) => {
 
   if (isNaN(pollNumber)) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, this is an invalid poll`
@@ -244,6 +254,7 @@ module.exports.commandPollResults = (message, args) => {
 
   if (!pollMap[pollNumber - 1]) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, this poll does not exist`
@@ -283,6 +294,7 @@ module.exports.commandResetPoll = (message, args) => {
 
   if (isNaN(pollNumber)) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, this is an invalid poll`
@@ -292,6 +304,7 @@ module.exports.commandResetPoll = (message, args) => {
 
   if (!pollMap[pollNumber - 1]) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, this poll does not exist`
@@ -305,6 +318,7 @@ module.exports.commandResetPoll = (message, args) => {
   // check if this user owns this poll
   if (currentPoll.user !== message.user) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `<@${message.user}>, only <@${currentPoll.user}> can reset this poll`

@@ -122,6 +122,7 @@ module.exports.commandBug = (message, commandMsg) => {
 module.exports.commandFeature = (message, commandMsg) => {
   if (!commandMsg) {
     return [{
+      doNotLog: 1,
       message: {
         text: 'use `!feature <text>`'
       }
@@ -161,6 +162,7 @@ module.exports.commandFlipCoin = (message, commandMsg) => {
 
     if (side.toLowerCase() !== 'heads' && side.toLowerCase() !== 'tails') {
       return [{
+        doNotLog: 1,
         message: {
           text: 'side must be `heads` or `tails`'
         }
@@ -171,6 +173,7 @@ module.exports.commandFlipCoin = (message, commandMsg) => {
 
     if (!text) {
       return [{
+        doNotLog: 1,
         message: {
           text: 'can\'t leave the text blank'
         }
@@ -268,58 +271,8 @@ module.exports.commandGoMs = (message, commandMsg) => {
   }];
 };
 
-module.exports.commandTestDbPoll = (message, commandMsg) => {
-  dbUtils.startPoll('foo', 'channel', () => {
-    console.log('in callback');
-  });
-
-  return [{
-    message: {
-      text: 'doing db stuff beep boop'
-    }
-  }];
-};
-
-module.exports.commandTestAddPollOption = (message, commandMsg) => {
-  dbUtils.addPollOption(1, 'option', 'foo', () => {
-    console.log('in callback');
-  });
-
-  return [{
-    message: {
-      text: 'doing db stuff beep boop'
-    }
-  }];
-};
-
-module.exports.commandTestAddPollVote = (message, commandMsg) => {
-  dbUtils.addPollVote(1, 'user', '0', () => {
-    console.log('in callback');
-  });
-
-  return [{
-    message: {
-      text: 'doing db stuff beep boop'
-    }
-  }];
-};
-
-module.exports.commandTestPollResults = (message, commandMsg) => {
-  dbUtils.getPollResults(1, () => {
-    console.log('in callback');
-  });
-
-  return [{
-    message: {
-      text: 'doing db stuff beep boop'
-    }
-  }];
-};
-
 module.exports.commandEndPoll = (message, commandMsg) => {
-  dbUtils.endPoll(1, 'foo', () => {
-    console.log('in callback');
-  });
+  dbUtils.endPoll(1, 'foo', () => {});
 
   return [{
     message: {
@@ -353,6 +306,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
 
   if (!isValidGiphyVote(wasCorrect)) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: 'use `!giphy <1/0/:+1:/:-1:/+1/-1>`',

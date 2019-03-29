@@ -5,6 +5,7 @@ module.exports.commandShot = (message, args) => {
 
   if (!user || !number) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: 'use `!shot <person> <number>`',
@@ -15,6 +16,7 @@ module.exports.commandShot = (message, args) => {
 
   if (number < 0 || number > 20) {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: 'use a number between 1 and 20',

@@ -4,5 +4,6 @@ module.exports = {
   replies: require('./replies'),
   poll: require('./poll'),
   admin: require('./admin'),
-  reactions: require('./reactions')
+  reactions: require('./reactions'),
+  stats: require('./stats')
 };

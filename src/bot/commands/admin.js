@@ -3,6 +3,7 @@ const dbUtils = require('../util/db/dbUtils.js');
 module.exports.resetGiphyScore = (message, args, messageHandler) => {
   if (message.user !== 'U2ARFPF62') {
     return [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: 'lol',
@@ -20,9 +21,8 @@ module.exports.resetGiphyScore = (message, args, messageHandler) => {
   }
 
   dbUtils.resetGiphyScore(correct, incorrect, () => {
-    console.log('giphy reset');
-
-    var responses = [{
+    let responses = [{
+      doNotLog: 1,
       method: 'reply',
       message: {
         text: `giphy score set to \`${correct} - ${incorrect}\``,
