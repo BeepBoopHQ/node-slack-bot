@@ -1,47 +1,49 @@
-function Message(rtm, web, webAdmin, selfId) {
-  this.rtm = rtm;
-  this.web = web;
-  this.webAdmin = webAdmin;
-  this.selfId = selfId;
+class Message{
+  constructor(rtm, web, webAdmin, selfId) {
+    this.rtm = rtm;
+    this.web = web;
+    this.webAdmin = webAdmin;
+    this.selfId = selfId;
 
-  this.send = (message, responses) => {
-    if (!responses || responses.length <= 0) return;
+    this.send = (message, responses) => {
+      if (!responses || responses.length <= 0) return;
 
-    for (let idx in responses) {
-      if (responses[idx].type === 'reaction') return doReactionCommand(this.web, message, responses);
+      for (let idx in responses) {
+        if (responses[idx].type === 'reaction') return doReactionCommand(this.web, message, responses);
 
-      let channel = responses[idx].message.channel ? responses[idx].message.channel : message.channel;
+        let channel = responses[idx].message.channel ? responses[idx].message.channel : message.channel;
 
-      if (responses[idx].type === 'custom') {
-        let opts = responses[idx].message;
+        if (responses[idx].type === 'custom') {
+          let opts = responses[idx].message;
 
-        opts.bot_id = this.selfId;
-        opts.type = 'message';
-        opts.subtype = 'bot_message';
-        opts.as_user = false;
+          opts.bot_id = this.selfId;
+          opts.type = 'message';
+          opts.subtype = 'bot_message';
+          opts.as_user = false;
 
-        if (responses[idx].message.thread_ts) {
-          opts.thread_ts = responses[idx].message.thread_ts;
+          if (responses[idx].message.thread_ts) {
+            opts.thread_ts = responses[idx].message.thread_ts;
+          }
+
+          this.web.chat.postMessage(channel, responses[idx].message.text, opts);
+          continue;
         }
 
-        this.web.chat.postMessage(channel, responses[idx].message.text, opts);
-        continue;
+        this.rtm.sendMessage(responses[idx].message.text, channel);
       }
-
-      this.rtm.sendMessage(responses[idx].message.text, channel);
     }
-  }
 
-  this.typing = (channel) => {
-    this.rtm.sendTyping(channel);
-  }
+    this.typing = (channel) => {
+      this.rtm.sendTyping(channel);
+    }
 
-  this.delete = (ts, channel) => {
-    this.webAdmin.chat.delete(ts, channel);
+    this.delete = (ts, channel) => {
+      this.webAdmin.chat.delete(ts, channel);
+    }
   }
 }
 
-function doReactionCommand(web, message, responses) {
+doReactionCommand = (web, message, responses) => {
   
   if (!responses || !responses.length) return;
 
@@ -54,7 +56,7 @@ function doReactionCommand(web, message, responses) {
   });
 }
 
-function doAddReaction(reactions, web, message, responses) {
+doAddReaction => (reactions, web, message, responses) => {
   if (!responses || responses.length === 0) return;
 
   var reactionToAdd = responses[0].reaction;
