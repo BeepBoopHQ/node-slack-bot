@@ -1,3 +1,3 @@
 module.exports = {
-  version: 'v5.0 patronizing penguin'
+  version: 'v6.0 sassy salamander'
 };
