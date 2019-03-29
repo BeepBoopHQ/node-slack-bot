@@ -4,7 +4,7 @@ let pollOptions = [];
 let pollMap = {};
 
 // functions
-function formatPollOptions(message) {
+formatPollOptions = (message) => {
   if (message.indexOf(' or ') === -1) {
     pollOptions.push(message);
     let formattedOptions = pollOptions.map(function(e, i) {
@@ -21,7 +21,7 @@ function formatPollOptions(message) {
   }
 }
 
-function createPollMapKey(userId) {
+createPollMapKey = (userId) => {
   for (let key in pollMap) {
     if (pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === null || pollMap[key] === undefined) {
@@ -38,7 +38,7 @@ function createPollMapKey(userId) {
   return newKey;
 }
 
-function deletePollMapKey(userId) {
+deletePollMapKey = (userId) => {
   for (let key in pollMap) {
     if (pollMap.hasOwnProperty(key)) {
       if (pollMap[key] === userId) {
@@ -362,42 +362,4 @@ module.exports.getExpiredPolls = () => {
   }
 
   return expiredPolls;
-};
-
-module.exports.doTestPoll = (message, args) => {
-  return [{
-    method: 'custom',
-    message: {
-      text: 'This is a test poll',
-      attachments: [
-        {
-          fallback: 'Fallback text',
-          callback_id: 'poll_1_cb',
-          attachment_type: 'default',
-          title: 'Poll title?',
-          text: 'Poll text?',
-          actions: [
-            {
-              name: 'Option 1',
-              text: 'Option 1',
-              type: 'button',
-              value: 'Option 1'
-            },
-            {
-              name: 'Option 2',
-              text: 'Option 2',
-              type: 'button',
-              value: 'Option 2'
-            },
-            {
-              name: 'Option 3',
-              text: 'Option 3',
-              type: 'button',
-              value: 'Option 3'
-            }
-          ]
-        }
-      ]
-    }
-  }];
 };
