@@ -3,6 +3,7 @@ const cmds = require('./commands/commands');
 const hiddenCmds = require('./commands/hiddenCommands');
 const Message = require('./util/message/messageUtils');
 const dbUtils = require('./util/db/dbUtils.js');
+const version = require('../version');
 
 // auto import .env file
 require('dotenv').load();
@@ -23,7 +24,7 @@ let rtm = new RtmClient(token, { loglevel: 'debug' });
 let web = new WebClient(token);
 let webAdmin = new WebClient(process.env.SLACK_ADMIN_TOKEN);
 
-function parseAndProcessCommand(message) {
+parseAndProcessCommand = (message) => {
   if (!message || !message.text) return;
 
   // does this message contain a hidden command
@@ -80,7 +81,7 @@ function parseAndProcessCommand(message) {
   }
 }
 
-function shouldReadMessage(message) {
+shouldReadMessage = (message) => {
   // bot message or from myself
   if (isBotMessage(message) || message.user === appData.selfId) return false;
 
@@ -91,7 +92,7 @@ function isBotMessage(message) {
   return message.subtype && message.subtype === 'bot_message';
 }
 
-function pollTimer() {
+pollTimer = () => {
   let expiredPolls = cmds.poll.getExpiredPolls();
 
   if (expiredPolls && expiredPolls.length > 0) {
@@ -101,7 +102,7 @@ function pollTimer() {
   }
 }
 
-function listCommands(message, commandMsg) {
+listCommands = (message, commandMsg) => {
   let commandList = 'commands available: \r\n ```';
 
   for (let key in commands) {
@@ -121,7 +122,7 @@ function listCommands(message, commandMsg) {
   }];
 }
 
-function buildCommandDictionary() {
+buildCommandDictionary = () => {
   // simple replies
   commands['berto'] = cmds.replies.commandBerto;
   commands['gohawks'] = cmds.replies.commandGoHawks;
@@ -187,6 +188,15 @@ module.exports.startBot = () => {
 
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
     messageHandler = new Message(rtm, web, webAdmin, appData.selfId);
+
+    messageHandler.send([{
+      doNotLog: 1,
+      method: 'reply',
+      message: {
+        text: `connected: running version ${version.version}`,
+        channel: 'C2ARE3TQU'
+      }
+    }]);
 
     // start the poll timer
     setInterval(pollTimer, 10000);
