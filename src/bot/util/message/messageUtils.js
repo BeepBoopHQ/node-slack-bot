@@ -1,4 +1,4 @@
-Message = (rtm, web, webAdmin, selfId) => {
+function Message(rtm, web, webAdmin, selfId) {
   this.rtm = rtm;
   this.web = web;
   this.webAdmin = webAdmin;
@@ -41,7 +41,7 @@ Message = (rtm, web, webAdmin, selfId) => {
   }
 }
 
-doReactionCommand = (web, message, responses) => {
+function doReactionCommand(web, message, responses) {
   
   if (!responses || !responses.length) return;
 
@@ -54,7 +54,7 @@ doReactionCommand = (web, message, responses) => {
   });
 }
 
-doAddReaction = (reactions, web, message, responses) => {
+function doAddReaction(reactions, web, message, responses) {
   if (!responses || responses.length === 0) return;
 
   var reactionToAdd = responses[0].reaction;
