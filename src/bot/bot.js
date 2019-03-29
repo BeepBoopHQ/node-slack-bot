@@ -189,11 +189,11 @@ module.exports.startBot = () => {
   rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
     messageHandler = new Message(rtm, web, webAdmin, appData.selfId);
 
-    messageHandler.send([{
+    messageHandler.send(null, [{
       doNotLog: 1,
       method: 'reply',
       message: {
-        text: `connected: running version ${version.version}`,
+        text: `connected: running \`${version.version}\``,
         channel: 'C2ARE3TQU'
       }
     }]);
