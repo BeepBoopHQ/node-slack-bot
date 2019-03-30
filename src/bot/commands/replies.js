@@ -325,7 +325,7 @@ module.exports.updateGiphyScore = (message, args, messageHandler) => {
     const correct = results[0][0].correct;
     const incorrect = results[0][0].incorrect;
 
-    var responses = [{
+    let responses = [{
       method: 'reply',
       message: {
         text: `giphy was ${wasCorrect ? 'correct' : 'incorrect'}! giphy score is now \`${correct} - ${incorrect}\``,
@@ -354,7 +354,7 @@ module.exports.getGiphyScore = (message, args, messageHandler) => {
     const correct = results[0].correct;
     const incorrect = results[0].incorrect;
 
-    var responses = [{
+    let responses = [{
       method: 'reply',
       message: {
         text: `giphy score is \`${correct} - ${incorrect}\``,

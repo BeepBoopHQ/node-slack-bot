@@ -55,7 +55,7 @@ module.exports.getCommandStats = (message, messageHandler) => {
       return;
     }
 
-    var statsString = '```';
+    let statsString = '```';
     for (let i = 0; i < results[0].length; i++) {
       statsString += `\r\n!${results[0][i].commandName} used ${results[0][i].count} times - Last use: <@${results[0][i].lastUsedBy}> on ${results[0][i].lastUsedDate}`;
     }

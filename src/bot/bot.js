@@ -28,7 +28,7 @@ parseAndProcessCommand = (message) => {
   if (!message || !message.text) return;
 
   // does this message contain a hidden command
-  var hiddenCommand = hiddenCmds.messageHasHiddenCommand(message.text);
+  let hiddenCommand = hiddenCmds.messageHasHiddenCommand(message.text);
 
   // not a ! command
   let parsedMessage = message.text.match(/^!(.*)\s?(.*)?$/);

@@ -1,5 +1,5 @@
 module.exports.commandSupreme = (message, commandMsg) => {
-    var messageTs = message.thread_ts || message.ts;
+    let messageTs = message.thread_ts || message.ts;
 
     return [{
         type: 'reaction',

@@ -59,7 +59,7 @@ doReactionCommand = (web, message, responses) => {
 doAddReaction = (reactions, web, message, responses) => {
   if (!responses || responses.length === 0) return;
 
-  var reactionToAdd = responses[0].reaction;
+  let reactionToAdd = responses[0].reaction;
 
   if (reactions && reactions.find(r => r.name === reactionToAdd)) return;
 
