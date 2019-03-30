@@ -1,4 +1,5 @@
-const { RtmClient, RTM_EVENTS, CLIENT_EVENTS, WebClient } = require('@slack/client');
+const { WebClient } = require("@slack/web-api");
+const { RTMClient } = require('@slack/rtm-api');
 const cmds = require('./commands/commands');
 const hiddenCmds = require('./commands/hiddenCommands');
 const Message = require('./util/message/messageUtils');
@@ -19,7 +20,7 @@ let hiddenCommands = {};
 let messageHandler;
 
 let token = process.env.SLACK_TOKEN || '';
-let rtm = new RtmClient(token, { loglevel: 'debug' });
+let rtm = new RTMClient(token, { loglevel: 'debug' });
 
 let web = new WebClient(token);
 let webAdmin = new WebClient(process.env.SLACK_ADMIN_TOKEN);
@@ -182,11 +183,11 @@ buildCommandDictionary = () => {
 }
 
 module.exports.startBot = () => {
-  rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (connectData) => {
+  rtm.on('authenticated', (connectData) => {
     appData.selfId = connectData.self.id;
   });
 
-  rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
+  rtm.on('connected', () => {
     messageHandler = new Message(rtm, web, webAdmin, appData.selfId);
 
     messageHandler.send(null, [{
@@ -205,11 +206,11 @@ module.exports.startBot = () => {
     buildCommandDictionary();
   });
 
-  rtm.on(RTM_EVENTS.CHANNEL_JOINED, (message) => {
+  rtm.on('channel_joined', (message) => {
     rtm.sendMessage('#gohawks', message.channel);
   });
 
-  rtm.on(RTM_EVENTS.MESSAGE, (message) => {
+  rtm.on('message', (message) => {
     if (!shouldReadMessage(message)) return;
 
     parseAndProcessCommand(message);

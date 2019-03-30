@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/canadaj/league-of-goons-bot",
   "dependencies": {
-    "@slack/client": "^3.15.0",
+    "@slack/rtm-api": "^5.0.0",
+    "@slack/web-api": "^5.0.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.4",
     "mysql": "^2.16.0",
